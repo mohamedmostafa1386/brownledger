@@ -1,0 +1,5 @@
+accountCode,accountName,accountType,accountCategory,normalBalance
+1010,Petty Cash,ASSET,CURRENT_ASSET,DEBIT
+2010,Accounts Payable,LIABILITY,CURRENT_LIABILITY,CREDIT
+4010,Sales Revenue,REVENUE,OPERATING_REVENUE,CREDIT
+6010,Rent Expense,EXPENSE,OPERATING_EXPENSE,DEBIT

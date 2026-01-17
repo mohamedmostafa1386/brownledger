@@ -1,0 +1,159 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-border: hsl(30 15% 85%);
+  --color-input: hsl(30 15% 85%);
+  --color-ring: hsl(30 50% 55%);
+  --color-background: hsl(30 25% 97%);
+  --color-foreground: hsl(24 10% 10%);
+  --color-primary: hsl(30 50% 55%);
+  --color-primary-foreground: hsl(0 0% 100%);
+  --color-secondary: hsl(30 20% 94%);
+  --color-secondary-foreground: hsl(24 10% 10%);
+  --color-muted: hsl(30 20% 94%);
+  --color-muted-foreground: hsl(24 10% 45%);
+  --color-accent: hsl(30 35% 90%);
+  --color-accent-foreground: hsl(24 10% 10%);
+  --color-destructive: hsl(0 84% 60%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(24 10% 10%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(24 10% 10%);
+
+  --radius-lg: 0.75rem;
+  --radius-md: 0.5rem;
+  --radius-sm: 0.375rem;
+
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-arabic: var(--font-cairo), 'Cairo', 'Tajawal', system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Arabic/RTL Font */
+.font-arabic {
+  font-family: var(--font-arabic);
+}
+
+/* RTL Support */
+[dir="rtl"] {
+  text-align: right;
+}
+
+[dir="rtl"] .ltr-text {
+  direction: ltr;
+  text-align: left;
+}
+
+/* Force numbers to LTR in RTL context */
+[dir="rtl"] .number {
+  direction: ltr;
+  display: inline-block;
+}
+
+
+/* Dark mode */
+.dark {
+  --color-background: hsl(24 15% 10%);
+  --color-foreground: hsl(30 25% 92%);
+  --color-card: hsl(24 15% 14%);
+  --color-card-foreground: hsl(30 25% 92%);
+  --color-popover: hsl(24 15% 14%);
+  --color-popover-foreground: hsl(30 25% 92%);
+  --color-primary: hsl(35 55% 60%);
+  --color-primary-foreground: hsl(24 15% 10%);
+  --color-secondary: hsl(24 12% 20%);
+  --color-secondary-foreground: hsl(30 25% 92%);
+  --color-muted: hsl(24 12% 20%);
+  --color-muted-foreground: hsl(30 15% 60%);
+  --color-accent: hsl(24 12% 22%);
+  --color-accent-foreground: hsl(30 25% 92%);
+  --color-destructive: hsl(0 63% 31%);
+  --color-destructive-foreground: hsl(0 0% 98%);
+  --color-border: hsl(24 12% 22%);
+  --color-input: hsl(24 12% 22%);
+  --color-ring: hsl(35 55% 60%);
+}
+
+/* Skeleton animation */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-muted);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Click responsiveness improvements */
+button, a, [role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Faster hover/active transitions */
+button, a, [role="button"], .clickable {
+  transition: background-color 0.1s ease, transform 0.1s ease, opacity 0.1s ease;
+}
+
+/* Active state for immediate feedback */
+button:active:not(:disabled), 
+a:active, 
+[role="button"]:active {
+  transform: scale(0.98);
+  opacity: 0.9;
+}
+
+/* Sidebar navigation - faster interactions */
+nav a, nav button {
+  transition: background-color 0.05s ease, color 0.05s ease;
+}
+
+/* Cards - quick hover feedback */
+.hover\:shadow-md:hover {
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* Input focus - quick response */
+input:focus, select:focus, textarea:focus {
+  transition: ring 0.1s ease, border-color 0.1s ease;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

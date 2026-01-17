@@ -1,0 +1,1278 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Company Type for different equity structures
+enum CompanyType {
+  SOLE_PROPRIETORSHIP  // Single owner
+  PARTNERSHIP          // Multiple partners with profit sharing
+  LLC                  // Limited Liability Company
+  CORPORATION          // Stock company with shareholders
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("CASHIER")
+  pin       String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  memberships  CompanyMembership[]
+  posSales     POSSale[]
+  cashierShifts CashierShift[]
+}
+
+// Partner model for Partnerships
+model Partner {
+  id              String   @id @default(cuid())
+  companyId       String
+  name            String
+  email           String?
+  phone           String?
+  ownershipPercent Float   // Percentage of ownership (0-100)
+  profitSharePercent Float // Percentage of profit sharing (0-100)
+  capitalContribution Float @default(0)
+  currentCapital  Float    @default(0)
+  drawings        Float    @default(0) // Withdrawals
+  isActive        Boolean  @default(true)
+  joinDate        DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId])
+}
+
+// Shareholder model for Corporations
+model Shareholder {
+  id              String   @id @default(cuid())
+  companyId       String
+  name            String
+  email           String?
+  phone           String?
+  shareClass      String   @default("COMMON") // COMMON, PREFERRED
+  sharesOwned     Int
+  sharePrice      Float    // Price per share at acquisition
+  totalInvestment Float    // Total amount invested
+  isActive        Boolean  @default(true)
+  acquisitionDate DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  company   Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  dividends DividendPayment[]
+
+  @@index([companyId])
+}
+
+// Dividend model for Corporations
+model Dividend {
+  id              String   @id @default(cuid())
+  companyId       String
+  declarationDate DateTime
+  recordDate      DateTime // Date to determine eligible shareholders
+  paymentDate     DateTime
+  dividendPerShare Float
+  totalAmount     Float
+  status          String   @default("DECLARED") // DECLARED, PAID, CANCELLED
+  notes           String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  company  Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  payments DividendPayment[]
+
+  @@index([companyId])
+}
+
+// Dividend payments to individual shareholders
+model DividendPayment {
+  id            String   @id @default(cuid())
+  dividendId    String
+  shareholderId String
+  sharesAtRecord Int     // Shares owned at record date
+  amount        Float    // Payment amount
+  isPaid        Boolean  @default(false)
+  paidAt        DateTime?
+  createdAt     DateTime @default(now())
+
+  dividend    Dividend    @relation(fields: [dividendId], references: [id], onDelete: Cascade)
+  shareholder Shareholder @relation(fields: [shareholderId], references: [id], onDelete: Cascade)
+
+  @@index([dividendId])
+  @@index([shareholderId])
+}
+
+model Company {
+  id              String      @id @default(cuid())
+  name            String
+  nameAr          String?     // Arabic name
+  logoUrl         String?
+  taxId           String?
+  email           String?
+  currency        String      @default("USD")
+  fiscalYearStart Int         @default(1)
+  address         String?
+  phone           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Company Type for different equity structures
+  companyType     CompanyType @default(LLC)
+  
+  // Subscription & Billing
+  subscriptionPlan      String?   @default("FREE")  // FREE, STARTER, PROFESSIONAL, ENTERPRISE
+  subscriptionStatus    String?   @default("ACTIVE") // ACTIVE, CANCELED, PAST_DUE
+  stripeCustomerId      String?
+  stripeSubscriptionId  String?
+  
+  // ETA E-Invoicing (Egypt Tax Authority)
+  etaRegistrationNumber String?
+  etaActivityCode      String?
+  governorate          String?
+  city                 String?
+  buildingNumber       String?
+  postalCode           String?
+  
+  // For Partnerships - profit/loss sharing ratio
+  // For Corporations - authorized shares info
+  authorizedShares    Int?
+  parValuePerShare    Float?
+  
+  memberships     CompanyMembership[]
+  clients         Client[]
+  suppliers       Supplier[]
+  invoices        Invoice[]
+  bills           Bill[]
+  expenses        Expense[]
+  bankAccounts    BankAccount[]
+  categories      ExpenseCategory[]
+  purchaseOrders  PurchaseOrder[]
+  aiInsights      AIInsight[]
+  activityLogs    ActivityLog[]
+  products        Product[]
+  posTerminals    POSTerminal[]
+  posSales        POSSale[]
+  cashierShifts   CashierShift[]
+  warehouses      Warehouse[]
+  stockMovements  StockMovement[]
+  stockAlerts     StockAlert[]
+  payments        Payment[]
+  deductions      PaymentDeduction[]
+  salesReturns    SalesReturn[]
+  purchaseReturns PurchaseReturn[]
+  
+  // Equity: Partners (for partnerships) or Shareholders (for corporations)
+  partners        Partner[]
+  shareholders    Shareholder[]
+  dividends       Dividend[]
+  
+  // Chart of Accounts & GL
+  accounts        Account[]
+  journalEntries  JournalEntry[]
+  ratioSnapshots  FinancialRatioSnapshot[]
+  
+  // Client Categories
+  clientCategories ClientCategory[]
+  
+  // Default GL Accounts for auto-posting
+  cashAccountId       String?
+  arAccountId         String?  // Accounts Receivable
+  apAccountId         String?  // Accounts Payable
+  salesAccountId      String?
+  salesTaxAccountId   String?
+  cogsAccountId       String?  // Cost of Goods Sold
+  inventoryAccountId  String?
+  
+  // Accrual Accounting
+  prepaidExpenses     PrepaidExpense[]
+  loans               Loan[]
+}
+
+model CompanyMembership {
+  id        String @id @default(cuid())
+  userId    String
+  companyId String
+  role      String @default("VIEWER")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, companyId])
+  @@index([companyId])
+}
+
+// ========== POS MODULE ==========
+
+model Product {
+  id             String   @id @default(cuid())
+  companyId      String
+  sku            String
+  barcode        String?
+  name           String
+  description    String?
+  categoryId     String?
+  costPrice      Float    @default(0)
+  sellingPrice   Float
+  taxRate        Float    @default(0)
+  stockQuantity  Int      @default(0)
+  lowStockAlert  Int      @default(10)
+  imageUrl       String?
+  isActive       Boolean  @default(true)
+  trackInventory Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  company        Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category       ProductCategory?  @relation(fields: [categoryId], references: [id])
+  saleItems      POSSaleItem[]
+  stockMovements StockMovement[]
+  stocks         Stock[]
+  stockAlerts    StockAlert[]
+  salesReturnItems    SalesReturnItem[]
+  purchaseReturnItems PurchaseReturnItem[]
+
+  @@unique([companyId, sku])
+  @@index([companyId, barcode])
+  @@index([companyId, isActive])
+}
+
+model ProductCategory {
+  id       String    @id @default(cuid())
+  name     String
+  color    String?
+  icon     String?
+  products Product[]
+}
+
+model POSTerminal {
+  id        String   @id @default(cuid())
+  companyId String
+  name      String
+  location  String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  company Company   @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  sales   POSSale[]
+
+  @@index([companyId])
+}
+
+model POSSale {
+  id             String   @id @default(cuid())
+  companyId      String
+  terminalId     String?
+  cashierId      String
+  saleNumber     String
+  saleDate       DateTime @default(now())
+  subtotal       Float
+  taxAmount      Float
+  discountAmount Float    @default(0)
+  total          Float
+  paymentMethod  String
+  cashReceived   Float?
+  changeGiven    Float?
+  customerName   String?
+  customerPhone  String?
+  notes          String?
+  status         String   @default("COMPLETED")
+  createdAt      DateTime @default(now())
+  
+  salesReturns   SalesReturn[]
+  
+  // GL Integration
+  journalEntryId String?
+  isPostedToGL   Boolean  @default(false)
+
+  company  Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  terminal POSTerminal?  @relation(fields: [terminalId], references: [id])
+  cashier  User          @relation(fields: [cashierId], references: [id])
+  items    POSSaleItem[]
+
+  @@unique([companyId, saleNumber])
+  @@index([companyId, saleDate])
+  @@index([cashierId])
+}
+
+model POSSaleItem {
+  id          String @id @default(cuid())
+  saleId      String
+  productId   String
+  productName String
+  quantity    Int
+  unitPrice   Float
+  taxRate     Float
+  discount    Float  @default(0)
+  total       Float
+
+  sale    POSSale @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@index([saleId])
+}
+
+model CashierShift {
+  id             String    @id @default(cuid())
+  companyId      String
+  cashierId      String
+  startTime      DateTime
+  endTime        DateTime?
+  openingCash    Float
+  closingCash    Float?
+  expectedCash   Float?
+  cashDifference Float?
+  totalSales     Float?
+  totalRefunds   Float?
+  notes          String?
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  cashier User    @relation(fields: [cashierId], references: [id])
+
+  @@index([companyId, cashierId])
+  @@index([startTime])
+}
+
+// ========== WAREHOUSE & STOCK MODULE ==========
+
+model Warehouse {
+  id        String   @id @default(cuid())
+  companyId String
+  name      String
+  code      String
+  location  String?
+  address   String?
+  managerId String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  company        Company         @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  stocks         Stock[]
+  stockMovements StockMovement[]
+
+  @@unique([companyId, code])
+  @@index([companyId])
+}
+
+model Stock {
+  id           String    @id @default(cuid())
+  productId    String
+  warehouseId  String
+  quantity     Int       @default(0)
+  reservedQty  Int       @default(0)
+  availableQty Int       @default(0)
+  lastRestocked DateTime?
+  updatedAt    DateTime  @updatedAt
+
+  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouse Warehouse @relation(fields: [warehouseId], references: [id], onDelete: Cascade)
+
+  @@unique([productId, warehouseId])
+  @@index([productId])
+  @@index([warehouseId])
+}
+
+model StockMovement {
+  id            String   @id @default(cuid())
+  companyId     String
+  productId     String
+  warehouseId   String?
+  type          String   // PURCHASE, SALE, ADJUSTMENT_IN, ADJUSTMENT_OUT, RETURN, DAMAGE
+  quantity      Int
+  balanceBefore Int      @default(0)
+  balanceAfter  Int      @default(0)
+  reference     String?  // PO number, Sale number, etc.
+  referenceType String?  // PO, SALE, BILL, ADJUSTMENT
+  notes         String?
+  userId        String?
+  date          DateTime @default(now())
+
+  company   Company    @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  product   Product    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  warehouse Warehouse? @relation(fields: [warehouseId], references: [id])
+
+  @@index([companyId, date])
+  @@index([productId, date])
+  @@index([warehouseId])
+}
+
+model StockAlert {
+  id         String   @id @default(cuid())
+  companyId  String
+  productId  String
+  type       String   // LOW_STOCK, OUT_OF_STOCK, OVERSTOCK, REORDER_NEEDED
+  message    String
+  severity   String   // LOW, MEDIUM, HIGH, CRITICAL
+  isResolved Boolean  @default(false)
+  resolvedAt DateTime?
+  createdAt  DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, isResolved])
+  @@index([productId])
+}
+
+// ========== END WAREHOUSE & STOCK MODULE ==========
+
+// ========== RECEIVABLES MODULE ==========
+
+model Payment {
+  id              String   @id @default(cuid())
+  companyId       String
+  clientId        String
+  paymentNumber   String
+  paymentDate     DateTime
+  valueDate       DateTime? // For checks - when it clears
+
+  // Amounts
+  totalAmount     Float
+  appliedAmount   Float    @default(0)
+  unappliedAmount Float    @default(0)
+
+  // Payment Method
+  paymentMethod   String   // CASH, CHECK, BANK_TRANSFER, CARD
+
+  // Cash fields
+  receivedBy      String?
+
+  // Check fields
+  checkNumber     String?
+  checkDate       DateTime?
+  bankName        String?
+  checkStatus     String?  // RECEIVED, DEPOSITED, CLEARED, BOUNCED
+
+  // Bank Transfer fields
+  bankReference   String?
+  receiverAccount String?
+
+  // Status
+  status          String   @default("PENDING") // PENDING, APPLIED, PARTIALLY_APPLIED, BOUNCED
+  autoMatched     Boolean  @default(false)
+  matchConfidence Float?
+
+  currency        String   @default("EGP")
+  notes           String?
+  createdAt       DateTime @default(now())
+  createdBy       String?
+  
+  // GL Integration
+  journalEntryId  String?
+  isPostedToGL    Boolean  @default(false)
+
+  company      Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  client       Client               @relation(fields: [clientId], references: [id])
+  applications PaymentApplication[]
+  deductions   PaymentDeduction[]
+
+  @@unique([companyId, paymentNumber])
+  @@index([companyId, paymentDate])
+  @@index([clientId])
+  @@index([status])
+}
+
+model PaymentApplication {
+  id            String   @id @default(cuid())
+  paymentId     String
+  invoiceId     String
+  appliedAmount Float
+  discountTaken Float    @default(0)
+  appliedDate   DateTime @default(now())
+
+  isAutoMatched   Boolean @default(false)
+  matchConfidence Float?
+  matchReason     String? // "Exact amount", "FIFO", "AI match"
+
+  approvedBy String?
+  notes      String?
+
+  payment Payment @relation(fields: [paymentId], references: [id], onDelete: Cascade)
+  invoice Invoice @relation(fields: [invoiceId], references: [id])
+
+  @@index([paymentId])
+  @@index([invoiceId])
+}
+
+model PaymentDeduction {
+  id              String   @id @default(cuid())
+  companyId       String
+  clientId        String
+  paymentId       String?
+  invoiceId       String?
+  deductionNumber String
+  deductionDate   DateTime @default(now())
+
+  amount      Float
+  type        String // EARLY_DISCOUNT, DAMAGE, SHORTAGE, ADJUSTMENT
+  reason      String
+  description String
+
+  status      String   @default("PENDING") // PENDING, APPROVED, REJECTED
+  approvedBy  String?
+  approvedAt  DateTime?
+
+  notes     String?
+  createdAt DateTime @default(now())
+  createdBy String?
+
+  company Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  client  Client   @relation(fields: [clientId], references: [id])
+  payment Payment? @relation(fields: [paymentId], references: [id])
+  invoice Invoice? @relation(fields: [invoiceId], references: [id])
+
+  @@unique([companyId, deductionNumber])
+  @@index([companyId])
+  @@index([clientId])
+  @@index([status])
+}
+
+// ========== END RECEIVABLES MODULE ==========
+
+// ========== CHART OF ACCOUNTS & GENERAL LEDGER ==========
+
+enum AccountType {
+  ASSET
+  LIABILITY
+  EQUITY
+  REVENUE
+  EXPENSE
+}
+
+enum AccountCategory {
+  CURRENT_ASSET
+  FIXED_ASSET
+  CURRENT_LIABILITY
+  LONG_TERM_LIABILITY
+  CAPITAL
+  RETAINED_EARNINGS
+  OPERATING_REVENUE
+  OTHER_INCOME
+  COST_OF_GOODS_SOLD
+  OPERATING_EXPENSE
+  OTHER_EXPENSE
+}
+
+enum BalanceType {
+  DEBIT
+  CREDIT
+}
+
+enum SourceType {
+  MANUAL
+  INVOICE
+  BILL
+  PAYMENT_RECEIVED
+  PAYMENT_MADE
+  POS_SALE
+  STOCK_ADJUSTMENT
+  EXPENSE
+}
+
+enum JournalStatus {
+  DRAFT
+  POSTED
+  REVERSED
+}
+
+enum HealthScore {
+  EXCELLENT
+  GOOD
+  FAIR
+  POOR
+  CRITICAL
+}
+
+model Account {
+  id              String          @id @default(cuid())
+  companyId       String
+  accountCode     String          // e.g., 1000, 4000, 5100
+  accountName     String
+  accountNameAr   String?
+  accountType     AccountType
+  accountCategory AccountCategory
+  parentId        String?
+  normalBalance   BalanceType
+  currentBalance  Float           @default(0)
+  isActive        Boolean         @default(true)
+  createdAt       DateTime        @default(now())
+
+  company      Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent       Account?           @relation("Hierarchy", fields: [parentId], references: [id], onUpdate: NoAction, onDelete: NoAction)
+  children     Account[]          @relation("Hierarchy")
+  journalLines JournalEntryLine[]
+
+  @@unique([companyId, accountCode])
+  @@index([companyId, accountType])
+  @@index([parentId])
+}
+
+model JournalEntry {
+  id            String        @id @default(cuid())
+  companyId     String
+  journalNumber String
+  entryDate     DateTime
+  description   String
+  descriptionAr String?
+  descriptionFr String?
+  sourceType    SourceType
+  sourceId      String?
+  status        JournalStatus @default(POSTED)
+  totalDebit    Float
+  totalCredit   Float
+  createdAt     DateTime      @default(now())
+  createdBy     String?
+
+  company Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  lines   JournalEntryLine[]
+
+  @@unique([companyId, journalNumber])
+  @@index([companyId, entryDate])
+  @@index([sourceType, sourceId])
+}
+
+model JournalEntryLine {
+  id             String  @id @default(cuid())
+  journalEntryId String
+  accountId      String
+  description    String?
+  debit          Float   @default(0)
+  credit         Float   @default(0)
+
+  journalEntry JournalEntry @relation(fields: [journalEntryId], references: [id], onDelete: Cascade)
+  account      Account      @relation(fields: [accountId], references: [id])
+
+  @@index([journalEntryId])
+  @@index([accountId])
+}
+
+model FinancialRatioSnapshot {
+  id           String   @id @default(cuid())
+  companyId    String
+  snapshotDate DateTime @default(now())
+  periodStart  DateTime
+  periodEnd    DateTime
+
+  // Liquidity Ratios
+  currentRatio Float?
+  quickRatio   Float?
+  cashRatio    Float?
+
+  // Profitability Ratios
+  grossProfitMargin Float?
+  netProfitMargin   Float?
+  returnOnAssets    Float?
+  returnOnEquity    Float?
+
+  // Efficiency Ratios
+  assetTurnover        Float?
+  inventoryTurnover    Float?
+  daysSalesOutstanding Float? // DSO
+
+  // Leverage Ratios
+  debtToEquity Float?
+  debtToAssets Float?
+
+  // Totals
+  totalAssets      Float @default(0)
+  totalLiabilities Float @default(0)
+  totalEquity      Float @default(0)
+  totalRevenue     Float @default(0)
+  netIncome        Float @default(0)
+
+  // AI Analysis
+  overallHealth   HealthScore @default(FAIR)
+  aiAnalysis      String?     // JSON string
+  recommendations String?     // JSON string
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, snapshotDate])
+}
+
+// ========== END CHART OF ACCOUNTS ==========
+
+
+// Client Categories for analytics and segmentation
+model ClientCategory {
+  id          String   @id @default(cuid())
+  companyId   String
+  name        String
+  nameAr      String?  // Arabic name
+  description String?
+  color       String?  // For UI display (hex color)
+  parentId    String?  // For subcategories
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  company  Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent   ClientCategory?  @relation("CategoryHierarchy", fields: [parentId], references: [id], onDelete: SetNull)
+  children ClientCategory[] @relation("CategoryHierarchy")
+  clients  Client[]
+
+  @@unique([companyId, name])
+  @@index([companyId])
+  @@index([parentId])
+}
+
+model Client {
+  id            String   @id @default(cuid())
+  companyId     String
+  categoryId    String?  // Link to ClientCategory
+  name          String
+  nameAr        String?  // Arabic name
+  email         String?
+  phone         String?
+  address       String?
+  taxId         String?
+  paymentTerms  Int      @default(30)
+  currency      String   @default("USD")
+  loyaltyPoints Int      @default(0)
+  totalOutstanding Float @default(0)
+  notes         String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  company    Company            @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category   ClientCategory?    @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  invoices   Invoice[]
+  payments   Payment[]
+  deductions PaymentDeduction[]
+  salesReturns SalesReturn[]
+
+  @@index([companyId])
+  @@index([categoryId])
+  @@index([phone])
+}
+
+model Supplier {
+  id            String   @id @default(cuid())
+  companyId     String
+  name          String
+  contactPerson String?
+  email         String?
+  phone         String?
+  website       String?
+  address       String?
+  city          String?
+  state         String?
+  zipCode       String?
+  country       String?
+  taxId         String?
+  paymentTerms  Int      @default(30)
+  currency      String   @default("USD")
+  bankAccount   String?
+  notes         String?
+  rating        Int?     @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  company        Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  bills          Bill[]
+  expenses       Expense[]
+  purchaseOrders PurchaseOrder[]
+  purchaseReturns PurchaseReturn[]
+  contacts       SupplierContact[]
+
+  @@index([companyId])
+  @@index([companyId, isActive])
+}
+
+model SupplierContact {
+  id         String  @id @default(cuid())
+  supplierId String
+  name       String
+  role       String?
+  email      String?
+  phone      String?
+  isPrimary  Boolean @default(false)
+
+  supplier Supplier @relation(fields: [supplierId], references: [id], onDelete: Cascade)
+
+  @@index([supplierId])
+}
+
+model Bill {
+  id              String   @id @default(cuid())
+  companyId       String
+  supplierId      String
+  purchaseOrderId String?  // Optional - can link to PO or create direct
+  billNumber      String
+  issueDate       DateTime
+  dueDate         DateTime
+  status          String   @default("DRAFT")
+  currency        String   @default("USD")
+  taxRate         Float    @default(0)
+  notes           String?
+  attachmentUrl   String?
+  totalAmount     Float    @default(0)
+  paidAmount      Float    @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  purchaseReturns PurchaseReturn[]
+  
+  // GL Integration
+  journalEntryId  String?
+  isPostedToGL    Boolean  @default(false)
+
+  company       Company        @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  supplier      Supplier       @relation(fields: [supplierId], references: [id])
+  purchaseOrder PurchaseOrder? @relation(fields: [purchaseOrderId], references: [id])
+  items         BillItem[]
+
+  @@unique([companyId, billNumber])
+  @@index([companyId, status])
+  @@index([supplierId])
+  @@index([purchaseOrderId])
+}
+
+model BillItem {
+  id          String  @id @default(cuid())
+  billId      String
+  productId   String? // Link to product for inventory tracking
+  description String
+  quantity    Float
+  unitPrice   Float
+  taxApplied  Boolean @default(true)
+
+  bill    Bill     @relation(fields: [billId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id])
+
+  @@index([billId])
+  @@index([productId])
+}
+
+model PurchaseOrder {
+  id           String    @id @default(cuid())
+  companyId    String
+  supplierId   String
+  poNumber     String
+  orderDate    DateTime
+  expectedDate DateTime?
+  receivedDate DateTime?
+  status       String    @default("DRAFT")
+  totalAmount  Float     @default(0)
+  notes        String?
+  createdBy    String?
+  approvedBy   String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  company  Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  supplier Supplier @relation(fields: [supplierId], references: [id])
+  items    POItem[]
+  bills    Bill[]   // Can convert PO to Bill
+
+  @@unique([companyId, poNumber])
+  @@index([companyId, status])
+  @@index([supplierId])
+}
+
+model POItem {
+  id          String @id @default(cuid())
+  poId        String
+  description String
+  quantity    Float
+  unitPrice   Float
+
+  purchaseOrder PurchaseOrder @relation(fields: [poId], references: [id], onDelete: Cascade)
+
+  @@index([poId])
+}
+
+model Invoice {
+  id               String    @id @default(cuid())
+  companyId        String
+  clientId         String
+  invoiceNumber    String
+  issueDate        DateTime
+  dueDate          DateTime
+  status           String    @default("DRAFT")
+  paymentStatus    String    @default("UNPAID") // UNPAID, PARTIALLY_PAID, PAID
+  currency         String    @default("USD")
+  taxRate          Float     @default(0)
+  totalAmount      Float     @default(0)
+  paidAmount       Float     @default(0)
+  balanceDue       Float     @default(0)
+  notes            String?
+  notesAr          String?   // Arabic notes
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  
+  salesReturns     SalesReturn[]
+  aiGenerated      Boolean   @default(false)
+  remindersSent    Int       @default(0)
+  lastReminderDate DateTime?
+  
+  // Additional amounts
+  subtotal         Float     @default(0)
+  discount         Float     @default(0)
+  taxAmount        Float     @default(0)
+  
+  // GL Integration
+  journalEntryId   String?
+  isPostedToGL     Boolean   @default(false)
+  
+  // ETA E-Invoicing (Egypt Tax Authority)
+  etaUuid          String?   // ETA document UUID
+  etaSubmissionId  String?   // ETA submission ID
+  etaStatus        String?   // SUBMITTED, VALID, INVALID, CANCELLED
+  etaLongId        String?   // Long format ID from ETA
+  etaPublicUrl     String?   // Public verification URL
+  etaSubmittedAt   DateTime?
+
+  company      Company              @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  client       Client               @relation(fields: [clientId], references: [id])
+  items        InvoiceItem[]
+  applications PaymentApplication[]
+  deductions   PaymentDeduction[]
+
+  @@unique([companyId, invoiceNumber])
+  @@index([companyId, status])
+  @@index([clientId])
+}
+
+model InvoiceItem {
+  id           String  @id @default(cuid())
+  invoiceId    String
+  description  String
+  descriptionAr String? // Arabic description
+  quantity     Float
+  unitPrice    Float
+  total        Float   @default(0)  // quantity * unitPrice
+  taxApplied   Boolean @default(true)
+
+  invoice Invoice @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@index([invoiceId])
+}
+
+model Expense {
+  id              String   @id @default(cuid())
+  companyId       String
+  categoryId      String?
+  supplierId      String?
+  date            DateTime
+  amount          Float
+  currency        String   @default("USD")
+  vendor          String?
+  description     String
+  receiptUrl      String?
+  notes           String?
+  createdAt       DateTime @default(now())
+  aiCategoryId    String?
+  aiConfidence    Float?   @default(0)
+  isDuplicateFlag Boolean  @default(false)
+  ocrData         String?
+
+  company  Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  category ExpenseCategory? @relation(fields: [categoryId], references: [id])
+  supplier Supplier?        @relation(fields: [supplierId], references: [id])
+
+  @@index([companyId, date])
+  @@index([categoryId])
+  @@index([supplierId])
+}
+
+model ExpenseCategory {
+  id        String  @id @default(cuid())
+  companyId String
+  name      String
+  parentId  String?
+  type      String?
+
+  company  Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  parent   ExpenseCategory?  @relation("SubCategories", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children ExpenseCategory[] @relation("SubCategories")
+  expenses Expense[]
+
+  @@index([companyId])
+}
+
+model BankAccount {
+  id            String  @id @default(cuid())
+  companyId     String
+  name          String
+  accountNumber String?
+  balance       Float   @default(0)
+  currency      String  @default("USD")
+
+  company      Company           @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  transactions BankTransaction[]
+
+  @@index([companyId])
+}
+
+model BankTransaction {
+  id          String   @id @default(cuid())
+  accountId   String
+  date        DateTime
+  amount      Float
+  type        String
+  description String
+  reconciled  Boolean  @default(false)
+  invoiceId   String?
+  expenseId   String?
+
+  account BankAccount @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  @@index([accountId, date])
+}
+
+model AIInsight {
+  id          String   @id @default(cuid())
+  companyId   String
+  type        String
+  title       String
+  description String
+  actionable  Boolean  @default(false)
+  action      String?
+  dismissed   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, dismissed])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  companyId String
+  type      String
+  metadata  String?
+  createdAt DateTime @default(now())
+
+  company Company @relation(fields: [companyId], references: [id], onDelete: Cascade)
+
+  @@index([companyId, type])
+}
+
+// ============================================
+// ACCRUAL ACCOUNTING MODELS
+// ============================================
+
+// Prepaid Expense for expense amortization over time
+// Example: 3-year hosting paid upfront, recognized monthly
+model PrepaidExpense {
+  id                String   @id @default(cuid())
+  companyId         String
+  description       String
+  vendorName        String?
+  referenceNumber   String?  // Bill/Invoice reference
+  totalAmount       Float
+  startDate         DateTime
+  endDate           DateTime
+  periodMonths      Int      // Total months to amortize
+  monthlyAmount     Float    // totalAmount / periodMonths
+  recognizedAmount  Float    @default(0)
+  remainingAmount   Float
+  expenseAccountId  String?  // GL account for expense (e.g., 6xxx)
+  assetAccountId    String?  // GL account for prepaid asset (e.g., 1300)
+  isActive          Boolean  @default(true)
+  lastRecognizedAt  DateTime?
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  company           Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  amortizations     ExpenseAmortization[]
+
+  @@index([companyId, isActive])
+}
+
+// Individual amortization entries for prepaid expenses
+model ExpenseAmortization {
+  id               String   @id @default(cuid())
+  prepaidExpenseId String
+  periodDate       DateTime // Month being recognized
+  amount           Float
+  isProcessed      Boolean  @default(false)
+  journalEntryId   String?  // Link to journal entry
+  createdAt        DateTime @default(now())
+
+  prepaidExpense   PrepaidExpense @relation(fields: [prepaidExpenseId], references: [id], onDelete: Cascade)
+
+  @@index([prepaidExpenseId, periodDate])
+}
+
+// Loan model for borrowing with interest
+model Loan {
+  id                String   @id @default(cuid())
+  companyId         String
+  loanName          String   // e.g., "Business Expansion Loan"
+  lenderName        String   // Bank or creditor name
+  referenceNumber   String?  // Loan account number
+  principalAmount   Float    // Original borrowed amount
+  interestRate      Float    // Annual interest rate (e.g., 0.12 for 12%)
+  interestType      String   @default("SIMPLE") // SIMPLE, COMPOUND
+  startDate         DateTime
+  endDate           DateTime
+  termMonths        Int      // Loan term in months
+  paymentFrequency  String   @default("MONTHLY") // MONTHLY, QUARTERLY, SEMI_ANNUALLY, ANNUALLY
+  monthlyPayment    Float?   // Fixed monthly payment (for amortized loans)
+  totalInterest     Float?   // Calculated total interest over life
+  totalPaid         Float    @default(0)
+  principalPaid     Float    @default(0)
+  interestPaid      Float    @default(0)
+  remainingBalance  Float
+  loanAccountId     String?  // Liability GL account (e.g., 2500)
+  interestAccountId String?  // Interest expense GL account (e.g., 6800)
+  isActive          Boolean  @default(true)
+  notes             String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  company  Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  payments LoanPayment[]
+  schedule LoanSchedule[]
+
+  @@index([companyId, isActive])
+}
+
+// Individual loan payment records
+model LoanPayment {
+  id             String   @id @default(cuid())
+  loanId         String
+  paymentDate    DateTime
+  paymentNumber  Int
+  principalPart  Float
+  interestPart   Float
+  totalPayment   Float
+  balanceAfter   Float
+  journalEntryId String?  // Link to journal entry
+  notes          String?
+  createdAt      DateTime @default(now())
+
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@index([loanId, paymentDate])
+}
+
+// Loan amortization schedule (pre-calculated)
+model LoanSchedule {
+  id            String   @id @default(cuid())
+  loanId        String
+  periodNumber  Int
+  dueDate       DateTime
+  principalDue  Float
+  interestDue   Float
+  totalDue      Float
+  balanceAfter  Float
+  isPaid        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  loan Loan @relation(fields: [loanId], references: [id], onDelete: Cascade)
+
+  @@index([loanId, periodNumber])
+}
+
+// ========== RETURNS MODULE (Credit & Debit Notes) ==========
+
+model SalesReturn {
+  id              String   @id @default(cuid())
+  companyId       String
+  clientId        String
+  invoiceId       String?
+  posSaleId       String?
+  returnNumber    String
+  returnDate      DateTime @default(now())
+  reason          String?
+  subtotal        Float    @default(0)
+  taxAmount       Float    @default(0)
+  totalAmount     Float    @default(0)
+  status          String   @default("COMPLETED") // COMPLETED, DRAFT
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // GL Integration
+  journalEntryId  String?
+  isPostedToGL    Boolean  @default(false)
+
+  company  Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  client   Client        @relation(fields: [clientId], references: [id])
+  invoice  Invoice?      @relation(fields: [invoiceId], references: [id])
+  posSale  POSSale?      @relation(fields: [posSaleId], references: [id])
+  items    SalesReturnItem[]
+
+  @@unique([companyId, returnNumber])
+  @@index([companyId, returnDate])
+  @@index([clientId])
+  @@index([invoiceId])
+  @@index([posSaleId])
+}
+
+model SalesReturnItem {
+  id            String @id @default(cuid())
+  salesReturnId String
+  productId     String?
+  description   String
+  quantity      Float
+  unitPrice     Float
+  taxRate       Float  @default(0)
+  total         Float  @default(0)
+
+  salesReturn   SalesReturn @relation(fields: [salesReturnId], references: [id], onDelete: Cascade)
+  product       Product?    @relation(fields: [productId], references: [id])
+
+  @@index([salesReturnId])
+  @@index([productId])
+}
+
+model PurchaseReturn {
+  id              String   @id @default(cuid())
+  companyId       String
+  supplierId      String
+  billId          String?
+  returnNumber    String
+  returnDate      DateTime @default(now())
+  reason          String?
+  subtotal        Float    @default(0)
+  taxAmount       Float    @default(0)
+  totalAmount     Float    @default(0)
+  status          String   @default("COMPLETED") // COMPLETED, DRAFT
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // GL Integration
+  journalEntryId  String?
+  isPostedToGL    Boolean  @default(false)
+
+  company  Company       @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  supplier Supplier      @relation(fields: [supplierId], references: [id])
+  bill     Bill?         @relation(fields: [billId], references: [id])
+  items    PurchaseReturnItem[]
+
+  @@unique([companyId, returnNumber])
+  @@index([companyId, returnDate])
+  @@index([supplierId])
+  @@index([billId])
+}
+
+model PurchaseReturnItem {
+  id               String @id @default(cuid())
+  purchaseReturnId String
+  productId        String?
+  description      String
+  quantity         Float
+  unitPrice        Float
+  taxRate          Float  @default(0)
+  total            Float  @default(0)
+
+  purchaseReturn   PurchaseReturn @relation(fields: [purchaseReturnId], references: [id], onDelete: Cascade)
+  product          Product?       @relation(fields: [productId], references: [id])
+
+  @@index([purchaseReturnId])
+  @@index([productId])
+}
+

@@ -1,0 +1,39 @@
+services:
+  app:
+    build: .
+    container_name: brownledger-app
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/brownledger
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=changeme_dev_secret_123
+      - AUTH_SECRET=changeme_dev_secret_123
+      - AUTH_TRUST_HOST=true
+    depends_on:
+      - db
+    networks:
+      - brownledger-net
+
+  db:
+    image: postgres:17
+    container_name: brownledger-db
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=brownledger
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    networks:
+      - brownledger-net
+    ports:
+      - "5432:5432"
+
+volumes:
+  db_data:
+
+
+networks:
+  brownledger-net:
