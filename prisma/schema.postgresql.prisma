@@ -240,6 +240,7 @@ model Product {
   stockAlerts    StockAlert[]
   salesReturnItems    SalesReturnItem[]
   purchaseReturnItems PurchaseReturnItem[]
+  billItems           BillItem[]
 
   @@unique([companyId, sku])
   @@index([companyId, barcode])
