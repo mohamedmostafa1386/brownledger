@@ -17,7 +17,7 @@ import { formatCurrency } from "@/lib/format";
 
 const COLORS = ["#22c55e", "#3b82f6", "#f59e0b", "#ef4444", "#8b5cf6", "#ec4899"];
 
-export default function ReportsPage() {
+export function ReportsView() {
     const { t, locale } = useI18n();
     const [activeTab, setActiveTab] = useState<"overview" | "sales" | "receivables" | "purchases" | "inventory" | "clients">("overview");
     const [period, setPeriod] = useState("month");
@@ -46,13 +46,13 @@ export default function ReportsPage() {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
-            <div className="flex items-center justify-between">
+            {/* Header Controls */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold">Reports & Analytics</h1>
-                    <p className="text-muted-foreground">Comprehensive business insights and performance metrics</p>
+                    <h2 className="text-xl font-semibold">Analytics & Insights</h2>
+                    <p className="text-muted-foreground text-sm">Detailed performance metrics</p>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-wrap gap-3">
                     <div className="flex bg-muted rounded-lg p-1">
                         <button
                             onClick={() => setViewMode("dashboard")}
@@ -96,8 +96,8 @@ export default function ReportsPage() {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
-                                    ? "border-primary text-primary"
-                                    : "border-transparent text-muted-foreground hover:text-foreground"
+                                ? "border-primary text-primary"
+                                : "border-transparent text-muted-foreground hover:text-foreground"
                                 }`}
                         >
                             <tab.icon className="w-4 h-4" />
@@ -727,7 +727,7 @@ function ClientsDashboard({ stats, locale, viewMode }: { stats: any; locale: str
                                 <td className="p-3 text-right">{totalRevenue > 0 ? ((client.value / totalRevenue) * 100).toFixed(1) : 0}%</td>
                                 <td className="p-3">
                                     <span className={`px-2 py-1 rounded text-xs ${i === 0 ? "bg-yellow-100 text-yellow-700" :
-                                            i < 3 ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700"
+                                        i < 3 ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700"
                                         }`}>
                                         {i === 0 ? "Gold" : i < 3 ? "Silver" : "Standard"}
                                     </span>

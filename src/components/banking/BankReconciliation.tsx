@@ -12,8 +12,6 @@ import {
     Unlink,
     RefreshCcw,
     AlertTriangle,
-    DollarSign,
-    Calendar,
     FileText,
 } from "lucide-react";
 import { formatCurrency } from "@/lib/format";
@@ -42,7 +40,7 @@ interface BankEntry {
     matchedSystemId: string | null;
 }
 
-export default function BankReconciliationPage() {
+export function BankReconciliation() {
     const { t, locale } = useI18n();
     const queryClient = useQueryClient();
     const [selectedBankAccount, setSelectedBankAccount] = useState<string>("");
@@ -101,11 +99,11 @@ export default function BankReconciliationPage() {
 
     return (
         <div className="space-y-6">
-            {/* Header */}
+            {/* Header Controls */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold">Bank Reconciliation</h1>
-                    <p className="text-muted-foreground">Match bank statements with system transactions</p>
+                    <h2 className="text-xl font-semibold">Reconciliation Tool</h2>
+                    <p className="text-muted-foreground text-sm">Match bank statements with system transactions</p>
                 </div>
                 <div className="flex items-center gap-3">
                     <select
@@ -207,10 +205,10 @@ export default function BankReconciliationPage() {
                                             key={tx.id}
                                             onClick={() => !isMatched && setSelectedSystemTx(isSelected ? null : tx.id)}
                                             className={`p-3 cursor-pointer transition-all ${isMatched
-                                                    ? "bg-green-50 dark:bg-green-950/20 opacity-60"
-                                                    : isSelected
-                                                        ? "bg-primary/10 border-s-4 border-s-primary"
-                                                        : "hover:bg-muted"
+                                                ? "bg-green-50 dark:bg-green-950/20 opacity-60"
+                                                : isSelected
+                                                    ? "bg-primary/10 border-s-4 border-s-primary"
+                                                    : "hover:bg-muted"
                                                 }`}
                                         >
                                             <div className="flex items-center justify-between">
@@ -265,10 +263,10 @@ export default function BankReconciliationPage() {
                                             key={entry.id}
                                             onClick={() => !isMatched && setSelectedBankEntry(isSelected ? null : entry.id)}
                                             className={`p-3 cursor-pointer transition-all ${isMatched
-                                                    ? "bg-green-50 dark:bg-green-950/20 opacity-60"
-                                                    : isSelected
-                                                        ? "bg-primary/10 border-e-4 border-e-primary"
-                                                        : "hover:bg-muted"
+                                                ? "bg-green-50 dark:bg-green-950/20 opacity-60"
+                                                : isSelected
+                                                    ? "bg-primary/10 border-e-4 border-e-primary"
+                                                    : "hover:bg-muted"
                                                 }`}
                                         >
                                             <div className="flex items-center justify-between">

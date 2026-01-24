@@ -28,6 +28,9 @@ model User {
   memberships  CompanyMembership[]
   posSales     POSSale[]
   cashierShifts CashierShift[]
+  
+  // Dashboard Customization
+  dashboardConfig Json?
 }
 
 // Partner model for Partnerships

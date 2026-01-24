@@ -36,7 +36,7 @@
         "pos": "Point of Sale",
         "reports": "Reports",
         "settings": "Settings",
-        "bills": "Bills",
+        "bills": "Purchases",
         "purchaseOrders": "Purchase Orders",
         "purchases": "Purchases",
         "receivables": "Receivables",
@@ -93,7 +93,45 @@
         "week": "Week",
         "month": "Month",
         "quarter": "Quarter",
-        "year": "Year"
+        "year": "Year",
+        "widgets": {
+            "metric-revenue": {
+                "label": "Revenue Card",
+                "description": "Displays total revenue and growth trend."
+            },
+            "metric-expenses": {
+                "label": "Expenses Card",
+                "description": "Displays total expenses."
+            },
+            "metric-profit": {
+                "label": "Net Profit Card",
+                "description": "Displays net profit and margin."
+            },
+            "metric-cash": {
+                "label": "Cash Balance Card",
+                "description": "Displays current cash balance."
+            },
+            "receivables-summary": {
+                "label": "Receivables Summary",
+                "description": "Overview of pending, paid, and overdue invoices."
+            },
+            "quick-actions": {
+                "label": "Quick Actions",
+                "description": "Shortcuts for common tasks."
+            },
+            "alerts-feed": {
+                "label": "Alerts & Notifications",
+                "description": "Critical business alerts."
+            },
+            "revenue-trend": {
+                "label": "Revenue Trend Chart",
+                "description": "Monthly revenue bar chart."
+            },
+            "recent-invoices": {
+                "label": "Recent Invoices",
+                "description": "List of latest invoice transactions."
+            }
+        }
     },
     "invoices": {
         "title": "Invoices",
@@ -177,9 +215,9 @@
         "saveSettings": "Save Settings"
     },
     "bills": {
-        "title": "Bills",
-        "newBill": "New Bill",
-        "billNumber": "Bill #",
+        "title": "Purchases",
+        "newBill": "New Purchase",
+        "billNumber": "Purchase #",
         "supplier": "Supplier",
         "totalPayable": "Total Payable",
         "dueThisWeek": "Due This Week",
@@ -318,5 +356,120 @@
         "expenseAccount": "Expense Account",
         "noAssets": "No prepaid assets found",
         "pendingRecognition": "Pending Recognition"
+    },
+    "landing": {
+        "nav": {
+            "features": "Features",
+            "pricing": "Pricing",
+            "testimonials": "Testimonials",
+            "login": "Login",
+            "startTrial": "Start Free Trial"
+        },
+        "hero": {
+            "badge": "AI-Powered Accounting for Egypt",
+            "title": "Modern Accounting for",
+            "titleHighlight": "Modern Business",
+            "description": "The only accounting software built specifically for Egyptian businesses. IFRS-compliant, Arabic interface, and ETA e-invoicing ready.",
+            "startTrial": "Start Free Trial",
+            "watchDemo": "Watch Demo",
+            "trialDays": "Free 14-day trial",
+            "noCard": "No credit card required"
+        },
+        "trustedBy": "Trusted by 500+ Egyptian businesses",
+        "features": {
+            "title": "Everything you need to manage your finances",
+            "subtitle": "Powerful features designed for Egyptian businesses, from invoicing to financial reporting.",
+            "items": {
+                "invoicing": {
+                    "title": "Professional Invoicing",
+                    "desc": "Create beautiful invoices in seconds. Track payments and send automatic reminders."
+                },
+                "reports": {
+                    "title": "Financial Reports",
+                    "desc": "IFRS-compliant Balance Sheet, Income Statement, and Cash Flow reports."
+                },
+                "reconciliation": {
+                    "title": "Bank Reconciliation",
+                    "desc": "Match bank transactions with your books automatically."
+                },
+                "ai": {
+                    "title": "AI-Powered Insights",
+                    "desc": "Get smart suggestions and predictions powered by artificial intelligence."
+                },
+                "multiLang": {
+                    "title": "Multi-Language",
+                    "desc": "Full Arabic and English support with RTL interface."
+                },
+                "collaboration": {
+                    "title": "Team Collaboration",
+                    "desc": "Invite your accountant, bookkeeper, or team members with role-based access."
+                }
+            }
+        },
+        "testimonials": {
+            "title": "Loved by businesses across Egypt"
+        },
+        "cta": {
+            "title": "Ready to modernize your accounting?",
+            "subtitle": "Join 500+ Egyptian businesses already using BrownLedger",
+            "button": "Start Your Free Trial"
+        },
+        "footer": {
+            "description": "Modern accounting software for Egyptian businesses.",
+            "headers": {
+                "product": "Product",
+                "company": "Company",
+                "support": "Support"
+            },
+            "links": {
+                "integrations": "Integrations",
+                "about": "About",
+                "blog": "Blog",
+                "careers": "Careers",
+                "help": "Help Center",
+                "contact": "Contact",
+                "privacy": "Privacy Policy"
+            },
+            "copyright": "© {year} BrownLedger. All rights reserved."
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Welcome back",
+            "subtitle": "Sign in to your BrownLedger account",
+            "emailLabel": "Email",
+            "passwordLabel": "Password",
+            "submit": "Sign In",
+            "demoCredentials": "Demo: admin@brownledger.com / demo123"
+        },
+        "register": {
+            "title": "Create your account",
+            "subtitle": "Start your free trial of BrownLedger",
+            "nameLabel": "Full Name",
+            "companyLabel": "Company Name",
+            "emailLabel": "Email",
+            "passwordLabel": "Password",
+            "confirmPasswordLabel": "Confirm Password",
+            "submit": "Create Account",
+            "alreadyHaveAccount": "Already have an account?",
+            "signIn": "Sign in"
+        },
+        "forgotPassword": {
+            "title": "Forgot Password?",
+            "subtitle": "Enter your email and we'll send you a reset link",
+            "emailWidthIcon": "Email Address",
+            "submit": "Send Reset Link",
+            "sending": "Sending...",
+            "backToLogin": "Back to Login",
+            "successTitle": "Check Your Email",
+            "successMessage": "We've sent a password reset link to",
+            "successNote": "The link will expire in 1 hour. If you don't see the email, check your spam folder."
+        },
+        "errors": {
+            "invalidCredentials": "Invalid email or password",
+            "generic": "Something went wrong",
+            "passwordsDoNotMatch": "Passwords do not match",
+            "passwordLength": "Password must be at least 6 characters"
+        }
     }
 }

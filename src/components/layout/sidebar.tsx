@@ -78,7 +78,7 @@ export function Sidebar() {
         { href: "/journal-entries", label: t("nav.journalEntries"), icon: Wallet, module: "financials" },
         { href: "/financial-statements", label: t("nav.financialStatements"), icon: Calculator, module: "financials" },
         // Reports & Settings
-        { href: "/reports", label: t("nav.reports"), icon: BarChart3, module: "reports" },
+
         { href: "/pos/shifts", label: locale === "ar" ? "ورديات الكاشير" : "Cashier Shifts", icon: Clock, module: "pos" },
         { href: "/team", label: locale === "ar" ? "إدارة الفريق" : "Team Management", icon: Users2, module: "team" },
         { href: "/settings", label: t("nav.settings"), icon: Settings, module: "settings" },

@@ -4,7 +4,11 @@ import { useState } from "react";
 import Link from "next/link";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
 
+import { useTranslations } from "next-intl";
+
 export default function ForgotPasswordPage() {
+    const t = useTranslations('auth.forgotPassword');
+    const tErrors = useTranslations('auth.errors');
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isSent, setIsSent] = useState(false);
@@ -27,10 +31,10 @@ export default function ForgotPasswordPage() {
             if (response.ok) {
                 setIsSent(true);
             } else {
-                setError(data.error || "Something went wrong");
+                setError(data.error || tErrors('generic'));
             }
         } catch (err) {
-            setError("Failed to send reset email");
+            setError(tErrors('generic'));
         } finally {
             setIsLoading(false);
         }
@@ -44,19 +48,19 @@ export default function ForgotPasswordPage() {
                         <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
                             <CheckCircle className="w-8 h-8 text-green-600" />
                         </div>
-                        <h1 className="text-2xl font-bold mb-2">Check Your Email</h1>
+                        <h1 className="text-2xl font-bold mb-2">{t('successTitle')}</h1>
                         <p className="text-muted-foreground mb-6">
-                            We've sent a password reset link to <strong>{email}</strong>
+                            {t('successMessage')} <strong>{email}</strong>
                         </p>
                         <p className="text-sm text-muted-foreground mb-6">
-                            The link will expire in 1 hour. If you don't see the email, check your spam folder.
+                            {t('successNote')}
                         </p>
                         <Link
                             href="/auth/login"
                             className="flex items-center justify-center gap-2 text-primary hover:underline"
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            Back to Login
+                            {t('backToLogin')}
                         </Link>
                     </div>
                 </div>
@@ -73,9 +77,9 @@ export default function ForgotPasswordPage() {
                         <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mx-auto mb-4">
                             <span className="text-xl font-bold text-primary-foreground">BL</span>
                         </div>
-                        <h1 className="text-2xl font-bold mb-2">Forgot Password?</h1>
+                        <h1 className="text-2xl font-bold mb-2">{t('title')}</h1>
                         <p className="text-muted-foreground">
-                            Enter your email and we'll send you a reset link
+                            {t('subtitle')}
                         </p>
                     </div>
 
@@ -88,7 +92,7 @@ export default function ForgotPasswordPage() {
                         )}
 
                         <div>
-                            <label className="block text-sm font-medium mb-2">Email Address</label>
+                            <label className="block text-sm font-medium mb-2">{t('emailWidthIcon')}</label>
                             <div className="relative">
                                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
                                 <input
@@ -107,7 +111,7 @@ export default function ForgotPasswordPage() {
                             disabled={isLoading || !email}
                             className="w-full py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                         >
-                            {isLoading ? "Sending..." : "Send Reset Link"}
+                            {isLoading ? t('sending') : t('submit')}
                         </button>
                     </form>
 
@@ -118,7 +122,7 @@ export default function ForgotPasswordPage() {
                             className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            Back to Login
+                            {t('backToLogin')}
                         </Link>
                     </div>
                 </div>

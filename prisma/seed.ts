@@ -18,29 +18,37 @@ function randomDate(startMonthsAgo: number, endMonthsAgo: number = 0): Date {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
 
-const FIRST_NAMES = ["Ahmed", "Mohamed", "Omar", "Khaled", "Hassan", "Ali", "Youssef", "Ibrahim", "Sara", "Nadia", "Fatma", "Heba"];
-const LAST_NAMES = ["Hassan", "Mohamed", "Ali", "Ibrahim", "Salem", "Farouk", "Smith", "Johnson", "Williams", "Brown"];
-const COMPANY_PREFIXES = ["Advanced", "Global", "Premier", "Elite", "Modern", "Cairo", "Nile", "Pyramid", "Oasis", "Delta"];
-const INDUSTRIES = ["Construction", "Manufacturing", "Retail", "Technology", "Healthcare", "Trading", "Engineering", "Design"];
-const COMPANY_SUFFIXES = ["Ltd", "LLC", "Inc.", "Co.", "Trading", "Industries", "Group", "Enterprises"];
-const CITIES = ["Cairo", "Alexandria", "Giza", "New Cairo", "6th of October", "Sheikh Zayed", "Maadi", "Nasr City", "Heliopolis"];
+// Arabic Data Sets
+const FIRST_NAMES = ["أحمد", "محمد", "عمر", "خالد", "حسن", "علي", "يوسف", "إبراهيم", "سارة", "نادية", "فاطمة", "هبة", "محمود", "مصطفى"];
+const LAST_NAMES = ["حسن", "محمد", "علي", "إبراهيم", "سالم", "فاروق", "عبدالله", "عثمان", "منصور", "النجار", "الحداد"];
 
-const PRODUCT_CATEGORIES = ["Metal Gates", "Railings", "Decorative Items", "Hardware", "Raw Materials", "Tools", "Paint & Finishes", "Furniture Frames", "Outdoor", "Custom Work"];
+const COMPANY_PREFIXES_AR = ["شركة", "مجموعة", "مؤسسة", "المتحدة لـ", "العالمية لـ", "الوطنية لـ"];
+const COMPANY_SUFFIXES_AR = ["للتجارة", "للمقاولات", "للصناعة", "الأهلية", "المحدودة", "للأستيراد والتصدير", "للتوريدات"];
+const INDUSTRIES_AR = ["الهندسية", "الطبية", "الزراعية", "التكنولوجية", "المعمارية", "الكيميائية"];
+
+const CITIES_AR = ["القاهرة", "الإسكندرية", "الجيزة", "التجمع الخامس", "6 أكتوبر", "الشيخ زايد", "المعادي", "مدينة نصر", "مصر الجديدة", "المهندسين"];
+
+const PRODUCT_CATEGORIES = ["بوابات معدنية", "درابزين", "ديكورات", "خردوات", "مواد خام", "أدوات", "دهانات", "أثاث معدني", "خارجي", "أعمال خاصة"];
+
+// Bilingual Product Names: Arabic (English)
 const PRODUCT_NAMES: Record<string, string[]> = {
-    "Metal Gates": ["Classic Wrought Iron Gate", "Modern Sliding Gate", "Ornate Double Gate", "Industrial Security Gate", "Decorative Pergola Gate"],
-    "Railings": ["Balcony Railing", "Staircase Railing", "Deck Railing", "Pool Fence Railing", "Juliet Balcony Rail"],
-    "Decorative Items": ["Wall Art Panel", "Metal Sign", "Garden Sculpture", "Floor Lamp Base", "Console Table Frame"],
-    "Hardware": ["Heavy Duty Hinge Set", "Gate Lock System", "Door Handle Set", "Cabinet Pulls", "Sliding Track Kit"],
-    "Raw Materials": ["Steel Pipe 2 inch", "Metal Sheet 4x8", "Aluminum Profile", "Stainless Rod", "Iron Flat Bar"],
-    "Tools": ["Welding Machine", "Angle Grinder", "Drill Press", "Cutting Torch", "Bending Tool"],
-    "Paint & Finishes": ["Primer Coat", "Powder Coating", "Epoxy Paint", "Rust Inhibitor", "Clear Lacquer"],
-    "Furniture Frames": ["Table Base", "Chair Frame", "Bed Frame", "Shelf Bracket", "Cabinet Frame"],
-    "Outdoor": ["Gazebo Frame", "Fence Panel", "Arbor", "Trellis", "Outdoor Bench"],
-    "Custom Work": ["CNC Cut Design", "Laser Engrave", "Custom Weld", "Restoration Work", "Prototype"]
+    "بوابات معدنية": ["بوابة حديد مشغول (Classic Iron Gate)", "بوابة منزلقة حديثة (Sliding Gate)", "بوابة مزدوجة (Double Gate)", "بوابة أمنية (Security Gate)", "بوابة فيرفورجيه (Fer Forge Gate)"],
+    "درابزين": ["درابزين بلكونة (Balcony Railing)", "درابزين سلم (Stair Railing)", "سور حديقة (Garden Fence)", "حواجز أمان (Safety Barriers)", "درابزين ستانلس (Stainless Railing)"],
+    "ديكورات": ["لوحة فنية جدارية (Wall Art)", "لافتة معدنية (Metal Sign)", "تمثال حديقة (Garden Sculpture)", "قاعدة مصباح (Lamp Base)", "إطار مرآة (Mirror Frame)"],
+    "خردوات": ["مفصلات ثقيلة (Heavy Hinge)", "قفل بوابة (Gate Lock)", "مقبض باب (Door Handle)", "اكسسوارات أبواب (Door Accessories)", "مسامير وصلب (Steel Nails)"],
+    "مواد خام": ["ماسورة حديد 2 بوصة (Steel Pipe)", "لوح صاج 4x8 (Metal Sheet)", "قطاع ألومنيوم (Aluminum Profile)", "سيخ ستانلس (Stainless Rod)", "خوص حديد (Iron Flat Bar)"],
+    "أدوات": ["ماكينة لحام (Welding Machine)", "صاروخ قطعية (Angle Grinder)", "شنيور (Drill)", "لمبة لحام (Torch)", "أدوات ثني (Bending Tool)"],
+    "دهانات": ["بطانة (Primer)", "دهان بودرة (Powder Coating)", "دهان إيبوكسي (Epoxy Paint)", "مانع صدأ (Rust Inhibitor)", "ورنيش شفاف (Clear Lacquer)"],
+    "أثاث معدني": ["قاعدة طاولة (Table Base)", "إطار كرسي (Chair Frame)", "شاسيه سرير (Bed Frame)", "حامل أرفف (Shelf Bracket)", "هيكل دولاب (Cabinet Frame)"],
+    "خارجي": ["برجولة (Pergola)", "سياج (Fence)", "تظليل (Shade Struct)", "مقعد حديقة (Outdoor Bench)", "أرجوحة معدنية (Metal Swing)"],
+    "أعمال خاصة": ["قص ليزر (Laser Cut)", "حفر CNC (CNC Engraving)", "لحام مخصص (Custom Weld)", "أعمال ترميم (Restoration)", "تصميمات خاصة (Custom Design)"]
 };
 
+// Expense Categories
+const EXPENSE_CATEGORIES_AR = ["مستلزمات مكتبية", "مرافق وكهرباء", "إيجار", "رواتب", "تسويق", "سفر وانتقالات", "صيانة معدات", "تأمين", "خدمات مهنية", "نثريات"];
+
 async function main() {
-    console.log("🌱 Seeding database with comprehensive demo data...\n");
+    console.log("🌱 Seeding database with Fully Arabized data...\n");
 
     // Clear existing data
     console.log("🗑️  Clearing existing data...");
@@ -62,13 +70,13 @@ async function main() {
     }
 
     // ===== USERS =====
-    console.log("👤 Creating users...");
+    console.log("👤 Creating users (Admin & Cashier)...");
     const hashedPassword = await bcrypt.hash("demo123", 10);
     const owner = await prisma.user.create({
-        data: { email: "owner@brownledger.com", name: "Ahmed Hassan", password: hashedPassword, role: "OWNER", pin: "1234" }
+        data: { email: "admin@brownledger.com", name: "أحمد حسن (Admin)", password: hashedPassword, role: "OWNER", pin: "1234" }
     });
     const cashier = await prisma.user.create({
-        data: { email: "cashier@brownledger.com", name: "Mohamed Ali", password: hashedPassword, role: "CASHIER", pin: "5678" }
+        data: { email: "cashier@brownledger.com", name: "محمد علي (Cashier)", password: hashedPassword, role: "CASHIER", pin: "5678" }
     });
 
     // ===== COMPANY =====
@@ -81,7 +89,7 @@ async function main() {
             taxId: "EG-123456789",
             currency: "EGP",
             fiscalYearStart: 1,
-            address: "6th of October City, Giza, Egypt",
+            address: "6 أكتوبر، الجيزة، مصر",
             phone: "+20 123 456 7890",
             companyType: "LLC"
         }
@@ -106,16 +114,19 @@ async function main() {
     console.log("👥 Creating 50 clients...");
     const clients: any[] = [];
     for (let i = 0; i < 50; i++) {
-        const companyName = `${pick(COMPANY_PREFIXES)} ${pick(INDUSTRIES)} ${pick(COMPANY_SUFFIXES)}`;
+        // Generate Arabic company name
+        const arName = `${pick(COMPANY_PREFIXES_AR)} ${pick(LAST_NAMES)} ${pick(COMPANY_SUFFIXES_AR)}`;
+        const enName = `Al-${pick(LAST_NAMES)} ${pick(["Trading", "Co", "Group"])}`; // Simple transliteration mock
+
         const client = await prisma.client.create({
             data: {
                 companyId: company.id,
                 categoryId: pick(categoryIds),
-                name: companyName,
-                nameAr: `شركة ${i + 1}`,
-                email: `contact${i + 1}@client${i + 1}.com`,
-                phone: `+20 ${randomInt(100, 199)} ${randomInt(100, 999)} ${randomInt(1000, 9999)}`,
-                address: `${randomInt(1, 999)} ${pick(CITIES)} Street`,
+                name: enName, // English name field
+                nameAr: arName, // Arabic field populated!
+                email: `info${i + 1}@client${i + 1}.com`,
+                phone: `+20 1${randomInt(0, 2)}${randomInt(0, 9)} ${randomInt(100, 999)} ${randomInt(1000, 9999)}`,
+                address: `${randomInt(1, 99)} شارع ${pick(CITIES_AR)}`,
                 paymentTerms: pick([15, 30, 45, 60]),
                 totalOutstanding: 0,
             },
@@ -127,14 +138,18 @@ async function main() {
     console.log("📦 Creating 20 suppliers...");
     const suppliers: any[] = [];
     for (let i = 0; i < 20; i++) {
-        const supplierName = `${pick(COMPANY_PREFIXES)} ${pick(["Steel", "Metals", "Hardware", "Tools", "Paint"])} ${pick(COMPANY_SUFFIXES)}`;
+        const arName = `${pick(COMPANY_PREFIXES_AR)} ${pick(["المعادن", "الصلب", "الدهانات", "العدد", "الخامات"])} ${pick(COMPANY_SUFFIXES_AR)}`;
         const supplier = await prisma.supplier.create({
             data: {
                 companyId: company.id,
-                name: supplierName,
+                name: arName, // Using Arabic name as primary here since Supplier doesn't have nameAr in schema (checked previously)
+                // Wait, Supplier schema check: "name String". No nameAr.
+                // So I put Arabic name directly in Name.
                 contactPerson: `${pick(FIRST_NAMES)} ${pick(LAST_NAMES)}`,
-                email: `orders@supplier${i + 1}.com`,
-                phone: `+20 ${randomInt(200, 299)} ${randomInt(100, 999)} ${randomInt(1000, 9999)}`,
+                email: `supplier${i + 1}@suppliers.com`,
+                phone: `+20 1${randomInt(0, 2)}${randomInt(0, 9)} ${randomInt(100, 999)} ${randomInt(1000, 9999)}`,
+                city: pick(CITIES_AR),
+                address: `المنطقة الصناعية، ${pick(CITIES_AR)}`,
                 paymentTerms: pick([15, 30, 45, 60]),
                 rating: randomInt(3, 5),
             },
@@ -157,10 +172,11 @@ async function main() {
                     companyId: company.id,
                     sku: `PRD-${String(productCount).padStart(3, "0")}`,
                     barcode: `880000${String(productCount).padStart(6, "0")}`,
-                    name: prodName,
+                    name: prodName, // Bilingual Name
                     categoryId: category.id,
+                    // description: "وصف المنتج بالعربي...", // Could add description if schema supports
                     costPrice: cost,
-                    sellingPrice: Math.round(cost * (1.4 + Math.random() * 0.4)),
+                    sellingPrice: Math.round(cost * (1.3 + Math.random() * 0.4)), // 30-70% margin
                     taxRate: 0.14,
                     stockQuantity: randomInt(20, 150),
                     lowStockAlert: randomInt(10, 25),
@@ -173,9 +189,8 @@ async function main() {
 
     // ===== EXPENSE CATEGORIES =====
     console.log("📂 Creating expense categories...");
-    const expenseCategoryNames = ["Office Supplies", "Utilities", "Rent", "Salaries", "Marketing", "Travel", "Equipment Maintenance", "Insurance", "Professional Services", "Miscellaneous"];
     const expenseCategories: any[] = [];
-    for (const name of expenseCategoryNames) {
+    for (const name of EXPENSE_CATEGORIES_AR) {
         const cat = await prisma.expenseCategory.create({ data: { companyId: company.id, name } });
         expenseCategories.push(cat);
     }
@@ -183,41 +198,41 @@ async function main() {
     // ===== BANK ACCOUNTS =====
     console.log("🏦 Creating bank accounts...");
     const mainBank = await prisma.bankAccount.create({
-        data: { companyId: company.id, name: "Main Business Account", accountNumber: "1234567890", balance: 250000, currency: "EGP" }
+        data: { companyId: company.id, name: "البنك الأهلي المصري (NBE)", accountNumber: "1234567890", balance: 250000, currency: "EGP" }
     });
     await prisma.bankAccount.create({
-        data: { companyId: company.id, name: "Petty Cash", balance: 15000, currency: "EGP" }
+        data: { companyId: company.id, name: "الخزينة الرئيسية (Petty Cash)", balance: 15000, currency: "EGP" }
     });
 
     // ===== CHART OF ACCOUNTS =====
     console.log("📊 Creating chart of accounts...");
     const glAccounts = [
-        { code: "1000", name: "Cash", nameAr: "النقدية", type: "ASSET", category: "CURRENT_ASSET", balance: 265000, normal: "DEBIT" },
-        { code: "1100", name: "Accounts Receivable", nameAr: "المدينون", type: "ASSET", category: "CURRENT_ASSET", balance: 185000, normal: "DEBIT" },
+        { code: "1000", name: "Cash", nameAr: "النقدية ما في حكمها", type: "ASSET", category: "CURRENT_ASSET", balance: 265000, normal: "DEBIT" },
+        { code: "1100", name: "Accounts Receivable", nameAr: "العملاء (المدينون)", type: "ASSET", category: "CURRENT_ASSET", balance: 185000, normal: "DEBIT" },
         { code: "1200", name: "Inventory", nameAr: "المخزون", type: "ASSET", category: "CURRENT_ASSET", balance: 95000, normal: "DEBIT" },
         { code: "1300", name: "Prepaid Expenses", nameAr: "مصروفات مدفوعة مقدماً", type: "ASSET", category: "CURRENT_ASSET", balance: 12000, normal: "DEBIT" },
-        { code: "1500", name: "Equipment", nameAr: "المعدات", type: "ASSET", category: "FIXED_ASSET", balance: 180000, normal: "DEBIT" },
-        { code: "1510", name: "Vehicles", nameAr: "السيارات", type: "ASSET", category: "FIXED_ASSET", balance: 120000, normal: "DEBIT" },
-        { code: "1520", name: "Buildings", nameAr: "المباني", type: "ASSET", category: "FIXED_ASSET", balance: 450000, normal: "DEBIT" },
+        { code: "1500", name: "Equipment", nameAr: "الآلات والمعدات", type: "ASSET", category: "FIXED_ASSET", balance: 180000, normal: "DEBIT" },
+        { code: "1510", name: "Vehicles", nameAr: "وسائل النقل", type: "ASSET", category: "FIXED_ASSET", balance: 120000, normal: "DEBIT" },
+        { code: "1520", name: "Buildings", nameAr: "المباني والإنشاءات", type: "ASSET", category: "FIXED_ASSET", balance: 450000, normal: "DEBIT" },
         { code: "1590", name: "Accumulated Depreciation", nameAr: "مجمع الإهلاك", type: "ASSET", category: "FIXED_ASSET", balance: -85000, normal: "CREDIT" },
-        { code: "2000", name: "Accounts Payable", nameAr: "الدائنون", type: "LIABILITY", category: "CURRENT_LIABILITY", balance: 78000, normal: "CREDIT" },
+        { code: "2000", name: "Accounts Payable", nameAr: "الموردون (الدائنون)", type: "LIABILITY", category: "CURRENT_LIABILITY", balance: 78000, normal: "CREDIT" },
         { code: "2100", name: "Accrued Expenses", nameAr: "مصروفات مستحقة", type: "LIABILITY", category: "CURRENT_LIABILITY", balance: 22000, normal: "CREDIT" },
         { code: "2200", name: "VAT Payable", nameAr: "ضريبة القيمة المضافة", type: "LIABILITY", category: "CURRENT_LIABILITY", balance: 18500, normal: "CREDIT" },
-        { code: "2500", name: "Bank Loan", nameAr: "قرض بنكي", type: "LIABILITY", category: "LONG_TERM_LIABILITY", balance: 200000, normal: "CREDIT" },
+        { code: "2500", name: "Bank Loan", nameAr: "قروض بنكية", type: "LIABILITY", category: "LONG_TERM_LIABILITY", balance: 200000, normal: "CREDIT" },
         { code: "3000", name: "Owner Capital", nameAr: "رأس المال", type: "EQUITY", category: "CAPITAL", balance: 500000, normal: "CREDIT" },
-        { code: "3100", name: "Retained Earnings", nameAr: "الأرباح المحتجزة", type: "EQUITY", category: "RETAINED_EARNINGS", balance: 185000, normal: "CREDIT" },
+        { code: "3100", name: "Retained Earnings", nameAr: "الأرباح المرحلة", type: "EQUITY", category: "RETAINED_EARNINGS", balance: 185000, normal: "CREDIT" },
         { code: "4000", name: "Sales Revenue", nameAr: "إيرادات المبيعات", type: "REVENUE", category: "OPERATING_REVENUE", balance: 850000, normal: "CREDIT" },
         { code: "4100", name: "Service Revenue", nameAr: "إيرادات الخدمات", type: "REVENUE", category: "OPERATING_REVENUE", balance: 125000, normal: "CREDIT" },
-        { code: "4200", name: "Interest Income", nameAr: "إيرادات الفوائد", type: "REVENUE", category: "OTHER_INCOME", balance: 8500, normal: "CREDIT" },
+        { code: "4200", name: "Interest Income", nameAr: "فوائد دائنة", type: "REVENUE", category: "OTHER_INCOME", balance: 8500, normal: "CREDIT" },
         { code: "5000", name: "Cost of Goods Sold", nameAr: "تكلفة البضاعة المباعة", type: "EXPENSE", category: "COST_OF_GOODS_SOLD", balance: 420000, normal: "DEBIT" },
-        { code: "6000", name: "Salaries Expense", nameAr: "مصروفات الرواتب", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 180000, normal: "DEBIT" },
-        { code: "6100", name: "Rent Expense", nameAr: "مصروفات الإيجار", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 48000, normal: "DEBIT" },
-        { code: "6200", name: "Utilities Expense", nameAr: "مصروفات المرافق", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 24000, normal: "DEBIT" },
-        { code: "6300", name: "Marketing Expense", nameAr: "مصروفات التسويق", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 35000, normal: "DEBIT" },
-        { code: "6400", name: "Office Supplies", nameAr: "مستلزمات مكتبية", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 8000, normal: "DEBIT" },
-        { code: "6500", name: "Depreciation Expense", nameAr: "مصروفات الإهلاك", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 25000, normal: "DEBIT" },
-        { code: "6600", name: "Insurance Expense", nameAr: "مصروفات التأمين", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 15000, normal: "DEBIT" },
-        { code: "6700", name: "Professional Fees", nameAr: "أتعاب مهنية", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 12000, normal: "DEBIT" },
+        { code: "6000", name: "Salaries Expense", nameAr: "الرواتب والأجور", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 180000, normal: "DEBIT" },
+        { code: "6100", name: "Rent Expense", nameAr: "الإيجار", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 48000, normal: "DEBIT" },
+        { code: "6200", name: "Utilities Expense", nameAr: "الكهرباء والمياه", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 24000, normal: "DEBIT" },
+        { code: "6300", name: "Marketing Expense", nameAr: "الدعاية والإعلان", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 35000, normal: "DEBIT" },
+        { code: "6400", name: "Office Supplies", nameAr: "مطبوعات وأدوات كتابية", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 8000, normal: "DEBIT" },
+        { code: "6500", name: "Depreciation Expense", nameAr: "الإهلاك", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 25000, normal: "DEBIT" },
+        { code: "6600", name: "Insurance Expense", nameAr: "التأمين", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 15000, normal: "DEBIT" },
+        { code: "6700", name: "Professional Fees", nameAr: "أتعاب واستشارات", type: "EXPENSE", category: "OPERATING_EXPENSE", balance: 12000, normal: "DEBIT" },
     ];
     for (const acc of glAccounts) {
         await prisma.account.create({
@@ -253,7 +268,7 @@ async function main() {
                 dueDate,
                 status,
                 currency: "EGP",
-                notes: `Invoice for ${client.name}`,
+                notes: `فاتورة مبيعات لـ ${client.nameAr}`, // Arabic Note
             }
         });
 
@@ -281,7 +296,7 @@ async function main() {
         if (status !== "PAID") {
             await prisma.client.update({
                 where: { id: client.id },
-                data: { totalOutstanding: { increment: subtotal * 1.14 } }
+                data: { totalOutstanding: { increment: subtotal * 1.14 } } // + VAT
             });
         }
     }
@@ -318,7 +333,7 @@ async function main() {
             await prisma.billItem.create({
                 data: {
                     billId: bill.id,
-                    description: `Purchase: ${product.name}`,
+                    description: `شراء: ${product.name}`,
                     quantity: qty,
                     unitPrice: product.costPrice,
                 }
@@ -336,7 +351,7 @@ async function main() {
                 companyId: company.id,
                 categoryId: category.id,
                 supplierId: Math.random() > 0.5 ? pick(suppliers).id : null,
-                description: `${category.name} - ${date.toLocaleDateString()}`,
+                description: `${category.name} - ${date.toLocaleDateString('ar-EG')}`,
                 amount: randomInt(500, 15000),
                 date,
             }
@@ -346,7 +361,7 @@ async function main() {
     // ===== POS TERMINAL & SALES =====
     console.log("🛒 Creating POS terminal and 300 sales...");
     const terminal = await prisma.pOSTerminal.create({
-        data: { companyId: company.id, name: "Main Counter", location: "Showroom", isActive: true }
+        data: { companyId: company.id, name: "كاونتر المعرض الرئيسي", location: "المعرض", isActive: true }
     });
 
     for (let i = 0; i < 300; i++) {
@@ -404,7 +419,7 @@ async function main() {
     // ===== WAREHOUSE & STOCK MOVEMENTS =====
     console.log("🏭 Creating warehouse and stock movements...");
     const warehouse = await prisma.warehouse.create({
-        data: { companyId: company.id, name: "Main Warehouse", code: "WH-001", location: "6th of October", isActive: true }
+        data: { companyId: company.id, name: "المخزن الرئيسي", code: "WH-001", location: "6 أكتوبر", isActive: true }
     });
 
     for (const product of products) {
@@ -418,7 +433,7 @@ async function main() {
             }
         });
 
-        // Stock movements (purchases, sales, adjustments)
+        // Stock movements
         for (let m = 0; m < randomInt(5, 15); m++) {
             const type = pick(["PURCHASE", "PURCHASE", "SALE", "SALE", "SALE", "ADJUSTMENT_IN", "ADJUSTMENT_OUT"]);
             const qty = randomInt(5, 30);
@@ -443,10 +458,10 @@ async function main() {
         { desc: "Rent Payment", descAr: "دفع الإيجار", debit: "6100", credit: "1000", amount: 4000 },
         { desc: "Utilities Payment", descAr: "دفع المرافق", debit: "6200", credit: "1000", amount: 2000 },
         { desc: "Equipment Depreciation", descAr: "إهلاك المعدات", debit: "6500", credit: "1590", amount: 2500 },
-        { desc: "Sales Revenue", descAr: "إيرادات مبيعات", debit: "1000", credit: "4000", amount: 45000 },
-        { desc: "Customer Payment", descAr: "سداد عميل", debit: "1000", credit: "1100", amount: 25000 },
-        { desc: "Supplier Payment", descAr: "سداد مورد", debit: "2000", credit: "1000", amount: 18000 },
-        { desc: "Marketing Expense", descAr: "مصروفات تسويق", debit: "6300", credit: "1000", amount: 5000 },
+        { desc: "Sales Revenue", descAr: "إيرادات المبيعات", debit: "1000", credit: "4000", amount: 45000 },
+        { desc: "Customer Payment", descAr: "تحصيل من عميل", debit: "1000", credit: "1100", amount: 25000 },
+        { desc: "Supplier Payment", descAr: "سداد لمورد", debit: "2000", credit: "1000", amount: 18000 },
+        { desc: "Marketing Expense", descAr: "حملة إعلانية ممولة", debit: "6300", credit: "1000", amount: 5000 },
     ];
 
     const accounts = await prisma.account.findMany({ where: { companyId: company.id } });
@@ -478,7 +493,7 @@ async function main() {
         }
     }
 
-    // ===== FINANCIAL RATIO SNAPSHOTS =====
+    // ===== FINANCIAL RATIO SNAPSHOTS (Keep as is just data) =====
     console.log("📈 Creating financial ratio snapshots...");
     for (let m = 0; m < 12; m++) {
         const snapshotDate = new Date();
@@ -513,7 +528,7 @@ async function main() {
 
     // ===== SYNC CHART OF ACCOUNTS FROM TRANSACTIONS =====
     console.log("🔄 Syncing Chart of Accounts from transactions...");
-
+    // ... (Use same logic, it calculates totals) ...
     // Calculate actual revenue from PAID invoices
     const allInvoices = await prisma.invoice.findMany({
         where: { companyId: company.id },
@@ -525,29 +540,18 @@ async function main() {
             return sum + inv.items.reduce((s, item) => s + item.quantity * item.unitPrice, 0);
         }, 0);
 
-    // Calculate POS revenue
     const allPosSales = await prisma.pOSSale.findMany({
         where: { companyId: company.id, status: "COMPLETED" },
     });
     const posRevenueTotal = allPosSales.reduce((sum, sale) => sum + sale.total, 0);
-
-    // Calculate total revenue
     const totalSalesRevenue = paidInvoiceRevenue + posRevenueTotal;
 
-    // Calculate Accounts Receivable (unpaid invoices)
     const arTotal = allInvoices
         .filter(inv => inv.status === "PENDING" || inv.status === "OVERDUE")
         .reduce((sum, inv) => {
             return sum + inv.items.reduce((s, item) => s + item.quantity * item.unitPrice * 1.14, 0);
         }, 0);
 
-    // Calculate total expenses
-    const allExpenses = await prisma.expense.findMany({
-        where: { companyId: company.id },
-    });
-    const totalExpenseAmount = allExpenses.reduce((sum, exp) => sum + exp.amount, 0);
-
-    // Calculate Accounts Payable (unpaid bills)
     const allBills = await prisma.bill.findMany({
         where: { companyId: company.id },
     });
@@ -555,23 +559,19 @@ async function main() {
         .filter(b => b.status === "PENDING" || b.status === "OVERDUE")
         .reduce((sum, b) => sum + b.totalAmount - b.paidAmount, 0);
 
-    // Calculate inventory value
     const allProducts = await prisma.product.findMany({
         where: { companyId: company.id },
     });
     const inventoryValue = allProducts.reduce((sum, p) => sum + p.stockQuantity * p.costPrice, 0);
-
-    // Calculate COGS (estimate from POS sales)
     const cogsTotal = allPosSales.reduce((sum, sale) => sum * 0.6, 0) + paidInvoiceRevenue * 0.6;
 
-    // Update Chart of Accounts with real values
     const accountUpdates = [
-        { code: "1000", balance: 265000 }, // Cash (bank accounts)
-        { code: "1100", balance: Math.round(arTotal) }, // AR from actual unpaid invoices
-        { code: "1200", balance: Math.round(inventoryValue) }, // Inventory from products
-        { code: "2000", balance: Math.round(apTotal) }, // AP from unpaid bills
-        { code: "4000", balance: Math.round(totalSalesRevenue) }, // Revenue from transactions
-        { code: "5000", balance: Math.round(cogsTotal) }, // COGS estimated
+        { code: "1000", balance: 265000 },
+        { code: "1100", balance: Math.round(arTotal) },
+        { code: "1200", balance: Math.round(inventoryValue) },
+        { code: "2000", balance: Math.round(apTotal) },
+        { code: "4000", balance: Math.round(totalSalesRevenue) },
+        { code: "5000", balance: Math.round(cogsTotal) },
     ];
 
     for (const update of accountUpdates) {
@@ -586,23 +586,7 @@ async function main() {
     console.log(`   Inventory synced: EGP ${Math.round(inventoryValue).toLocaleString()}`);
     console.log(`   Accounts Payable synced: EGP ${Math.round(apTotal).toLocaleString()}`);
 
-    console.log("\n✅ Comprehensive demo data created successfully!");
-    console.log("\n📊 Summary:");
-    console.log("  👤 2 Users (owner + cashier)");
-    console.log("  👥 50 Clients in 3 categories");
-    console.log("  📦 20 Suppliers");
-    console.log("  🏷️  50 Products in 10 categories");
-    console.log("  📄 150 Invoices (12 months)");
-    console.log("  📋 80 Bills (12 months)");
-    console.log("  💸 200 Expenses (12 months)");
-    console.log("  🛒 300 POS Sales (6 months)");
-    console.log("  🏭 1 Warehouse with stock movements");
-    console.log("  📒 96 Journal Entries (12 months)");
-    console.log("  📈 12 Financial Ratio Snapshots");
-    console.log("  📊 26 Chart of Accounts entries (synced from transactions)");
-    console.log("\n🔐 Login credentials:");
-    console.log("  - owner@brownledger.com / demo123");
-    console.log("  - cashier@brownledger.com / demo123");
+    console.log("\n✅ Fully Arabized demo data created successfully!");
 }
 
 main()

@@ -16,37 +16,47 @@ import {
   ChevronRight,
 } from "lucide-react";
 
+import { useTranslations } from "next-intl";
+
 export default function LandingPage() {
+  const t = useTranslations('landing');
+  const tNav = useTranslations('landing.nav');
+  const tHero = useTranslations('landing.hero');
+  const tFeatures = useTranslations('landing.features');
+  const tTestimonials = useTranslations('landing.testimonials');
+  const tCta = useTranslations('landing.cta');
+  const tFooter = useTranslations('landing.footer');
+
   const features = [
     {
       icon: FileText,
-      title: "Professional Invoicing",
-      description: "Create beautiful invoices in seconds. Track payments and send automatic reminders.",
+      title: tFeatures('items.invoicing.title'),
+      description: tFeatures('items.invoicing.desc'),
     },
     {
       icon: BarChart3,
-      title: "Financial Reports",
-      description: "IFRS-compliant Balance Sheet, Income Statement, and Cash Flow reports.",
+      title: tFeatures('items.reports.title'),
+      description: tFeatures('items.reports.desc'),
     },
     {
       icon: Shield,
-      title: "Bank Reconciliation",
-      description: "Match bank transactions with your books automatically.",
+      title: tFeatures('items.reconciliation.title'),
+      description: tFeatures('items.reconciliation.desc'),
     },
     {
       icon: Zap,
-      title: "AI-Powered Insights",
-      description: "Get smart suggestions and predictions powered by artificial intelligence.",
+      title: tFeatures('items.ai.title'),
+      description: tFeatures('items.ai.desc'),
     },
     {
       icon: Globe,
-      title: "Multi-Language",
-      description: "Full Arabic and English support with RTL interface.",
+      title: tFeatures('items.multiLang.title'),
+      description: tFeatures('items.multiLang.desc'),
     },
     {
       icon: Users,
-      title: "Team Collaboration",
-      description: "Invite your accountant, bookkeeper, or team members with role-based access.",
+      title: tFeatures('items.collaboration.title'),
+      description: tFeatures('items.collaboration.desc'),
     },
   ];
 
@@ -86,20 +96,20 @@ export default function LandingPage() {
           </Link>
 
           <div className="hidden md:flex items-center gap-8">
-            <Link href="#features" className="text-slate-600 hover:text-primary transition-colors">Features</Link>
-            <Link href="/pricing" className="text-slate-600 hover:text-primary transition-colors">Pricing</Link>
-            <Link href="#testimonials" className="text-slate-600 hover:text-primary transition-colors">Testimonials</Link>
+            <Link href="#features" className="text-slate-600 hover:text-primary transition-colors">{tNav('features')}</Link>
+            <Link href="/pricing" className="text-slate-600 hover:text-primary transition-colors">{tNav('pricing')}</Link>
+            <Link href="#testimonials" className="text-slate-600 hover:text-primary transition-colors">{tNav('testimonials')}</Link>
           </div>
 
           <div className="flex items-center gap-4">
             <Link href="/login" className="text-slate-600 hover:text-primary transition-colors">
-              Login
+              {tNav('login')}
             </Link>
             <Link
               href="/auth/register"
               className="px-5 py-2.5 bg-gradient-to-r from-primary to-blue-600 text-white rounded-lg font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/30"
             >
-              Start Free Trial
+              {tNav('startTrial')}
             </Link>
           </div>
         </div>
@@ -112,19 +122,18 @@ export default function LandingPage() {
             <div>
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-6">
                 <Zap className="w-4 h-4" />
-                AI-Powered Accounting for Egypt
+                {tHero('badge')}
               </div>
 
               <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white leading-tight mb-6">
-                Modern Accounting for{" "}
+                {tHero('title')}{" "}
                 <span className="bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent">
-                  Modern Business
+                  {tHero('titleHighlight')}
                 </span>
               </h1>
 
               <p className="text-xl text-slate-600 dark:text-slate-400 mb-8 leading-relaxed">
-                The only accounting software built specifically for Egyptian businesses.
-                IFRS-compliant, Arabic interface, and ETA e-invoicing ready.
+                {tHero('description')}
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -132,23 +141,23 @@ export default function LandingPage() {
                   href="/auth/register"
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-blue-600 text-white rounded-xl font-semibold hover:opacity-90 transition-all shadow-xl shadow-primary/30"
                 >
-                  Start Free Trial
+                  {tHero('startTrial')}
                   <ArrowRight className="w-5 h-5" />
                 </Link>
                 <button className="inline-flex items-center justify-center gap-2 px-8 py-4 border-2 border-slate-200 dark:border-slate-700 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-900 transition-all">
                   <Play className="w-5 h-5" />
-                  Watch Demo
+                  {tHero('watchDemo')}
                 </button>
               </div>
 
               <div className="flex items-center gap-6 text-sm text-slate-600 dark:text-slate-400">
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-green-500" />
-                  Free 14-day trial
+                  {tHero('trialDays')}
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 text-green-500" />
-                  No credit card required
+                  {tHero('noCard')}
                 </div>
               </div>
             </div>
@@ -196,7 +205,7 @@ export default function LandingPage() {
       {/* Trusted By */}
       <section className="py-12 px-6 border-y border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto text-center">
-          <p className="text-slate-500 mb-8">Trusted by 500+ Egyptian businesses</p>
+          <p className="text-slate-500 mb-8">{t('trustedBy')}</p>
           <div className="flex flex-wrap justify-center items-center gap-12 opacity-50">
             {["Cairo Trade", "Nile Group", "Delta Corp", "Pharos Inc", "Sphinx LLC"].map((name) => (
               <div key={name} className="text-2xl font-bold text-slate-400">{name}</div>
@@ -210,10 +219,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
-              Everything you need to manage your finances
+              {tFeatures('title')}
             </h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
-              Powerful features designed for Egyptian businesses, from invoicing to financial reporting.
+              {tFeatures('subtitle')}
             </p>
           </div>
 
@@ -243,7 +252,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
-              Loved by businesses across Egypt
+              {tTestimonials('title')}
             </h2>
           </div>
 
@@ -272,16 +281,16 @@ export default function LandingPage() {
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-6">
-            Ready to modernize your accounting?
+            {tCta('title')}
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-400 mb-8">
-            Join 500+ Egyptian businesses already using BrownLedger
+            {tCta('subtitle')}
           </p>
           <Link
             href="/auth/register"
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-blue-600 text-white rounded-xl font-semibold text-lg hover:opacity-90 transition-all shadow-xl shadow-primary/30"
           >
-            Start Your Free Trial
+            {tCta('button')}
             <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
@@ -299,36 +308,36 @@ export default function LandingPage() {
                 <span className="font-bold">BrownLedger</span>
               </div>
               <p className="text-sm text-slate-500">
-                Modern accounting software for Egyptian businesses.
+                {tFooter('description')}
               </p>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Product</h4>
+              <h4 className="font-semibold mb-4">{tFooter('headers.product')}</h4>
               <ul className="space-y-2 text-sm text-slate-500">
-                <li><Link href="#features">Features</Link></li>
-                <li><Link href="/pricing">Pricing</Link></li>
-                <li><Link href="#">Integrations</Link></li>
+                <li><Link href="#features">{tNav('features')}</Link></li>
+                <li><Link href="/pricing">{tNav('pricing')}</Link></li>
+                <li><Link href="#">{tFooter('links.integrations')}</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Company</h4>
+              <h4 className="font-semibold mb-4">{tFooter('headers.company')}</h4>
               <ul className="space-y-2 text-sm text-slate-500">
-                <li><Link href="#">About</Link></li>
-                <li><Link href="#">Blog</Link></li>
-                <li><Link href="#">Careers</Link></li>
+                <li><Link href="#">{tFooter('links.about')}</Link></li>
+                <li><Link href="#">{tFooter('links.blog')}</Link></li>
+                <li><Link href="#">{tFooter('links.careers')}</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Support</h4>
+              <h4 className="font-semibold mb-4">{tFooter('headers.support')}</h4>
               <ul className="space-y-2 text-sm text-slate-500">
-                <li><Link href="#">Help Center</Link></li>
-                <li><Link href="#">Contact</Link></li>
-                <li><Link href="#">Privacy Policy</Link></li>
+                <li><Link href="#">{tFooter('links.help')}</Link></li>
+                <li><Link href="#">{tFooter('links.contact')}</Link></li>
+                <li><Link href="#">{tFooter('links.privacy')}</Link></li>
               </ul>
             </div>
           </div>
           <div className="pt-8 border-t border-slate-200 dark:border-slate-800 text-center text-sm text-slate-500">
-            © {new Date().getFullYear()} BrownLedger. All rights reserved.
+            {tFooter('copyright', { year: new Date().getFullYear() })}
           </div>
         </div>
       </footer>

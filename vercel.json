@@ -1,6 +1,5 @@
 {
-  "buildCommand": "npx prisma generate && npm run build",
+  "buildCommand": "npx prisma generate --schema=./prisma/schema.postgresql.prisma && next build",
   "installCommand": "npm install",
-  "framework": "nextjs",
-  "regions": ["fra1"]
+  "framework": "nextjs"
 }

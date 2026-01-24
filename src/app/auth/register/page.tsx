@@ -6,7 +6,11 @@ import { motion } from "framer-motion";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 
+import { useTranslations } from "next-intl";
+
 export default function RegisterPage() {
+    const t = useTranslations('auth.register');
+    const tErrors = useTranslations('auth.errors');
     const router = useRouter();
     const [formData, setFormData] = useState({
         name: "",
@@ -25,13 +29,13 @@ export default function RegisterPage() {
         setError("");
 
         if (formData.password !== formData.confirmPassword) {
-            setError("Passwords do not match");
+            setError(tErrors('passwordsDoNotMatch'));
             setIsLoading(false);
             return;
         }
 
         if (formData.password.length < 6) {
-            setError("Password must be at least 6 characters");
+            setError(tErrors('passwordLength'));
             setIsLoading(false);
             return;
         }
@@ -56,7 +60,7 @@ export default function RegisterPage() {
                 router.push("/login?registered=true");
             }
         } catch {
-            setError("Something went wrong");
+            setError(tErrors('generic'));
         } finally {
             setIsLoading(false);
         }
@@ -75,9 +79,9 @@ export default function RegisterPage() {
                         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
                             <span className="text-xl font-bold text-primary-foreground">BL</span>
                         </div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Create your account</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Start your free trial of BrownLedger
+                            {t('subtitle')}
                         </p>
                     </div>
 
@@ -91,7 +95,7 @@ export default function RegisterPage() {
 
                         <div>
                             <label htmlFor="name" className="mb-1.5 block text-sm font-medium">
-                                Full Name
+                                {t('nameLabel')}
                             </label>
                             <input
                                 id="name"
@@ -106,7 +110,7 @@ export default function RegisterPage() {
 
                         <div>
                             <label htmlFor="companyName" className="mb-1.5 block text-sm font-medium">
-                                Company Name
+                                {t('companyLabel')}
                             </label>
                             <input
                                 id="companyName"
@@ -121,7 +125,7 @@ export default function RegisterPage() {
 
                         <div>
                             <label htmlFor="email" className="mb-1.5 block text-sm font-medium">
-                                Email
+                                {t('emailLabel')}
                             </label>
                             <input
                                 id="email"
@@ -136,7 +140,7 @@ export default function RegisterPage() {
 
                         <div>
                             <label htmlFor="password" className="mb-1.5 block text-sm font-medium">
-                                Password
+                                {t('passwordLabel')}
                             </label>
                             <div className="relative">
                                 <input
@@ -160,7 +164,7 @@ export default function RegisterPage() {
 
                         <div>
                             <label htmlFor="confirmPassword" className="mb-1.5 block text-sm font-medium">
-                                Confirm Password
+                                {t('confirmPasswordLabel')}
                             </label>
                             <input
                                 id="confirmPassword"
@@ -181,15 +185,15 @@ export default function RegisterPage() {
                             {isLoading ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
-                                "Create Account"
+                                t('submit')
                             )}
                         </button>
                     </form>
 
                     <p className="mt-6 text-center text-sm text-muted-foreground">
-                        Already have an account?{" "}
+                        {t('alreadyHaveAccount')}{" "}
                         <Link href="/login" className="font-medium text-primary hover:underline">
-                            Sign in
+                            {t('signIn')}
                         </Link>
                     </p>
                 </div>

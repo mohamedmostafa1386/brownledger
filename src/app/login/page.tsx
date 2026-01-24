@@ -6,7 +6,11 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
+import { useTranslations } from "next-intl";
+
 export default function LoginPage() {
+    const t = useTranslations('auth.login');
+    const tErrors = useTranslations('auth.errors');
     const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -26,13 +30,13 @@ export default function LoginPage() {
             });
 
             if (result?.error) {
-                setError("Invalid email or password");
+                setError(tErrors('invalidCredentials'));
             } else {
                 router.push("/dashboard");
                 router.refresh();
             }
         } catch {
-            setError("Something went wrong");
+            setError(tErrors('generic'));
         } finally {
             setIsLoading(false);
         }
@@ -51,9 +55,9 @@ export default function LoginPage() {
                         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-primary">
                             <span className="text-xl font-bold text-primary-foreground">BL</span>
                         </div>
-                        <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+                        <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Sign in to your BrownLedger account
+                            {t('subtitle')}
                         </p>
                     </div>
 
@@ -67,7 +71,7 @@ export default function LoginPage() {
 
                         <div>
                             <label htmlFor="email" className="mb-1.5 block text-sm font-medium">
-                                Email
+                                {t('emailLabel')}
                             </label>
                             <input
                                 id="email"
@@ -82,7 +86,7 @@ export default function LoginPage() {
 
                         <div>
                             <label htmlFor="password" className="mb-1.5 block text-sm font-medium">
-                                Password
+                                {t('passwordLabel')}
                             </label>
                             <input
                                 id="password"
@@ -103,13 +107,13 @@ export default function LoginPage() {
                             {isLoading ? (
                                 <Loader2 className="h-4 w-4 animate-spin" />
                             ) : (
-                                "Sign In"
+                                t('submit')
                             )}
                         </button>
                     </form>
 
                     <p className="mt-6 text-center text-sm text-muted-foreground">
-                        Demo: owner@brownledger.com / demo123
+                        {t('demoCredentials')}
                     </p>
                 </div>
             </motion.div>
