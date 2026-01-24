@@ -17,8 +17,11 @@ import {
 } from "lucide-react";
 
 import { useTranslations } from "next-intl";
+import { useParams } from "next/navigation";
 
 export default function LandingPage() {
+  const params = useParams();
+  const locale = params.locale as string;
   const t = useTranslations('landing');
   const tNav = useTranslations('landing.nav');
   const tHero = useTranslations('landing.hero');
@@ -86,7 +89,7 @@ export default function LandingPage() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-slate-950/80 backdrop-blur-lg border-b border-slate-200 dark:border-slate-800">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href={`/${locale}`} className="flex items-center gap-2">
             <div className="w-10 h-10 bg-gradient-to-br from-primary to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/30">
               <span className="text-lg font-bold text-white">BL</span>
             </div>
@@ -99,14 +102,18 @@ export default function LandingPage() {
             <Link href="#features" className="text-slate-600 hover:text-primary transition-colors">{tNav('features')}</Link>
             <Link href="/pricing" className="text-slate-600 hover:text-primary transition-colors">{tNav('pricing')}</Link>
             <Link href="#testimonials" className="text-slate-600 hover:text-primary transition-colors">{tNav('testimonials')}</Link>
+            <Link href={`/${locale === 'en' ? 'ar' : 'en'}`} className="flex items-center gap-1 text-slate-600 hover:text-primary transition-colors font-medium">
+              <Globe className="w-4 h-4" />
+              {locale === 'en' ? 'العربية' : 'English'}
+            </Link>
           </div>
 
           <div className="flex items-center gap-4">
-            <Link href="/login" className="text-slate-600 hover:text-primary transition-colors">
+            <Link href={`/${locale}/login`} className="text-slate-600 hover:text-primary transition-colors">
               {tNav('login')}
             </Link>
             <Link
-              href="/auth/register"
+              href={`/${locale}/auth/register`}
               className="px-5 py-2.5 bg-gradient-to-r from-primary to-blue-600 text-white rounded-lg font-medium hover:opacity-90 transition-all shadow-lg shadow-primary/30"
             >
               {tNav('startTrial')}
@@ -138,7 +145,7 @@ export default function LandingPage() {
 
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
                 <Link
-                  href="/auth/register"
+                  href={`/${locale}/auth/register`}
                   className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-blue-600 text-white rounded-xl font-semibold hover:opacity-90 transition-all shadow-xl shadow-primary/30"
                 >
                   {tHero('startTrial')}
@@ -287,7 +294,7 @@ export default function LandingPage() {
             {tCta('subtitle')}
           </p>
           <Link
-            href="/auth/register"
+            href={`/${locale}/auth/register`}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary to-blue-600 text-white rounded-xl font-semibold text-lg hover:opacity-90 transition-all shadow-xl shadow-primary/30"
           >
             {tCta('button')}

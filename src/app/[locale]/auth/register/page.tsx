@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
@@ -12,6 +12,7 @@ export default function RegisterPage() {
     const t = useTranslations('auth.register');
     const tErrors = useTranslations('auth.errors');
     const router = useRouter();
+    const params = useParams();
     const [formData, setFormData] = useState({
         name: "",
         email: "",
@@ -57,7 +58,7 @@ export default function RegisterPage() {
             if (!res.ok) {
                 setError(data.error || "Registration failed");
             } else {
-                router.push("/login?registered=true");
+                router.push(`/${params.locale}/login?registered=true`);
             }
         } catch {
             setError(tErrors('generic'));

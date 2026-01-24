@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
@@ -12,6 +12,7 @@ export default function LoginPage() {
     const t = useTranslations('auth.login');
     const tErrors = useTranslations('auth.errors');
     const router = useRouter();
+    const params = useParams();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
@@ -32,7 +33,7 @@ export default function LoginPage() {
             if (result?.error) {
                 setError(tErrors('invalidCredentials'));
             } else {
-                router.push("/dashboard");
+                router.push(`/${params.locale}/dashboard`);
                 router.refresh();
             }
         } catch {
