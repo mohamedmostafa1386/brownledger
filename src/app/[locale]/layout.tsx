@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Cairo } from "next/font/google";
-import "../../globals.css";
+import "../globals.css";
 import { Providers } from "@/components/providers";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
