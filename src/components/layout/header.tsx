@@ -5,10 +5,12 @@ import { Bell, Search, Moon, Sun, LogOut, Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { signOut } from "next-auth/react";
 import { useSidebarStore } from "@/lib/stores/sidebar-store";
+import { useI18n } from "@/lib/i18n-context";
 
 export function Header() {
     const [isDark, setIsDark] = useState(false);
     const t = useTranslations("common");
+    const { locale } = useI18n();
     const { toggle } = useSidebarStore();
 
     useEffect(() => {
@@ -22,7 +24,7 @@ export function Header() {
     };
 
     const handleLogout = async () => {
-        await signOut({ callbackUrl: "/login" });
+        await signOut({ callbackUrl: `/${locale}/login` });
     };
 
     return (
