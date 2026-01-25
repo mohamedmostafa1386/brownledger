@@ -54,7 +54,7 @@ const IMPORT_TYPES = [
 ] as const;
 
 export default function ImportPage() {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
     const [activeImport, setActiveImport] = useState<typeof IMPORT_TYPES[number]["id"] | null>(null);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isExporting, setIsExporting] = useState<string | null>(null);
@@ -93,7 +93,7 @@ export default function ImportPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="space-y-1">
                     <div className="flex items-center gap-2 text-muted-foreground mb-2">
-                        <Link href="/settings" className="hover:text-primary flex items-center gap-1 transition-colors">
+                        <Link href={`/${locale}/settings`} className="hover:text-primary flex items-center gap-1 transition-colors">
                             <Settings className="h-4 w-4" />
                             {t("common.settings")}
                         </Link>

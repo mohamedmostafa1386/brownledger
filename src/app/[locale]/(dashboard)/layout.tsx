@@ -6,13 +6,16 @@ import { redirect } from "next/navigation";
 
 export default async function DashboardLayout({
     children,
+    params,
 }: {
     children: React.ReactNode;
+    params: Promise<{ locale: string }>;
 }) {
     const session = await auth();
+    const { locale } = await params;
 
     if (!session) {
-        redirect("/login");
+        redirect(`/${locale}/login`);
     }
 
     return (

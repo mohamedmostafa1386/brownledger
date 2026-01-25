@@ -78,7 +78,7 @@ export default function InvoiceDetailPage() {
                 <FileText className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
                 <h2 className="text-xl font-semibold mb-2">{locale === "ar" ? "الفاتورة غير موجودة" : "Invoice Not Found"}</h2>
                 <p className="text-muted-foreground mb-4">{locale === "ar" ? "لم نتمكن من العثور على هذه الفاتورة" : "We couldn't find this invoice"}</p>
-                <Link href="/invoices" className="text-primary hover:underline">
+                <Link href={`/${locale}/invoices`} className="text-primary hover:underline">
                     {locale === "ar" ? "العودة إلى الفواتير" : "Back to Invoices"}
                 </Link>
             </div>
@@ -101,7 +101,7 @@ export default function InvoiceDetailPage() {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <Link
-                        href="/invoices"
+                        href={`/${locale}/invoices`}
                         className="flex h-9 w-9 items-center justify-center rounded-lg border border-input hover:bg-muted"
                     >
                         <ArrowLeft className="h-4 w-4" />

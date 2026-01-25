@@ -193,7 +193,7 @@ export default function RegisterPage() {
 
                     <p className="mt-6 text-center text-sm text-muted-foreground">
                         {t('alreadyHaveAccount')}{" "}
-                        <Link href="/login" className="font-medium text-primary hover:underline">
+                        <Link href={`/${params.locale}/login`} className="font-medium text-primary hover:underline">
                             {t('signIn')}
                         </Link>
                     </p>

@@ -147,7 +147,7 @@ export default function InvoicesPage() {
                                 {t("common.export")}
                             </button>
                             <Link
-                                href="/invoices/new"
+                                href={`/${locale}/invoices/new`}
                                 className="flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90"
                             >
                                 <Plus className="h-4 w-4" />

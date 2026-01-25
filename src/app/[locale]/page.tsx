@@ -100,7 +100,7 @@ export default function LandingPage() {
 
           <div className="hidden md:flex items-center gap-8">
             <Link href="#features" className="text-slate-600 hover:text-primary transition-colors">{tNav('features')}</Link>
-            <Link href="/pricing" className="text-slate-600 hover:text-primary transition-colors">{tNav('pricing')}</Link>
+            <Link href={`/${locale}/pricing`} className="text-slate-600 hover:text-primary transition-colors">{tNav('pricing')}</Link>
             <Link href="#testimonials" className="text-slate-600 hover:text-primary transition-colors">{tNav('testimonials')}</Link>
             <Link href={`/${locale === 'en' ? 'ar' : 'en'}`} className="flex items-center gap-1 text-slate-600 hover:text-primary transition-colors font-medium">
               <Globe className="w-4 h-4" />
@@ -322,7 +322,7 @@ export default function LandingPage() {
               <h4 className="font-semibold mb-4">{tFooter('headers.product')}</h4>
               <ul className="space-y-2 text-sm text-slate-500">
                 <li><Link href="#features">{tNav('features')}</Link></li>
-                <li><Link href="/pricing">{tNav('pricing')}</Link></li>
+                <li><Link href={`/${locale}/pricing`}>{tNav('pricing')}</Link></li>
                 <li><Link href="#">{tFooter('links.integrations')}</Link></li>
               </ul>
             </div>

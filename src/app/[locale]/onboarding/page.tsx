@@ -93,7 +93,7 @@ export default function OnboardingPage() {
             });
 
             if (response.ok) {
-                router.push("/dashboard");
+                router.push(`/${locale}/dashboard`);
             }
         } catch (error) {
             console.error("Error creating company:", error);
@@ -108,8 +108,8 @@ export default function OnboardingPage() {
                 <div key={step.id} className="flex items-center">
                     <div
                         className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all ${currentStep >= step.id
-                                ? "bg-primary border-primary text-primary-foreground"
-                                : "border-border text-muted-foreground"
+                            ? "bg-primary border-primary text-primary-foreground"
+                            : "border-border text-muted-foreground"
                             }`}
                     >
                         {currentStep > step.id ? (
@@ -227,8 +227,8 @@ export default function OnboardingPage() {
                                     key={type.value}
                                     onClick={() => setFormData({ ...formData, companyType: type.value as CompanyType })}
                                     className={`p-5 rounded-xl border-2 text-left transition-all ${formData.companyType === type.value
-                                            ? "border-primary bg-primary/5 ring-2 ring-primary/20"
-                                            : "border-border hover:border-primary/50"
+                                        ? "border-primary bg-primary/5 ring-2 ring-primary/20"
+                                        : "border-border hover:border-primary/50"
                                         }`}
                                 >
                                     <type.icon className={`w-10 h-10 mb-3 ${formData.companyType === type.value ? "text-primary" : "text-muted-foreground"}`} />
@@ -310,8 +310,8 @@ export default function OnboardingPage() {
                                             key={month}
                                             onClick={() => setFormData({ ...formData, fiscalYearStart: i + 1 })}
                                             className={`p-3 rounded-lg border text-sm transition-all ${formData.fiscalYearStart === i + 1
-                                                    ? "border-primary bg-primary text-primary-foreground"
-                                                    : "border-border hover:border-primary/50"
+                                                ? "border-primary bg-primary text-primary-foreground"
+                                                : "border-border hover:border-primary/50"
                                                 }`}
                                         >
                                             {month.slice(0, 3)}
@@ -393,7 +393,7 @@ export default function OnboardingPage() {
                 {/* Skip */}
                 <div className="text-center mt-4">
                     <button
-                        onClick={() => router.push("/dashboard")}
+                        onClick={() => router.push(`/${locale}/dashboard`)}
                         className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                     >
                         Skip for now →

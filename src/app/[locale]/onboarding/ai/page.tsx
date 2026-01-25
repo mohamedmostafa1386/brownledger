@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import {
     Sparkles,
     Send,
@@ -52,6 +52,8 @@ const INDUSTRY_ICONS: Record<string, JSX.Element> = {
 
 export default function AIOnboardingPage() {
     const router = useRouter();
+    const params = useParams();
+    const locale = params.locale as string;
     const [step, setStep] = useState<"describe" | "review" | "applying" | "complete">("describe");
     const [description, setDescription] = useState("");
     const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -333,7 +335,7 @@ export default function AIOnboardingPage() {
                                     Your BrownLedger instance has been customized for your business.
                                 </p>
                                 <button
-                                    onClick={() => router.push("/dashboard")}
+                                    onClick={() => router.push(`/${locale}/dashboard`)}
                                     className="inline-flex items-center gap-2 px-6 h-12 rounded-xl bg-primary text-primary-foreground font-medium hover:opacity-90 transition"
                                 >
                                     Go to Dashboard
@@ -350,8 +352,8 @@ export default function AIOnboardingPage() {
                         <div
                             key={s}
                             className={`w-2 h-2 rounded-full transition ${step === s || (step === "applying" && s === "review")
-                                    ? "bg-primary"
-                                    : "bg-muted"
+                                ? "bg-primary"
+                                : "bg-muted"
                                 }`}
                         />
                     ))}

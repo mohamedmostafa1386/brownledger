@@ -2,11 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Check, X, Sparkles, ArrowRight, Zap } from "lucide-react";
 import { PLANS } from "@/lib/plans";
 
 export default function PricingPage() {
     const [billingPeriod, setBillingPeriod] = useState<"monthly" | "yearly">("yearly");
+    const params = useParams();
+    const locale = params.locale as string;
 
     const formatPrice = (amount: number) => {
         if (amount === 0) return "Free";
@@ -18,18 +21,18 @@ export default function PricingPage() {
             {/* Header */}
             <header className="border-b border-white/10">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-                    <Link href="/" className="flex items-center gap-2">
+                    <Link href={`/${locale}`} className="flex items-center gap-2">
                         <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
                             <span className="text-lg font-bold text-white">BL</span>
                         </div>
                         <span className="text-xl font-semibold text-white">BrownLedger</span>
                     </Link>
                     <div className="flex items-center gap-4">
-                        <Link href="/login" className="text-white/80 hover:text-white">
+                        <Link href={`/${locale}/login`} className="text-white/80 hover:text-white">
                             Login
                         </Link>
                         <Link
-                            href="/auth/register"
+                            href={`/${locale}/auth/register`}
                             className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90"
                         >
                             Start Free Trial
@@ -112,7 +115,7 @@ export default function PricingPage() {
                             </div>
 
                             <Link
-                                href="/auth/register"
+                                href={`/${locale}/auth/register`}
                                 className={`block w-full py-3 text-center rounded-lg font-medium mb-6 transition-all ${plan.recommended
                                     ? "bg-white text-primary hover:bg-white/90"
                                     : "bg-primary text-white hover:bg-primary/90"

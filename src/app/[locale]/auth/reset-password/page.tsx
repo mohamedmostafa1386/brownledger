@@ -1,13 +1,15 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, useParams } from "next/navigation";
 import Link from "next/link";
 import { Lock, Eye, EyeOff, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
 
 function ResetPasswordForm() {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const params = useParams();
+    const locale = params.locale as string;
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +53,7 @@ function ResetPasswordForm() {
 
             if (response.ok) {
                 setIsSuccess(true);
-                setTimeout(() => router.push("/auth/login"), 3000);
+                setTimeout(() => router.push(`/${locale}/login`), 3000);
             } else {
                 setError(data.error || "Failed to reset password");
             }
@@ -75,7 +77,7 @@ function ResetPasswordForm() {
                             Your password has been successfully reset. Redirecting to login...
                         </p>
                         <Link
-                            href="/auth/login"
+                            href={`/${locale}/login`}
                             className="text-primary hover:underline"
                         >
                             Go to Login Now
@@ -99,7 +101,7 @@ function ResetPasswordForm() {
                             This password reset link is invalid or has expired.
                         </p>
                         <Link
-                            href="/auth/forgot-password"
+                            href={`/${locale}/auth/forgot-password`}
                             className="text-primary hover:underline"
                         >
                             Request a new reset link
@@ -199,7 +201,7 @@ function ResetPasswordForm() {
                     {/* Back to Login */}
                     <div className="mt-6 text-center">
                         <Link
-                            href="/auth/login"
+                            href={`/${locale}/login`}
                             className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                             <ArrowLeft className="w-4 h-4" />

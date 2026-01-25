@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { AlertTriangle, Home, RefreshCcw, Mail } from "lucide-react";
 
 export default function ErrorPage({
@@ -11,6 +12,8 @@ export default function ErrorPage({
     error: Error & { digest?: string };
     reset: () => void;
 }) {
+    const params = useParams();
+    const locale = (params.locale as string) || "ar";
     useEffect(() => {
         // Log error to an error reporting service
         console.error("Application Error:", error);
@@ -48,7 +51,7 @@ export default function ErrorPage({
                         Try Again
                     </button>
                     <Link
-                        href="/dashboard"
+                        href={`/${locale}/dashboard`}
                         className="flex items-center justify-center gap-2 px-6 py-3 border border-border rounded-lg hover:bg-muted transition-colors"
                     >
                         <Home className="w-4 h-4" />

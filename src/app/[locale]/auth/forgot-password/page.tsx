@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Mail, ArrowLeft, CheckCircle } from "lucide-react";
 
 import { useTranslations } from "next-intl";
@@ -9,6 +10,8 @@ import { useTranslations } from "next-intl";
 export default function ForgotPasswordPage() {
     const t = useTranslations('auth.forgotPassword');
     const tErrors = useTranslations('auth.errors');
+    const params = useParams();
+    const locale = params.locale as string;
     const [email, setEmail] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [isSent, setIsSent] = useState(false);
@@ -56,7 +59,7 @@ export default function ForgotPasswordPage() {
                             {t('successNote')}
                         </p>
                         <Link
-                            href="/auth/login"
+                            href={`/${locale}/login`}
                             className="flex items-center justify-center gap-2 text-primary hover:underline"
                         >
                             <ArrowLeft className="w-4 h-4" />
@@ -118,7 +121,7 @@ export default function ForgotPasswordPage() {
                     {/* Back to Login */}
                     <div className="mt-6 text-center">
                         <Link
-                            href="/auth/login"
+                            href={`/${locale}/login`}
                             className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
                         >
                             <ArrowLeft className="w-4 h-4" />

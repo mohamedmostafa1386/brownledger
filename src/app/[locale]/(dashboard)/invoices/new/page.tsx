@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { Plus, Trash2, Save, ArrowLeft, Sparkles } from "lucide-react";
 import Link from "next/link";
@@ -16,6 +16,8 @@ interface InvoiceItem {
 
 export default function NewInvoicePage() {
     const router = useRouter();
+    const params = useParams();
+    const locale = params.locale as string;
     const [items, setItems] = useState<InvoiceItem[]>([
         { id: "1", description: "", quantity: 1, unitPrice: 0 },
     ]);
@@ -50,7 +52,7 @@ export default function NewInvoicePage() {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         // TODO: Submit to API
-        router.push("/invoices");
+        router.push(`/${locale}/invoices`);
     };
 
     return (
@@ -59,7 +61,7 @@ export default function NewInvoicePage() {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
                     <Link
-                        href="/invoices"
+                        href={`/${locale}/invoices`}
                         className="flex h-9 w-9 items-center justify-center rounded-lg border border-input hover:bg-muted"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -72,8 +74,8 @@ export default function NewInvoicePage() {
                 <button
                     onClick={() => setShowAIGenerator(!showAIGenerator)}
                     className={`flex h-9 items-center gap-2 rounded-lg px-4 text-sm font-medium ${showAIGenerator
-                            ? "bg-primary/10 text-primary"
-                            : "border border-input hover:bg-muted"
+                        ? "bg-primary/10 text-primary"
+                        : "border border-input hover:bg-muted"
                         }`}
                 >
                     <Sparkles className="h-4 w-4" />

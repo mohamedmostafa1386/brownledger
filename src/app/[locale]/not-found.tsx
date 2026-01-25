@@ -1,9 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { FileQuestion, Home, ArrowLeft, Search } from "lucide-react";
 
 export default function NotFoundPage() {
+    const params = useParams();
+    const locale = (params.locale as string) || "ar";
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
             <div className="text-center max-w-md">
@@ -26,7 +29,7 @@ export default function NotFoundPage() {
                 {/* Actions */}
                 <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <Link
-                        href="/dashboard"
+                        href={`/${locale}/dashboard`}
                         className="flex items-center justify-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
                     >
                         <Home className="w-4 h-4" />
@@ -45,13 +48,13 @@ export default function NotFoundPage() {
                 <div className="mt-12 pt-8 border-t border-border">
                     <p className="text-sm text-muted-foreground mb-4">Popular pages:</p>
                     <div className="flex flex-wrap gap-2 justify-center">
-                        <Link href="/invoices" className="text-sm text-primary hover:underline">Invoices</Link>
+                        <Link href={`/${locale}/invoices`} className="text-sm text-primary hover:underline">Invoices</Link>
                         <span className="text-muted-foreground">•</span>
-                        <Link href="/expenses" className="text-sm text-primary hover:underline">Expenses</Link>
+                        <Link href={`/${locale}/expenses`} className="text-sm text-primary hover:underline">Expenses</Link>
                         <span className="text-muted-foreground">•</span>
-                        <Link href="/clients" className="text-sm text-primary hover:underline">Clients</Link>
+                        <Link href={`/${locale}/clients`} className="text-sm text-primary hover:underline">Clients</Link>
                         <span className="text-muted-foreground">•</span>
-                        <Link href="/reports" className="text-sm text-primary hover:underline">Reports</Link>
+                        <Link href={`/${locale}/dashboard`} className="text-sm text-primary hover:underline">Dashboard</Link>
                     </div>
                 </div>
             </div>
