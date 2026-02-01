@@ -1,0 +1,17 @@
+{
+  "status": "commited",
+  "type": "backend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:3000",
+  "backendAuthType": "public",
+  "executionArgs": {
+    "projectName": "brownledger-v2",
+    "projectPath": "d:\\brownledger-v2",
+    "testIds": [],
+    "additionalInstruction": "Rerun all tests. Backend is ready with /api/auth/login and Bearer token support. Use admin@brownledger.com / demo123 as valid credentials. projectPath is d:\\brownledger-v2.",
+    "envs": {
+      "API_KEY": "sk-user-mQf-XsJ0eGLIaOeA314NJwm5lJ1OhFcFkkLUNrQ0gmptxKPOgRUUh0DIxTTVKPXFujp0-KsIHjtEHInrCcRTSWeNeIIKIDMvYMlDzv9QvU1t6LiLWWliy_yo_rTx4UkfB0w"
+    }
+  },
+  "proxy": "http://e4281211-2567-44ac-bca1-6ed3c62d9707:zyse4maxRCNlWbd0FO7J2HCufX5mmfnG@tun.testsprite.com:8080"
+}

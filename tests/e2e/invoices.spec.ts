@@ -7,7 +7,7 @@ test.describe('Invoices Module', () => {
     });
 
     test('should navigate to invoices page', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
 
         await expect(page).toHaveURL(/\/invoices/);
         // Use getByRole to find the Invoices heading specifically
@@ -15,7 +15,7 @@ test.describe('Invoices Module', () => {
     });
 
     test('should display invoices list', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
 
         // Wait for page to load
         await page.waitForTimeout(1000);
@@ -26,14 +26,14 @@ test.describe('Invoices Module', () => {
     });
 
     test('should have New Invoice button', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
 
         const newButton = page.locator('button:has-text("New"), button:has-text("Create"), a:has-text("Invoice")');
         await expect(newButton.first()).toBeVisible();
     });
 
     test('should filter invoices by status', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
 
         // Look for status filter/tabs
         const statusFilter = page.locator('button, [role="tab"]');
@@ -42,7 +42,7 @@ test.describe('Invoices Module', () => {
     });
 
     test('should search invoices', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
 
         const searchInput = page.locator('input[placeholder*="Search"], input[type="search"], input[placeholder*="search"]');
 

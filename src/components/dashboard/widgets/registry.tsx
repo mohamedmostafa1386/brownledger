@@ -13,7 +13,7 @@ export interface WidgetDefinition {
     description?: string;
     component: React.ComponentType<any>;
     defaultSize: "small" | "medium" | "large" | "full"; // Suggestion for UI builder
-    mapDataToProps?: (data: any, t?: (key: string) => string) => any;
+    mapDataToProps?: (data: any, t?: (key: string) => string, periodLabel?: string) => any;
 }
 
 export const widgetRegistry: WidgetDefinition[] = [
@@ -24,13 +24,14 @@ export const widgetRegistry: WidgetDefinition[] = [
         description: "Displays total revenue and growth trend.",
         component: MetricWidget,
         defaultSize: "small",
-        mapDataToProps: (data, t) => ({
+        mapDataToProps: (data, t, periodLabel) => ({
             title: t ? t('dashboard.widgets.metric-revenue.label') : "Total Revenue",
             value: data.revenue,
             icon: DollarSign,
             trend: { value: 12.5, isPositive: true }, // Placeholder trend logic
             colorClass: "text-emerald-600",
-            delay: 0
+            delay: 0,
+            subtitle: periodLabel
         })
     },
     {
@@ -39,13 +40,14 @@ export const widgetRegistry: WidgetDefinition[] = [
         description: "Displays total expenses.",
         component: MetricWidget,
         defaultSize: "small",
-        mapDataToProps: (data, t) => ({
+        mapDataToProps: (data, t, periodLabel) => ({
             title: t ? t('dashboard.widgets.metric-expenses.label') : "Total Expenses",
             value: data.expenses,
             icon: Receipt,
             trend: { value: 3.2, isPositive: false },
             colorClass: "text-rose-600",
-            delay: 0.1
+            delay: 0.1,
+            subtitle: periodLabel
         })
     },
     {
@@ -54,7 +56,7 @@ export const widgetRegistry: WidgetDefinition[] = [
         description: "Displays net profit and margin.",
         component: MetricWidget,
         defaultSize: "small",
-        mapDataToProps: (data, t) => {
+        mapDataToProps: (data, t, periodLabel) => {
             const revenue = data.revenue || 0;
             const cogs = data.cogs || 0;
             const expenses = data.expenses || 0;
@@ -65,7 +67,8 @@ export const widgetRegistry: WidgetDefinition[] = [
                 value: profit,
                 icon: Target,
                 colorClass: profit >= 0 ? "text-emerald-600" : "text-rose-600",
-                delay: 0.2
+                delay: 0.2,
+                subtitle: periodLabel
             };
         }
     },
@@ -75,13 +78,14 @@ export const widgetRegistry: WidgetDefinition[] = [
         description: "Displays current cash balance.",
         component: MetricWidget,
         defaultSize: "small",
-        mapDataToProps: (data, t) => ({
+        mapDataToProps: (data, t, periodLabel) => ({
             title: t ? t('dashboard.widgets.metric-cash.label') : "Cash Balance",
             value: data.cash,
             icon: Wallet,
             trend: { value: 5.4, isPositive: true },
             colorClass: "text-emerald-600",
-            delay: 0.3
+            delay: 0.3,
+            subtitle: periodLabel
         })
     },
 

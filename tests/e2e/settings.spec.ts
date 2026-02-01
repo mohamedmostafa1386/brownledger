@@ -11,18 +11,18 @@ test.describe('Settings Module', () => {
     });
 
     test('should display settings page', async ({ page }) => {
-        await page.goto('/settings');
+        await page.goto('/en/settings');
         await expect(page.getByRole('heading').first()).toBeVisible();
     });
 
     test('should have company settings section', async ({ page }) => {
-        await page.goto('/settings');
+        await page.goto('/en/settings');
         const companySection = page.getByText(/Company|Business|Profile/i);
         await expect(companySection.first()).toBeVisible();
     });
 
     test('should have save button', async ({ page }) => {
-        await page.goto('/settings');
+        await page.goto('/en/settings');
         const saveButton = page.locator('button:has-text("Save"), button:has-text("Update")');
         await expect(saveButton.first()).toBeVisible();
     });
@@ -34,7 +34,7 @@ test.describe('User Management', () => {
     });
 
     test('should access users from settings', async ({ page }) => {
-        await page.goto('/settings');
+        await page.goto('/en/settings');
         // Settings page should load
         const heading = page.getByRole('heading');
         await expect(heading.first()).toBeVisible();

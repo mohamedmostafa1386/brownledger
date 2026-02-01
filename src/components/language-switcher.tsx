@@ -18,7 +18,12 @@ export function LanguageSwitcher() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const [isPending, startTransition] = useTransition();
-    const { setLocale: setStoreLocale, isRTL } = useLocaleStore();
+
+    // Direct derivation for UI consistency
+    const isRTL = locale === "ar";
+
+    // Use store only for setting persistence (cookies/localStorage)
+    const { setLocale: setStoreLocale } = useLocaleStore();
 
     const switchLanguage = (newLocale: string) => {
         if (newLocale === locale) {
@@ -35,8 +40,11 @@ export function LanguageSwitcher() {
         // Navigate to new locale in transition
         startTransition(() => {
             // Remove current locale prefix if present
-            const pathWithoutLocale = pathname.replace(/^\/(en|ar)/, "") || "/";
-            router.push(pathWithoutLocale);
+            const pathWithoutLocale = pathname.replace(/^\/(en|ar)/, "") || "";
+            // Ensure path starts with / if not empty, but don't double slash
+            const targetPath = pathWithoutLocale.startsWith("/") ? pathWithoutLocale : `/${pathWithoutLocale}`;
+
+            router.push(`/${newLocale}${targetPath}`);
             router.refresh();
         });
     };

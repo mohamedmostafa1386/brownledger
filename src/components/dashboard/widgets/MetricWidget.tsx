@@ -10,9 +10,10 @@ interface MetricWidgetProps {
     trend?: { value: number; isPositive: boolean };
     colorClass?: string;
     delay?: number;
+    subtitle?: string; // Period indicator e.g., "This Month"
 }
 
-export function MetricWidget({ title, value, icon: Icon, trend, colorClass = "text-primary", delay = 0 }: MetricWidgetProps) {
+export function MetricWidget({ title, value, icon: Icon, trend, colorClass = "text-primary", delay = 0, subtitle }: MetricWidgetProps) {
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -31,7 +32,14 @@ export function MetricWidget({ title, value, icon: Icon, trend, colorClass = "te
                     </div>
                 )}
             </div>
-            <p className="text-muted-foreground text-sm mb-1">{title}</p>
+            <div className="flex items-center gap-2 mb-1">
+                <p className="text-muted-foreground text-sm">{title}</p>
+                {subtitle && (
+                    <span className="text-xs px-1.5 py-0.5 bg-muted rounded text-muted-foreground">
+                        {subtitle}
+                    </span>
+                )}
+            </div>
             <p className={`text-2xl font-bold ${colorClass === "text-rose-600" ? "text-rose-600" : ""}`}>{formatCurrency(value)}</p>
         </motion.div>
     );

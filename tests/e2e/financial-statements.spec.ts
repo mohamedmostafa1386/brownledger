@@ -4,7 +4,7 @@ import { login } from '../fixtures';
 test.describe('Financial Statements Module', () => {
     test.beforeEach(async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/financial-statements');
+        await page.goto('/en/financial-statements');
     });
 
     test('should display financial statements page', async ({ page }) => {
@@ -42,7 +42,7 @@ test.describe('Financial Statements Module', () => {
 test.describe('Income Statement', () => {
     test.beforeEach(async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/financial-statements');
+        await page.goto('/en/financial-statements');
     });
 
     test('should display revenue section', async ({ page }) => {

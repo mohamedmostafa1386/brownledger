@@ -22,7 +22,7 @@ test.describe('Responsive - Dashboard', () => {
 
     test('should display correctly on desktop', async ({ page }) => {
         await page.setViewportSize(viewports.desktop);
-        await page.goto('/dashboard');
+        await page.goto('/en/dashboard');
 
         // Sidebar should be visible on desktop
         const sidebar = page.locator('aside, nav[data-testid="sidebar"]');
@@ -31,21 +31,21 @@ test.describe('Responsive - Dashboard', () => {
 
     test('should display correctly on laptop', async ({ page }) => {
         await page.setViewportSize(viewports.laptop);
-        await page.goto('/dashboard');
+        await page.goto('/en/dashboard');
 
         await expect(page.getByRole('heading').first()).toBeVisible();
     });
 
     test('should display correctly on tablet portrait', async ({ page }) => {
         await page.setViewportSize(viewports.tabletPortrait);
-        await page.goto('/dashboard');
+        await page.goto('/en/dashboard');
 
         await expect(page.getByRole('heading').first()).toBeVisible();
     });
 
     test('should display correctly on mobile', async ({ page }) => {
         await page.setViewportSize(viewports.mobile);
-        await page.goto('/dashboard');
+        await page.goto('/en/dashboard');
 
         await expect(page.getByRole('heading').first()).toBeVisible();
 
@@ -64,7 +64,7 @@ test.describe('Responsive - POS', () => {
 
     test('should display POS on tablet', async ({ page }) => {
         await page.setViewportSize(viewports.tabletLandscape);
-        await page.goto('/pos');
+        await page.goto('/en/pos');
 
         // Product grid and cart should both be visible on tablet
         const products = page.getByText(/Product|Item/i);
@@ -73,7 +73,7 @@ test.describe('Responsive - POS', () => {
 
     test('should display POS on mobile', async ({ page }) => {
         await page.setViewportSize(viewports.mobile);
-        await page.goto('/pos');
+        await page.goto('/en/pos');
 
         // On mobile, might use tabs or accordion for products/cart
         await expect(page.getByRole('heading').first()).toBeVisible();
@@ -87,7 +87,7 @@ test.describe('Responsive - Invoices', () => {
 
     test('should have horizontal scroll on mobile for tables', async ({ page }) => {
         await page.setViewportSize(viewports.mobile);
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
 
         // Table should exist (might scroll)
         const table = page.locator('table');
@@ -103,7 +103,7 @@ test.describe('Responsive - Forms', () => {
 
     test('should stack form fields on mobile', async ({ page }) => {
         await page.setViewportSize(viewports.mobile);
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
 
         // Forms should be usable on mobile
         const buttons = page.locator('button');
@@ -115,7 +115,6 @@ test.describe('Responsive - Forms', () => {
 test.describe('Responsive - Navigation', () => {
     test('should collapse navigation on mobile', async ({ page }) => {
         await page.setViewportSize(viewports.mobile);
-        await page.goto('/login');
         await login(page, 'en');
 
         // Navigation behavior on mobile

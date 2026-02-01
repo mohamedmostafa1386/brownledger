@@ -423,7 +423,7 @@ Current page: ${pathname}`;
                 animate={{ scale: 1 }}
                 onClick={() => setIsOpen(true)}
                 className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary shadow-lg hover:bg-primary/90"
-                title={locale === "ar" ? "مساعد المحاسبة" : "Accounting Assistant"}
+                title={t("aiHelp.title")}
             >
                 <HelpCircle className="h-6 w-6 text-primary-foreground" />
             </motion.button>
@@ -450,8 +450,8 @@ Current page: ${pathname}`;
                             <HelpCircle className="h-4 w-4 text-primary" />
                         </div>
                         <div>
-                            <h3 className="font-semibold text-sm">{locale === "ar" ? "مساعد المحاسبة" : "Accounting Assistant"}</h3>
-                            <p className="text-xs text-muted-foreground">{locale === "ar" ? "أنا هنا لمساعدتك" : "Here to help you"}</p>
+                            <h3 className="font-semibold text-sm">{t("aiHelp.title")}</h3>
+                            <p className="text-xs text-muted-foreground">{t("aiHelp.subtitle")}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-1">
@@ -484,7 +484,7 @@ Current page: ${pathname}`;
                         )}
                     >
                         <BookOpen className="h-4 w-4 inline-block mr-1" />
-                        {locale === "ar" ? "دليل المساعدة" : "Help Guide"}
+                        {t("aiHelp.helpGuide")}
                     </button>
                     <button
                         onClick={() => setActiveTab("chat")}
@@ -494,7 +494,7 @@ Current page: ${pathname}`;
                         )}
                     >
                         <Sparkles className="h-4 w-4 inline-block mr-1" />
-                        {locale === "ar" ? "محادثة ذكية" : "AI Chat"}
+                        {t("aiHelp.chat")}
                     </button>
                 </div>
 
@@ -509,7 +509,7 @@ Current page: ${pathname}`;
                                         onClick={() => setSelectedTopic(null)}
                                         className="text-sm text-primary hover:underline mb-4 flex items-center gap-1"
                                     >
-                                        ← {locale === "ar" ? "رجوع" : "Back"}
+                                        ← {t("aiHelp.back")}
                                     </button>
                                     <h4 className="font-semibold text-lg mb-2">
                                         {locale === "ar" ? selectedTopic.titleAr : selectedTopic.title}
@@ -536,7 +536,7 @@ Current page: ${pathname}`;
                                         <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                                         <input
                                             type="text"
-                                            placeholder={locale === "ar" ? "ابحث في المواضيع..." : "Search topics..."}
+                                            placeholder={t("aiHelp.searchPlaceholder")}
                                             value={searchQuery}
                                             onChange={(e) => setSearchQuery(e.target.value)}
                                             className="h-9 w-full rounded-lg border border-input bg-background pl-9 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
@@ -547,7 +547,7 @@ Current page: ${pathname}`;
                                     {contextualTopics.length > 0 && searchQuery === "" && (
                                         <div className="mb-4">
                                             <h5 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                                                {locale === "ar" ? "مساعدة هذه الصفحة" : "Help for this page"}
+                                                {t("aiHelp.helpForPage")}
                                             </h5>
                                             {contextualTopics.map(topic => (
                                                 <button
@@ -568,7 +568,7 @@ Current page: ${pathname}`;
 
                                     {/* All Topics */}
                                     <h5 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
-                                        {locale === "ar" ? "جميع المواضيع" : "All Topics"}
+                                        {t("aiHelp.allTopics")}
                                     </h5>
                                     <div className="space-y-2">
                                         {filteredTopics.map(topic => (
@@ -601,9 +601,7 @@ Current page: ${pathname}`;
                                 <div className="text-center py-8">
                                     <Bot className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
                                     <p className="text-sm text-muted-foreground mb-4">
-                                        {locale === "ar"
-                                            ? "اسألني أي شيء عن كيفية استخدام التطبيق"
-                                            : "Ask me anything about how to use the app"}
+                                        {t("aiHelp.greeting")}
                                     </p>
                                     <div className="flex flex-wrap gap-2 justify-center">
                                         {quickQuestions.map((q) => (
@@ -682,7 +680,7 @@ Current page: ${pathname}`;
                                 type="text"
                                 value={input}
                                 onChange={(e) => setInput(e.target.value)}
-                                placeholder={locale === "ar" ? "اكتب سؤالك..." : "Type your question..."}
+                                placeholder={t("aiHelp.inputPlaceholder")}
                                 className="flex-1 h-10 rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                                 disabled={isLoading}
                             />

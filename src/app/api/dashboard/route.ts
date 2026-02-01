@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { getCompanyId, requireCompanyId } from "@/lib/api-auth";
+import { apiResponse, apiError, unauthorizedError } from "@/lib/api-response";
 import {
     getFinancialSummary,
     getMonthlyData,
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
         // Get company ID from auth, ensure strict multi-tenancy
         const auth = await requireCompanyId();
         if ("error" in auth) {
-            return NextResponse.json({ error: auth.error }, { status: auth.status });
+            return unauthorizedError(auth.error);
         }
         const { companyId } = auth;
 
@@ -96,7 +97,7 @@ export async function GET(request: NextRequest) {
         const pendingCount = invoices.filter(i => i.status === "PENDING" || i.status === "SENT").length;
         const overdueCount = invoices.filter(i => i.status === "OVERDUE").length;
 
-        return NextResponse.json({
+        return apiResponse({
             // Period info
             period,
             startDate: startDate.toISOString(),
@@ -129,6 +130,6 @@ export async function GET(request: NextRequest) {
         });
     } catch (error) {
         console.error("Dashboard API error:", error);
-        return NextResponse.json({ error: "Failed to fetch dashboard data" }, { status: 500 });
+        return apiError("Failed to fetch dashboard data", "DASHBOARD_FETCH_ERROR", 500, error);
     }
 }

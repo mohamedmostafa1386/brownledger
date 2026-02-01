@@ -2,7 +2,7 @@
 
 import { useI18n } from "@/lib/i18n-context";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Package, AlertTriangle, TrendingDown, Warehouse, Plus, RefreshCcw, ArrowLeftRight, FileText, DollarSign, X, Check, Search, ArrowUpRight, ArrowDownRight, TrendingUp } from "lucide-react";
 import { formatCurrency, formatDate } from "@/lib/utils";
 
@@ -58,6 +58,7 @@ export default function StockManagementPage() {
     const [transferQty, setTransferQty] = useState(1);
     const [fromWarehouse, setFromWarehouse] = useState("");
     const [toWarehouse, setToWarehouse] = useState("");
+    const [selectedWarehouseId, setSelectedWarehouseId] = useState(""); // For adjustment
     const [newWarehouseName, setNewWarehouseName] = useState("");
     const [newWarehouseCode, setNewWarehouseCode] = useState("");
     const [newWarehouseLocation, setNewWarehouseLocation] = useState("");
@@ -100,17 +101,47 @@ export default function StockManagementPage() {
         item.sku.toLowerCase().includes(search.toLowerCase())
     );
 
-    // Mock warehouses data
-    const warehouses: WarehouseInfo[] = [
-        { id: "1", name: "Main Warehouse", code: "WH-001", location: "Cairo, Factory Floor A", itemCount: 150, totalValue: 450000 },
-        { id: "2", name: "Retail Store", code: "WH-002", location: "6th October, Branch 1", itemCount: 45, totalValue: 120000 },
-        { id: "3", name: "Cold Storage", code: "WH-003", location: "Alexandria Port", itemCount: 20, totalValue: 85000 },
-    ];
+    // Warehouses query
+    const { data: warehouses = [], isLoading: isWarehousesLoading } = useQuery<WarehouseInfo[]>({
+        queryKey: ["warehouses"],
+        queryFn: () => fetch("/api/stock/warehouses").then(res => res.json()),
+    });
+
+    // Default Warehouse Selection
+    useEffect(() => {
+        if (warehouses.length > 0) {
+            if (!fromWarehouse) setFromWarehouse(warehouses[0].id);
+            if (!toWarehouse && warehouses.length > 1) setToWarehouse(warehouses[1].id);
+        }
+    }, [warehouses, fromWarehouse, toWarehouse]);
 
     // Stock adjustment mutation
     const adjustMutation = useMutation({
-        mutationFn: async (data: { productId: string; quantity: number; reason: string }) => {
+        mutationFn: async (data: { productId: string; quantity: number; reason: string; warehouseId?: string }) => {
             const res = await fetch("/api/stock/adjust", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+            if (!res.ok) throw new Error("Failed to adjust stock");
+            return res.json();
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["current-stock"] });
+            queryClient.invalidateQueries({ queryKey: ["stock-stats"] });
+            queryClient.invalidateQueries({ queryKey: ["stock-movements"] });
+            queryClient.invalidateQueries({ queryKey: ["warehouses"] });
+            setShowAdjustModal(false);
+            setSelectedProduct(null);
+            setAdjustQty(0);
+            setSelectedWarehouseId("");
+        },
+    });
+
+    // Create warehouse mutation
+    const createWarehouseMutation = useMutation({
+        mutationFn: async (data: { name: string; code: string; location: string }) => {
+            const res = await fetch("/api/stock/warehouses", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
@@ -118,12 +149,11 @@ export default function StockManagementPage() {
             return res.json();
         },
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["current-stock"] });
-            queryClient.invalidateQueries({ queryKey: ["stock-stats"] });
-            queryClient.invalidateQueries({ queryKey: ["stock-movements"] });
-            setShowAdjustModal(false);
-            setSelectedProduct(null);
-            setAdjustQty(0);
+            queryClient.invalidateQueries({ queryKey: ["warehouses"] });
+            setShowWarehouseModal(false);
+            setNewWarehouseName("");
+            setNewWarehouseCode("");
+            setNewWarehouseLocation("");
         },
     });
 
@@ -162,6 +192,17 @@ export default function StockManagementPage() {
                 productId: selectedProduct.id,
                 quantity: adjustQty,
                 reason: adjustReason,
+                warehouseId: selectedWarehouseId || undefined,
+            });
+        }
+    };
+
+    const submitWarehouse = () => {
+        if (newWarehouseName && newWarehouseCode) {
+            createWarehouseMutation.mutate({
+                name: newWarehouseName,
+                code: newWarehouseCode,
+                location: newWarehouseLocation
             });
         }
     };
@@ -618,6 +659,20 @@ export default function StockManagementPage() {
                             </div>
 
                             <div>
+                                <label className="block text-sm font-medium mb-1.5">Warehouse</label>
+                                <select
+                                    value={selectedWarehouseId}
+                                    onChange={(e) => setSelectedWarehouseId(e.target.value)}
+                                    className="w-full h-10 rounded-lg border border-input bg-background px-3 text-sm focus:ring-1 focus:ring-primary outline-none"
+                                >
+                                    <option value="">Global / Main (No link)</option>
+                                    {warehouses?.map((wh: any) => (
+                                        <option key={wh.id} value={wh.id}>{wh.name}</option>
+                                    ))}
+                                </select>
+                            </div>
+
+                            <div>
                                 <label className="block text-sm font-medium mb-1.5">Adjustment Reason</label>
                                 <select
                                     value={adjustReason}
@@ -816,10 +871,11 @@ export default function StockManagementPage() {
 
                         <div className="flex gap-3 mt-6">
                             <button
-                                onClick={() => setShowWarehouseModal(false)}
-                                className="flex-1 h-10 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20"
+                                onClick={submitWarehouse}
+                                disabled={createWarehouseMutation.isPending || !newWarehouseName || !newWarehouseCode}
+                                className="flex-1 h-10 rounded-lg bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-colors shadow-lg shadow-primary/20 disabled:opacity-50"
                             >
-                                Create Warehouse
+                                {createWarehouseMutation.isPending ? "Creating..." : "Create Warehouse"}
                             </button>
                             <button
                                 onClick={() => setShowWarehouseModal(false)}

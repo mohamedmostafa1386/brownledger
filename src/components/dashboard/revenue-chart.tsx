@@ -11,6 +11,7 @@ import {
     Legend,
 } from "recharts";
 import { TrendingUp, TrendingDown } from "lucide-react";
+import { useI18n } from "@/lib/i18n-context";
 
 interface RevenueChartProps {
     data: { name: string; value: number; expenses?: number }[];
@@ -18,6 +19,8 @@ interface RevenueChartProps {
 }
 
 export function RevenueChart({ data, isLoading }: RevenueChartProps) {
+    const { t, locale } = useI18n();
+
     if (isLoading) {
         return (
             <div className="rounded-xl border border-border bg-card p-6">
@@ -52,8 +55,8 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
                 <div>
-                    <h3 className="font-semibold text-lg">Revenue Overview</h3>
-                    <p className="text-sm text-muted-foreground">Monthly revenue and expenses trend</p>
+                    <h3 className="font-semibold text-lg">{t("dashboard.revenueOverview")}</h3>
+                    <p className="text-sm text-muted-foreground">{locale === "ar" ? "اتجاه الإيرادات والمصروفات الشهرية" : "Monthly revenue and expenses trend"}</p>
                 </div>
                 <div className="flex items-center gap-2">
                     <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-sm font-medium ${momChange >= 0 ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
@@ -100,12 +103,12 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
                             }}
                             formatter={(value: number, name: string) => [
                                 `$${value.toLocaleString()}`,
-                                name === "value" ? "Revenue" : "Expenses"
+                                name === "value" ? t("dashboard.revenue") : t("dashboard.expenses")
                             ]}
                             labelStyle={{ color: "hsl(24 10% 10%)", fontWeight: 600 }}
                         />
                         <Legend
-                            formatter={(value) => value === "value" ? "Revenue" : "Expenses"}
+                            formatter={(value) => value === "value" ? t("dashboard.revenue") : t("dashboard.expenses")}
                             wrapperStyle={{ paddingTop: "10px" }}
                         />
                         <Area
@@ -132,12 +135,12 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
 
             {/* Data Table */}
             <div className="mt-6 border-t border-border pt-4">
-                <h4 className="text-sm font-medium mb-3">Monthly Breakdown</h4>
+                <h4 className="text-sm font-medium mb-3">{t("dashboard.monthlyBreakdown")}</h4>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm">
                         <thead>
                             <tr className="text-muted-foreground">
-                                <th className="text-left py-2 font-medium">Month</th>
+                                <th className="text-left py-2 font-medium">{locale === "ar" ? "الشهر" : "Month"}</th>
                                 {enhancedData.map((item) => (
                                     <th key={item.name} className="text-right py-2 font-medium px-2">{item.name}</th>
                                 ))}
@@ -146,7 +149,7 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
                         </thead>
                         <tbody>
                             <tr className="border-t border-border">
-                                <td className="py-2 font-medium text-primary">Revenue</td>
+                                <td className="py-2 font-medium text-primary">{t("dashboard.revenue")}</td>
                                 {enhancedData.map((item) => (
                                     <td key={item.name} className="text-right py-2 px-2">
                                         ${item.value.toLocaleString()}
@@ -157,7 +160,7 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
                                 </td>
                             </tr>
                             <tr className="border-t border-border">
-                                <td className="py-2 font-medium text-destructive">Expenses</td>
+                                <td className="py-2 font-medium text-destructive">{t("dashboard.expenses")}</td>
                                 {enhancedData.map((item) => (
                                     <td key={item.name} className="text-right py-2 px-2 text-muted-foreground">
                                         ${item.expenses.toLocaleString()}
@@ -168,7 +171,7 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
                                 </td>
                             </tr>
                             <tr className="border-t border-border bg-muted/30">
-                                <td className="py-2 font-semibold">Net Profit</td>
+                                <td className="py-2 font-semibold">{t("dashboard.netProfit")}</td>
                                 {enhancedData.map((item) => (
                                     <td key={item.name} className={`text-right py-2 px-2 font-medium ${item.value - item.expenses >= 0 ? "text-green-600" : "text-red-600"
                                         }`}>
@@ -188,19 +191,19 @@ export function RevenueChart({ data, isLoading }: RevenueChartProps) {
             {/* Summary Stats */}
             <div className="grid grid-cols-4 gap-4 mt-4 pt-4 border-t border-border">
                 <div className="text-center">
-                    <p className="text-xs text-muted-foreground">Avg Monthly</p>
+                    <p className="text-xs text-muted-foreground">{t("dashboard.avgMonthly")}</p>
                     <p className="font-semibold">${avgRevenue.toLocaleString()}</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-xs text-muted-foreground">Highest</p>
+                    <p className="text-xs text-muted-foreground">{t("dashboard.highest")}</p>
                     <p className="font-semibold text-green-600">${maxRevenue.toLocaleString()}</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-xs text-muted-foreground">Lowest</p>
+                    <p className="text-xs text-muted-foreground">{t("dashboard.lowest")}</p>
                     <p className="font-semibold text-amber-600">${minRevenue.toLocaleString()}</p>
                 </div>
                 <div className="text-center">
-                    <p className="text-xs text-muted-foreground">Profit Margin</p>
+                    <p className="text-xs text-muted-foreground">{t("dashboard.profitMargin")}</p>
                     <p className="font-semibold text-primary">
                         {totalRevenue > 0 ? ((totalProfit / totalRevenue) * 100).toFixed(1) : 0}%
                     </p>

@@ -41,3 +41,37 @@ export async function GET(
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
+
+export async function DELETE(
+    req: NextRequest,
+    { params }: { params: Promise<{ id: string }> }
+) {
+    const authInfo = await requireAuth();
+    if ("error" in authInfo) {
+        return NextResponse.json({ error: authInfo.error }, { status: authInfo.status });
+    }
+
+    const { id } = await params;
+
+    try {
+        const invoice = await prisma.invoice.findUnique({
+            where: {
+                id,
+                companyId: authInfo.companyId,
+            },
+        });
+
+        if (!invoice) {
+            return NextResponse.json({ error: "Invoice not found" }, { status: 404 });
+        }
+
+        await prisma.invoice.delete({
+            where: { id },
+        });
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error("Error deleting invoice:", error);
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    }
+}

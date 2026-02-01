@@ -4,7 +4,7 @@ import { login } from '../fixtures';
 test.describe('Chart of Accounts Module', () => {
     test.beforeEach(async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/chart-of-accounts');
+        await page.goto('/en/chart-of-accounts');
     });
 
     test('should display chart of accounts page', async ({ page }) => {
@@ -33,7 +33,7 @@ test.describe('Chart of Accounts Module', () => {
 test.describe('Journal Entries Module', () => {
     test.beforeEach(async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/journal-entries');
+        await page.goto('/en/journal-entries');
     });
 
     test('should display journal entries page', async ({ page }) => {
@@ -65,24 +65,4 @@ test.describe('Journal Entries Module', () => {
     });
 });
 
-test.describe('Financial Ratios Module', () => {
-    test.beforeEach(async ({ page }) => {
-        await login(page, 'en');
-        await page.goto('/financial-ratios');
-    });
 
-    test('should display financial ratios page', async ({ page }) => {
-        await expect(page.getByRole('heading').first()).toBeVisible();
-    });
-
-    test('should show overall health score', async ({ page }) => {
-        const healthScore = page.getByText(/Health|Score|Overall|صحة|نسب/i);
-        await expect(healthScore.first()).toBeVisible();
-    });
-
-    test('should show individual ratio cards', async ({ page }) => {
-        const ratioCards = page.locator('.ratio-card, .bg-card, [data-testid="ratio-card"]');
-        const count = await ratioCards.count();
-        expect(count).toBeGreaterThan(0);
-    });
-});

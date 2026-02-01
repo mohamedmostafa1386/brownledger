@@ -1,5 +1,6 @@
 {
     "common": {
+        "appName": "BrownLedger",
         "save": "Enregistrer",
         "cancel": "Annuler",
         "add": "Ajouter",
@@ -43,7 +44,10 @@
         "financialStatements": "États financiers",
         "financialRatios": "Ratios financiers",
         "journalEntries": "Écritures comptables",
-        "chartOfAccounts": "Plan comptable"
+        "chartOfAccounts": "Plan comptable",
+        "reconciliation": "Rapprochement bancaire",
+        "cashierShifts": "Quarts de caissier",
+        "team": "Gestion d'équipe"
     },
     "dashboard": {
         "title": "Tableau de bord",
@@ -62,6 +66,23 @@
         "revenueOverview": "Aperçu des revenus",
         "monthlyBreakdown": "Détail mensuel",
         "revenue": "Revenus",
+        "subtitle": "Aperçu complet de la performance de votre entreprise",
+        "snapshot": "Aperçu",
+        "reports": "Rapports",
+        "customize": "Personnaliser",
+        "closeBuilder": "Fermer le constructeur",
+        "ranges": {
+            "today": "Aujourd'hui",
+            "week": "Cette semaine",
+            "month": "Ce mois",
+            "quarter": "Ce trimestre",
+            "year": "Cette année"
+        },
+        "health": {
+            "healthy": "Sain",
+            "fair": "Moyen",
+            "needsAttention": "Attention requise"
+        },
         "profit": "Profit",
         "avgMonthly": "Moy. mensuelle",
         "highest": "Le plus élevé",
@@ -177,5 +198,117 @@
         "quantity": "Quantité",
         "lowStock": "Stock faible",
         "outOfStock": "Rupture de stock"
+    },
+    "reports": {
+        "title": "Analyses et Insights",
+        "subtitle": "Indicateurs de performance détaillés",
+        "tabs": {
+            "overview": "Aperçu",
+            "sales": "Ventes et Revenus",
+            "receivables": "Créances",
+            "purchases": "Achats",
+            "inventory": "Inventaire",
+            "clients": "Clients"
+        },
+        "controls": {
+            "dashboard": "Tableau de bord",
+            "table": "Tableaux",
+            "export": "Exporter"
+        },
+        "kpi": {
+            "totalRevenue": "Chiffre d'affaires",
+            "totalExpenses": "Total des dépenses",
+            "netProfit": "Bénéfice net",
+            "cashFlow": "Flux de trésorerie",
+            "totalSales": "Ventes totales",
+            "invoiceCount": "Nombre de factures",
+            "avgOrderValue": "Panier moyen",
+            "topClientRevenue": "Revenu top client",
+            "totalAR": "Total créances",
+            "current": "Courant",
+            "overdue": "En retard",
+            "over90": "Plus de 90 jours",
+            "totalPurchases": "Total des achats",
+            "pendingBills": "Factures en attente",
+            "apBalance": "Solde fournisseurs",
+            "topSupplierSpend": "Top fournisseur",
+            "inventoryValue": "Valeur du stock",
+            "lowStock": "Stock faible",
+            "outOfStock": "Rupture de stock",
+            "turnoverRate": "Taux de rotation",
+            "totalClients": "Total clients",
+            "avgRevenueClient": "Revenu moyen/client",
+            "clientConcentration": "Concentration clients"
+        },
+        "charts": {
+            "revenueVsExpenses": "Revenus vs Dépenses",
+            "profitTrend": "Tendance des bénéfices",
+            "expensesByCategory": "Dépenses par catégorie",
+            "cashFlowForecast": "Prévisions de trésorerie",
+            "salesByClient": "Ventes par client",
+            "salesTrend": "Tendance des ventes",
+            "arAging": "Analyse des créances",
+            "purchasesBySupplier": "Achats par fournisseur",
+            "apAging": "Échéance des dettes",
+            "stockValuation": "Valorisation du stock",
+            "stockMovements": "Mouvements de stock",
+            "revenueByClient": "Revenus par client"
+        },
+        "tableHeaders": {
+            "metric": "Métrique",
+            "currentPeriod": "Période actuelle",
+            "change": "Changement",
+            "status": "Statut",
+            "month": "Mois",
+            "revenue": "Revenus",
+            "expenses": "Dépenses",
+            "profit": "Profit",
+            "margin": "Marge",
+            "rank": "Rang",
+            "clientName": "Nom du client",
+            "date": "Date",
+            "agingBucket": "Période d'échéance",
+            "amount": "Montant",
+            "riskLevel": "Niveau de risque",
+            "supplier": "Fournisseur",
+            "category": "Catégorie",
+            "stockIn": "Entrée stock",
+            "stockOut": "Sortie stock",
+            "netChange": "Changement net",
+            "tier": "Niveau"
+        }
+    },
+    "widgets": {
+        "receivables": {
+            "title": "Comptes clients",
+            "viewAll": "Voir tout",
+            "totalPending": "Total en attente",
+            "paid": "Payé",
+            "pending": "En attente",
+            "overdue": "En retard"
+        },
+        "quickActions": {
+            "title": "Actions rapides",
+            "newInvoice": "Nouvelle facture",
+            "newInvoiceDesc": "Créer une facture",
+            "posSale": "Vente PDV",
+            "posSaleDesc": "Vente rapide",
+            "addExpense": "Ajouter dépense",
+            "addExpenseDesc": "Enregistrer dépense",
+            "addClient": "Ajouter client",
+            "addClientDesc": "Nouveau client"
+        }
+    },
+    "aiHelp": {
+        "title": "Assistant comptable",
+        "subtitle": "Là pour vous aider",
+        "helpGuide": "Guide d'aide",
+        "chat": "Chat IA",
+        "back": "Retour",
+        "searchPlaceholder": "Rechercher des sujets...",
+        "helpForPage": "Aide pour cette page",
+        "allTopics": "Tous les sujets",
+        "greeting": "Posez-moi une question sur l'utilisation de l'application",
+        "inputPlaceholder": "Tapez votre question..."
     }
 }

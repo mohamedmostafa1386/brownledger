@@ -5,7 +5,7 @@ import { SessionProvider } from "next-auth/react";
 import { useState, type ReactNode } from "react";
 import { I18nProvider } from "@/lib/i18n-context";
 
-export function Providers({ children }: { children: ReactNode }) {
+export function Providers({ children, locale }: { children: ReactNode; locale: string }) {
     const [queryClient] = useState(
         () =>
             new QueryClient({
@@ -21,7 +21,7 @@ export function Providers({ children }: { children: ReactNode }) {
     return (
         <SessionProvider>
             <QueryClientProvider client={queryClient}>
-                <I18nProvider>{children}</I18nProvider>
+                <I18nProvider locale={locale}>{children}</I18nProvider>
             </QueryClientProvider>
         </SessionProvider>
     );

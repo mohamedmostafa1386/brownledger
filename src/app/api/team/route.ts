@@ -94,6 +94,7 @@ export async function POST(request: NextRequest) {
                 success: true,
                 message: "User added to team",
                 addedDirectly: true,
+                id: existingUser.id,
             });
         }
 
@@ -122,6 +123,7 @@ export async function POST(request: NextRequest) {
                 success: true,
                 message: "User created and added to team",
                 addedDirectly: true,
+                id: newUser.id,
             });
         }
 
@@ -193,5 +195,40 @@ export async function DELETE(request: NextRequest) {
     } catch (error) {
         console.error("Error removing member:", error);
         return NextResponse.json({ error: "Failed to remove member" }, { status: 500 });
+    }
+}
+
+// Update team member role
+export async function PATCH(request: NextRequest) {
+    try {
+        const auth = await requireCompanyId();
+        if ("error" in auth) {
+            return NextResponse.json({ error: auth.error }, { status: auth.status });
+        }
+        const { companyId, role: userRole } = auth;
+
+        if (!permissions.canManageTeam(userRole)) {
+            return NextResponse.json({ error: "Forbidden: Only admins can manage team" }, { status: 403 });
+        }
+
+        const body = await request.json();
+        const { userId, role } = body;
+
+        if (!userId || !role) {
+            return NextResponse.json({ error: "User ID and Role are required" }, { status: 400 });
+        }
+
+        // Prevent changing own role? (Optional safeguard)
+        // if (userId === auth.userId) ...
+
+        await prisma.companyMembership.updateMany({
+            where: { userId, companyId },
+            data: { role },
+        });
+
+        return NextResponse.json({ success: true, message: "Member role updated" });
+    } catch (error) {
+        console.error("Error updating member role:", error);
+        return NextResponse.json({ error: "Failed to update member role" }, { status: 500 });
     }
 }

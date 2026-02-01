@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Save, ArrowLeft, Sparkles } from "lucide-react";
+import { Plus, Trash2, Save, ArrowLeft, Sparkles, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { AIInvoiceGenerator } from "@/components/invoices/ai-invoice-generator";
+import { useToast } from "@/components/ui/use-toast";
 
 interface InvoiceItem {
     id: string;
@@ -14,15 +15,54 @@ interface InvoiceItem {
     unitPrice: number;
 }
 
+interface Client {
+    id: string;
+    name: string;
+}
+
 export default function NewInvoicePage() {
     const router = useRouter();
     const params = useParams();
+    const { toast } = useToast();
     const locale = params.locale as string;
+
+    // Form State
+    const [isLoading, setIsLoading] = useState(false);
+    const [clientId, setClientId] = useState("");
+    const [invoiceNumber, setInvoiceNumber] = useState("INV-" + Math.floor(1000 + Math.random() * 9000));
+    const [issueDate, setIssueDate] = useState(new Date().toISOString().split("T")[0]);
+    const [dueDate, setDueDate] = useState(() => {
+        const d = new Date();
+        d.setDate(d.getDate() + 30);
+        return d.toISOString().split("T")[0];
+    });
     const [items, setItems] = useState<InvoiceItem[]>([
         { id: "1", description: "", quantity: 1, unitPrice: 0 },
     ]);
     const [taxRate, setTaxRate] = useState(10);
+    const [notes, setNotes] = useState("");
     const [showAIGenerator, setShowAIGenerator] = useState(true);
+    const [clients, setClients] = useState<Client[]>([]);
+
+    // Fetch Clients
+    useEffect(() => {
+        fetch("/api/clients")
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.data && Array.isArray(data.data)) {
+                    setClients(data.data);
+                    if (data.data.length > 0) {
+                        setClientId(data.data[0].id);
+                    }
+                } else if (Array.isArray(data)) {
+                    setClients(data);
+                    if (data.length > 0) {
+                        setClientId(data[0].id);
+                    }
+                }
+            })
+            .catch((err) => console.error("Failed to fetch clients:", err));
+    }, []);
 
     const addItem = () => {
         setItems([
@@ -49,10 +89,48 @@ export default function NewInvoicePage() {
     const tax = subtotal * (taxRate / 100);
     const total = subtotal + tax;
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // TODO: Submit to API
-        router.push(`/${locale}/invoices`);
+
+        if (!clientId) {
+            toast({ title: "Error", description: "Please select a client", variant: "destructive" });
+            return;
+        }
+
+        if (items.some(i => !i.description || i.quantity <= 0 || i.unitPrice < 0)) {
+            toast({ title: "Error", description: "Please fill in all line items correctly", variant: "destructive" });
+            return;
+        }
+
+        try {
+            setIsLoading(true);
+            const response = await fetch("/api/invoices", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    clientId,
+                    invoiceNumber,
+                    issueDate,
+                    dueDate,
+                    items,
+                    taxRate,
+                    notes
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to create invoice");
+            }
+
+            toast({ title: "Success", description: "Invoice created successfully" });
+            router.push(`/${locale}/invoices`);
+            router.refresh(); // Refresh data
+        } catch (error) {
+            console.error("Error creating invoice:", error);
+            toast({ title: "Error", description: "Failed to create invoice. Please try again.", variant: "destructive" });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -114,34 +192,48 @@ export default function NewInvoicePage() {
                             <div className="grid gap-4 sm:grid-cols-2">
                                 <div>
                                     <label className="mb-1.5 block text-sm font-medium">Client</label>
-                                    <select className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring">
+                                    <select
+                                        value={clientId}
+                                        onChange={(e) => setClientId(e.target.value)}
+                                        className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                        required
+                                    >
                                         <option value="">Select a client...</option>
-                                        <option value="1">Tech Solutions Inc</option>
-                                        <option value="2">Global Enterprises</option>
-                                        <option value="3">Startup Labs</option>
+                                        {clients.map((client) => (
+                                            <option key={client.id} value={client.id}>
+                                                {client.name}
+                                            </option>
+                                        ))}
                                     </select>
                                 </div>
                                 <div>
                                     <label className="mb-1.5 block text-sm font-medium">Invoice Number</label>
                                     <input
                                         type="text"
-                                        defaultValue="INV-006"
+                                        value={invoiceNumber}
+                                        onChange={(e) => setInvoiceNumber(e.target.value)}
                                         className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                        required
                                     />
                                 </div>
                                 <div>
                                     <label className="mb-1.5 block text-sm font-medium">Issue Date</label>
                                     <input
                                         type="date"
-                                        defaultValue={new Date().toISOString().split("T")[0]}
+                                        value={issueDate}
+                                        onChange={(e) => setIssueDate(e.target.value)}
                                         className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                        required
                                     />
                                 </div>
                                 <div>
                                     <label className="mb-1.5 block text-sm font-medium">Due Date</label>
                                     <input
                                         type="date"
+                                        value={dueDate}
+                                        onChange={(e) => setDueDate(e.target.value)}
                                         className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                        required
                                     />
                                 </div>
                             </div>
@@ -165,6 +257,7 @@ export default function NewInvoicePage() {
                                                 value={item.description}
                                                 onChange={(e) => updateItem(item.id, "description", e.target.value)}
                                                 className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                                required
                                             />
                                         </div>
                                         <div className="w-24">
@@ -175,6 +268,7 @@ export default function NewInvoicePage() {
                                                 value={item.quantity}
                                                 onChange={(e) => updateItem(item.id, "quantity", parseFloat(e.target.value) || 0)}
                                                 className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                                required
                                             />
                                         </div>
                                         <div className="w-32">
@@ -186,6 +280,7 @@ export default function NewInvoicePage() {
                                                 value={item.unitPrice}
                                                 onChange={(e) => updateItem(item.id, "unitPrice", parseFloat(e.target.value) || 0)}
                                                 className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+                                                required
                                             />
                                         </div>
                                         <button
@@ -219,6 +314,8 @@ export default function NewInvoicePage() {
                             <textarea
                                 placeholder="Add any notes for the client..."
                                 rows={4}
+                                value={notes}
+                                onChange={(e) => setNotes(e.target.value)}
                                 className="w-full rounded-lg border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
                             />
                         </motion.div>
@@ -267,10 +364,11 @@ export default function NewInvoicePage() {
                             <div className="mt-6 space-y-3">
                                 <button
                                     type="submit"
-                                    className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary font-medium text-primary-foreground hover:bg-primary/90"
+                                    disabled={isLoading}
+                                    className="flex h-10 w-full items-center justify-center gap-2 rounded-lg bg-primary font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    <Save className="h-4 w-4" />
-                                    Save Invoice
+                                    {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+                                    {isLoading ? "Saving..." : "Save Invoice"}
                                 </button>
                                 <button
                                     type="button"

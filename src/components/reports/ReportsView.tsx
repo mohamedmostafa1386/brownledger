@@ -29,19 +29,19 @@ export function ReportsView() {
     });
 
     const tabs = [
-        { id: "overview", label: "Overview", icon: BarChart3 },
-        { id: "sales", label: "Sales & Revenue", icon: ShoppingCart },
-        { id: "receivables", label: "Receivables", icon: CreditCard },
-        { id: "purchases", label: "Purchases", icon: Package },
-        { id: "inventory", label: "Inventory", icon: Package },
-        { id: "clients", label: "Clients", icon: Users },
+        { id: "overview", label: t("reports.tabs.overview"), icon: BarChart3 },
+        { id: "sales", label: t("reports.tabs.sales"), icon: ShoppingCart },
+        { id: "receivables", label: t("reports.tabs.receivables"), icon: CreditCard },
+        { id: "purchases", label: t("reports.tabs.purchases"), icon: Package },
+        { id: "inventory", label: t("reports.tabs.inventory"), icon: Package },
+        { id: "clients", label: t("reports.tabs.clients"), icon: Users },
     ] as const;
 
     const periods = [
-        { value: "week", label: "This Week" },
-        { value: "month", label: "This Month" },
-        { value: "quarter", label: "This Quarter" },
-        { value: "year", label: "This Year" },
+        { value: "week", label: t("dashboard.ranges.week") },
+        { value: "month", label: t("dashboard.ranges.month") },
+        { value: "quarter", label: t("dashboard.ranges.quarter") },
+        { value: "year", label: t("dashboard.ranges.year") },
     ];
 
     return (
@@ -49,8 +49,8 @@ export function ReportsView() {
             {/* Header Controls */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                    <h2 className="text-xl font-semibold">Analytics & Insights</h2>
-                    <p className="text-muted-foreground text-sm">Detailed performance metrics</p>
+                    <h2 className="text-xl font-semibold">{t("reports.title")}</h2>
+                    <p className="text-muted-foreground text-sm">{t("reports.subtitle")}</p>
                 </div>
                 <div className="flex flex-wrap gap-3">
                     <div className="flex bg-muted rounded-lg p-1">
@@ -59,14 +59,14 @@ export function ReportsView() {
                             className={`flex items-center gap-2 px-3 py-1.5 rounded text-sm ${viewMode === "dashboard" ? "bg-background shadow" : ""}`}
                         >
                             <PieChartIcon className="w-4 h-4" />
-                            Dashboard
+                            {t("reports.controls.dashboard")}
                         </button>
                         <button
                             onClick={() => setViewMode("table")}
                             className={`flex items-center gap-2 px-3 py-1.5 rounded text-sm ${viewMode === "table" ? "bg-background shadow" : ""}`}
                         >
                             <Table className="w-4 h-4" />
-                            Tables
+                            {t("reports.controls.table")}
                         </button>
                     </div>
                     <select
@@ -83,7 +83,7 @@ export function ReportsView() {
                     </button>
                     <button className="flex h-9 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-primary-foreground hover:bg-primary/90">
                         <Download className="h-4 w-4" />
-                        Export
+                        {t("reports.controls.export")}
                     </button>
                 </div>
             </div>
@@ -94,6 +94,7 @@ export function ReportsView() {
                     {tabs.map((tab) => (
                         <button
                             key={tab.id}
+                            data-testid={`report-tab-${tab.id}`}
                             onClick={() => setActiveTab(tab.id)}
                             className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-colors whitespace-nowrap ${activeTab === tab.id
                                 ? "border-primary text-primary"
@@ -150,11 +151,12 @@ export function ReportsView() {
 
 // Overview Dashboard
 function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: string; viewMode: string }) {
+    const { t } = useI18n();
     const kpis = [
-        { title: "Total Revenue", value: stats?.revenue || 0, change: stats?.revenueChange || 0, icon: DollarSign, color: "green" },
-        { title: "Total Expenses", value: stats?.expenses || 0, change: stats?.expensesChange || 0, icon: CreditCard, color: "red", negative: true },
-        { title: "Net Profit", value: stats?.profit || 0, change: stats?.profitChange || 0, icon: TrendingUp, color: "blue" },
-        { title: "Cash Flow", value: stats?.cashFlow || 0, change: stats?.cashFlowChange || 0, icon: ArrowUpRight, color: "purple" },
+        { title: t("reports.kpi.totalRevenue"), value: stats?.revenue || 0, change: stats?.revenueChange || 0, icon: DollarSign, color: "green" },
+        { title: t("reports.kpi.totalExpenses"), value: stats?.expenses || 0, change: stats?.expensesChange || 0, icon: CreditCard, color: "red", negative: true },
+        { title: t("reports.kpi.netProfit"), value: stats?.profit || 0, change: stats?.profitChange || 0, icon: TrendingUp, color: "blue" },
+        { title: t("reports.kpi.cashFlow"), value: stats?.cashFlow || 0, change: stats?.cashFlowChange || 0, icon: ArrowUpRight, color: "purple" },
     ];
 
     if (viewMode === "table") {
@@ -162,15 +164,15 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
             <div className="space-y-6">
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">Financial Summary</h3>
+                        <h3 className="font-semibold">{t("reports.tabs.overview")}</h3>
                     </div>
                     <table className="w-full">
                         <thead className="bg-muted/30">
                             <tr>
-                                <th className="text-left p-3 font-medium">Metric</th>
-                                <th className="text-right p-3 font-medium">Current Period</th>
-                                <th className="text-right p-3 font-medium">Change</th>
-                                <th className="text-right p-3 font-medium">Status</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.metric")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.currentPeriod")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.change")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.status")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -184,11 +186,11 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
                                     <td className="p-3 text-right">
                                         {kpi.change >= 0 ? (
                                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-green-100 text-green-700 rounded text-xs">
-                                                <CheckCircle className="w-3 h-3" /> Good
+                                                <CheckCircle className="w-3 h-3" /> {t("dashboard.health.healthy")}
                                             </span>
                                         ) : (
                                             <span className="inline-flex items-center gap-1 px-2 py-1 bg-red-100 text-red-700 rounded text-xs">
-                                                <AlertTriangle className="w-3 h-3" /> Attention
+                                                <AlertTriangle className="w-3 h-3" /> {t("dashboard.health.needsAttention")}
                                             </span>
                                         )}
                                     </td>
@@ -200,16 +202,16 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
 
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">Monthly Performance</h3>
+                        <h3 className="font-semibold">{t("dashboard.monthlyBreakdown")}</h3>
                     </div>
                     <table className="w-full">
                         <thead className="bg-muted/30">
                             <tr>
-                                <th className="text-left p-3 font-medium">Month</th>
-                                <th className="text-right p-3 font-medium">Revenue</th>
-                                <th className="text-right p-3 font-medium">Expenses</th>
-                                <th className="text-right p-3 font-medium">Profit</th>
-                                <th className="text-right p-3 font-medium">Margin</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.month")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.revenue")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.expenses")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.profit")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.margin")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -240,7 +242,7 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
 
             {/* Charts */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <ChartCard title="Revenue vs Expenses">
+                <ChartCard title={t("reports.charts.revenueVsExpenses")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={stats?.monthlyData || []}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -248,25 +250,25 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
                             <YAxis axisLine={false} tickLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                             <Tooltip formatter={(v: number) => formatCurrency(v, locale, "EGP")} />
                             <Legend />
-                            <Bar dataKey="revenue" fill="#22c55e" radius={[4, 4, 0, 0]} name="Revenue" />
-                            <Bar dataKey="expenses" fill="#ef4444" radius={[4, 4, 0, 0]} name="Expenses" />
+                            <Bar dataKey="revenue" fill="#22c55e" radius={[4, 4, 0, 0]} name={t("reports.tableHeaders.revenue")} />
+                            <Bar dataKey="expenses" fill="#ef4444" radius={[4, 4, 0, 0]} name={t("reports.tableHeaders.expenses")} />
                         </BarChart>
                     </ResponsiveContainer>
                 </ChartCard>
 
-                <ChartCard title="Profit Trend">
+                <ChartCard title={t("reports.charts.profitTrend")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <AreaChart data={stats?.monthlyData || []}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
                             <XAxis dataKey="month" axisLine={false} tickLine={false} />
                             <YAxis axisLine={false} tickLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                             <Tooltip formatter={(v: number) => formatCurrency(v, locale, "EGP")} />
-                            <Area type="monotone" dataKey="profit" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} />
+                            <Area type="monotone" dataKey="profit" stroke="#3b82f6" fill="#3b82f6" fillOpacity={0.2} name={t("reports.tableHeaders.profit")} />
                         </AreaChart>
                     </ResponsiveContainer>
                 </ChartCard>
 
-                <ChartCard title="Expenses by Category">
+                <ChartCard title={t("reports.charts.expensesByCategory")}>
                     <div className="flex items-center h-[280px]">
                         <ResponsiveContainer width="50%" height="100%">
                             <PieChart>
@@ -292,7 +294,7 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
                     </div>
                 </ChartCard>
 
-                <ChartCard title="Cash Flow Forecast">
+                <ChartCard title={t("reports.charts.cashFlowForecast")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <LineChart data={stats?.cashFlowForecast || []}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -300,8 +302,8 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
                             <YAxis axisLine={false} tickLine={false} tickFormatter={(v) => `${v / 1000}k`} />
                             <Tooltip formatter={(v: number) => formatCurrency(v, locale, "EGP")} />
                             <Legend />
-                            <Line type="monotone" dataKey="actual" stroke="#22c55e" strokeWidth={2} name="Actual" />
-                            <Line type="monotone" dataKey="forecast" stroke="#3b82f6" strokeWidth={2} strokeDasharray="5 5" name="Forecast" />
+                            <Line type="monotone" dataKey="actual" stroke="#22c55e" strokeWidth={2} name={locale === "ar" ? "فعلي" : "Actual"} />
+                            <Line type="monotone" dataKey="forecast" stroke="#3b82f6" strokeWidth={2} strokeDasharray="5 5" name={locale === "ar" ? "متوقع" : "Forecast"} />
                         </LineChart>
                     </ResponsiveContainer>
                 </ChartCard>
@@ -312,11 +314,12 @@ function OverviewDashboard({ stats, locale, viewMode }: { stats: any; locale: st
 
 // Sales Dashboard
 function SalesDashboard({ stats, locale, viewMode }: { stats: any; locale: string; viewMode: string }) {
+    const { t } = useI18n();
     const kpis = [
-        { title: "Total Sales", value: stats?.totalSales || 0, change: 12, icon: DollarSign, color: "green" },
-        { title: "Invoice Count", value: stats?.invoiceCount || 0, change: 5, icon: FileText, color: "blue", isCount: true },
-        { title: "Avg Order Value", value: stats?.avgOrderValue || 0, change: 8, icon: ShoppingCart, color: "purple" },
-        { title: "Top Client Revenue", value: stats?.topClientRevenue || 0, change: 15, icon: Users, color: "amber" },
+        { title: t("reports.kpi.totalSales"), value: stats?.totalSales || 0, change: 12, icon: DollarSign, color: "green" },
+        { title: t("reports.kpi.invoiceCount"), value: stats?.invoiceCount || 0, change: 5, icon: FileText, color: "blue", isCount: true },
+        { title: t("reports.kpi.avgOrderValue"), value: stats?.avgOrderValue || 0, change: 8, icon: ShoppingCart, color: "purple" },
+        { title: t("reports.kpi.topClientRevenue"), value: stats?.topClientRevenue || 0, change: 15, icon: Users, color: "amber" },
     ];
 
     if (viewMode === "table") {
@@ -324,15 +327,15 @@ function SalesDashboard({ stats, locale, viewMode }: { stats: any; locale: strin
             <div className="space-y-6">
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">Sales by Client</h3>
+                        <h3 className="font-semibold">{t("reports.charts.salesByClient")}</h3>
                     </div>
                     <table className="w-full">
                         <thead className="bg-muted/30">
                             <tr>
-                                <th className="text-left p-3 font-medium">Rank</th>
-                                <th className="text-left p-3 font-medium">Client Name</th>
-                                <th className="text-right p-3 font-medium">Total Sales</th>
-                                <th className="text-right p-3 font-medium">% of Total</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.rank")}</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.clientName")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.kpi.totalSales")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.share")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -350,14 +353,14 @@ function SalesDashboard({ stats, locale, viewMode }: { stats: any; locale: strin
 
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">Daily Sales Trend</h3>
+                        <h3 className="font-semibold">{t("reports.charts.salesTrend")}</h3>
                     </div>
                     <div className="max-h-96 overflow-y-auto">
                         <table className="w-full">
                             <thead className="bg-muted/30 sticky top-0">
                                 <tr>
-                                    <th className="text-left p-3 font-medium">Date</th>
-                                    <th className="text-right p-3 font-medium">Sales</th>
+                                    <th className="text-left p-3 font-medium">{t("reports.tableHeaders.date")}</th>
+                                    <th className="text-right p-3 font-medium">{t("reports.kpi.totalSales")}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -384,7 +387,7 @@ function SalesDashboard({ stats, locale, viewMode }: { stats: any; locale: strin
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <ChartCard title="Sales by Client (Top 5)">
+                <ChartCard title={t("reports.charts.salesByClient")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={stats?.salesByClient || []} layout="vertical">
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -396,7 +399,7 @@ function SalesDashboard({ stats, locale, viewMode }: { stats: any; locale: strin
                     </ResponsiveContainer>
                 </ChartCard>
 
-                <ChartCard title="Sales Trend">
+                <ChartCard title={t("reports.charts.salesTrend")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <AreaChart data={stats?.salesTrend || []}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -414,12 +417,13 @@ function SalesDashboard({ stats, locale, viewMode }: { stats: any; locale: strin
 
 // Receivables Dashboard
 function ReceivablesDashboard({ stats, locale, viewMode }: { stats: any; locale: string; viewMode: string }) {
+    const { t } = useI18n();
     const arAgingData = [
-        { bucket: "Current", amount: (stats?.topClientRevenue || 0) * 0.4, color: "#22c55e" },
+        { bucket: t("reports.kpi.current"), amount: (stats?.topClientRevenue || 0) * 0.4, color: "#22c55e" },
         { bucket: "1-30 days", amount: (stats?.topClientRevenue || 0) * 0.25, color: "#3b82f6" },
         { bucket: "31-60 days", amount: (stats?.topClientRevenue || 0) * 0.15, color: "#f59e0b" },
         { bucket: "61-90 days", amount: (stats?.topClientRevenue || 0) * 0.12, color: "#ef4444" },
-        { bucket: "90+ days", amount: (stats?.topClientRevenue || 0) * 0.08, color: "#7f1d1d" },
+        { bucket: t("reports.kpi.over90"), amount: (stats?.topClientRevenue || 0) * 0.08, color: "#7f1d1d" },
     ];
     const totalAR = arAgingData.reduce((s, a) => s + a.amount, 0);
 
@@ -427,15 +431,15 @@ function ReceivablesDashboard({ stats, locale, viewMode }: { stats: any; locale:
         return (
             <div className="bg-card rounded-lg border border-border overflow-hidden">
                 <div className="p-4 border-b border-border bg-muted/50">
-                    <h3 className="font-semibold">Accounts Receivable Aging</h3>
+                    <h3 className="font-semibold">{t("reports.charts.arAging")}</h3>
                 </div>
                 <table className="w-full">
                     <thead className="bg-muted/30">
                         <tr>
-                            <th className="text-left p-3 font-medium">Aging Bucket</th>
-                            <th className="text-right p-3 font-medium">Amount</th>
-                            <th className="text-right p-3 font-medium">% of Total</th>
-                            <th className="text-left p-3 font-medium">Risk Level</th>
+                            <th className="text-left p-3 font-medium">{t("reports.tableHeaders.agingBucket")}</th>
+                            <th className="text-right p-3 font-medium">{t("reports.tableHeaders.amount")}</th>
+                            <th className="text-right p-3 font-medium">{t("reports.tableHeaders.share")}</th>
+                            <th className="text-left p-3 font-medium">{t("reports.tableHeaders.riskLevel")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -446,13 +450,13 @@ function ReceivablesDashboard({ stats, locale, viewMode }: { stats: any; locale:
                                 <td className="p-3 text-right">{totalAR > 0 ? ((row.amount / totalAR) * 100).toFixed(1) : 0}%</td>
                                 <td className="p-3">
                                     <span className="px-2 py-1 rounded text-xs" style={{ backgroundColor: `${row.color}20`, color: row.color }}>
-                                        {i === 0 ? "Low" : i < 3 ? "Medium" : "High"}
+                                        {i === 0 ? t("reports.riskLevels.low") : i < 3 ? t("reports.riskLevels.medium") : t("reports.riskLevels.high")}
                                     </span>
                                 </td>
                             </tr>
                         ))}
                         <tr className="border-t-2 border-border font-bold bg-muted/30">
-                            <td className="p-3">Total Outstanding</td>
+                            <td className="p-3">{t("reports.totalOutstanding")}</td>
                             <td className="p-3 text-right">{formatCurrency(totalAR, locale, "EGP")}</td>
                             <td className="p-3 text-right">100%</td>
                             <td className="p-3"></td>
@@ -466,13 +470,13 @@ function ReceivablesDashboard({ stats, locale, viewMode }: { stats: any; locale:
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <KPICard title="Total A/R" value={totalAR} change={-5} icon={CreditCard} color="blue" locale={locale} />
-                <KPICard title="Current" value={arAgingData[0].amount} change={10} icon={CheckCircle} color="green" locale={locale} />
-                <KPICard title="Overdue" value={arAgingData.slice(1).reduce((s, a) => s + a.amount, 0)} change={-8} icon={Clock} color="amber" locale={locale} />
-                <KPICard title="90+ Days" value={arAgingData[4].amount} change={-12} icon={AlertTriangle} color="red" locale={locale} negative />
+                <KPICard title={t("reports.kpi.totalAR")} value={totalAR} change={-5} icon={CreditCard} color="blue" locale={locale} />
+                <KPICard title={t("reports.kpi.current")} value={arAgingData[0].amount} change={10} icon={CheckCircle} color="green" locale={locale} />
+                <KPICard title={t("reports.kpi.overdue")} value={arAgingData.slice(1).reduce((s, a) => s + a.amount, 0)} change={-8} icon={Clock} color="amber" locale={locale} />
+                <KPICard title={t("reports.kpi.over90")} value={arAgingData[4].amount} change={-12} icon={AlertTriangle} color="red" locale={locale} negative />
             </div>
 
-            <ChartCard title="A/R Aging Analysis">
+            <ChartCard title={t("reports.charts.arAging")}>
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={arAgingData}>
                         <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -493,19 +497,20 @@ function ReceivablesDashboard({ stats, locale, viewMode }: { stats: any; locale:
 
 // Purchases Dashboard
 function PurchasesDashboard({ stats, locale, viewMode }: { stats: any; locale: string; viewMode: string }) {
+    const { t } = useI18n();
     if (viewMode === "table") {
         return (
             <div className="space-y-6">
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">Purchases by Supplier</h3>
+                        <h3 className="font-semibold">{t("reports.charts.purchasesBySupplier")}</h3>
                     </div>
                     <table className="w-full">
                         <thead className="bg-muted/30">
                             <tr>
-                                <th className="text-left p-3 font-medium">Supplier</th>
-                                <th className="text-right p-3 font-medium">Total Purchases</th>
-                                <th className="text-right p-3 font-medium">% of Total</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.supplier")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.kpi.totalPurchases")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.share")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -522,13 +527,13 @@ function PurchasesDashboard({ stats, locale, viewMode }: { stats: any; locale: s
 
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">A/P Aging</h3>
+                        <h3 className="font-semibold">{t("reports.charts.apAging")}</h3>
                     </div>
                     <table className="w-full">
                         <thead className="bg-muted/30">
                             <tr>
-                                <th className="text-left p-3 font-medium">Aging Bucket</th>
-                                <th className="text-right p-3 font-medium">Amount</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.agingBucket")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.amount")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -548,14 +553,14 @@ function PurchasesDashboard({ stats, locale, viewMode }: { stats: any; locale: s
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <KPICard title="Total Purchases" value={stats?.totalPurchases || 0} change={-5} icon={Package} color="red" locale={locale} negative />
-                <KPICard title="Pending Bills" value={stats?.pendingBills || 0} change={3} icon={FileText} color="amber" locale={locale} isCount />
-                <KPICard title="A/P Balance" value={stats?.apAging || 0} change={-2} icon={CreditCard} color="blue" locale={locale} />
-                <KPICard title="Top Supplier" value={stats?.topSupplierSpend || 0} change={10} icon={Users} color="purple" locale={locale} />
+                <KPICard title={t("reports.kpi.totalPurchases")} value={stats?.totalPurchases || 0} change={-5} icon={Package} color="red" locale={locale} negative />
+                <KPICard title={t("reports.kpi.pendingBills")} value={stats?.pendingBills || 0} change={3} icon={FileText} color="amber" locale={locale} isCount />
+                <KPICard title={t("reports.kpi.apBalance")} value={stats?.apAging || 0} change={-2} icon={CreditCard} color="blue" locale={locale} />
+                <KPICard title={t("reports.kpi.topSupplierSpend")} value={stats?.topSupplierSpend || 0} change={10} icon={Users} color="purple" locale={locale} />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <ChartCard title="Purchases by Supplier">
+                <ChartCard title={t("reports.charts.purchasesBySupplier")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={stats?.purchasesBySupplier || []} layout="vertical">
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -567,7 +572,7 @@ function PurchasesDashboard({ stats, locale, viewMode }: { stats: any; locale: s
                     </ResponsiveContainer>
                 </ChartCard>
 
-                <ChartCard title="A/P Aging Buckets">
+                <ChartCard title={t("reports.charts.apAging")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={stats?.apAgingBuckets || []}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -585,19 +590,20 @@ function PurchasesDashboard({ stats, locale, viewMode }: { stats: any; locale: s
 
 // Inventory Dashboard
 function InventoryDashboard({ stats, locale, viewMode }: { stats: any; locale: string; viewMode: string }) {
+    const { t } = useI18n();
     if (viewMode === "table") {
         return (
             <div className="space-y-6">
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">Stock Valuation by Category</h3>
+                        <h3 className="font-semibold">{t("reports.charts.stockValuation")}</h3>
                     </div>
                     <table className="w-full">
                         <thead className="bg-muted/30">
                             <tr>
-                                <th className="text-left p-3 font-medium">Category</th>
-                                <th className="text-right p-3 font-medium">Value</th>
-                                <th className="text-right p-3 font-medium">% of Total</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.category")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.amount")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.share")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -614,15 +620,15 @@ function InventoryDashboard({ stats, locale, viewMode }: { stats: any; locale: s
 
                 <div className="bg-card rounded-lg border border-border overflow-hidden">
                     <div className="p-4 border-b border-border bg-muted/50">
-                        <h3 className="font-semibold">Stock Movements</h3>
+                        <h3 className="font-semibold">{t("reports.charts.stockMovements")}</h3>
                     </div>
                     <table className="w-full">
                         <thead className="bg-muted/30">
                             <tr>
-                                <th className="text-left p-3 font-medium">Period</th>
-                                <th className="text-right p-3 font-medium">Stock In</th>
-                                <th className="text-right p-3 font-medium">Stock Out</th>
-                                <th className="text-right p-3 font-medium">Net Change</th>
+                                <th className="text-left p-3 font-medium">{t("reports.tableHeaders.currentPeriod")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.stockIn")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.stockOut")}</th>
+                                <th className="text-right p-3 font-medium">{t("reports.tableHeaders.netChange")}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -646,14 +652,14 @@ function InventoryDashboard({ stats, locale, viewMode }: { stats: any; locale: s
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <KPICard title="Inventory Value" value={stats?.inventoryValue || 0} change={3} icon={Package} color="blue" locale={locale} />
-                <KPICard title="Low Stock Items" value={stats?.lowStockCount || 0} change={-2} icon={AlertTriangle} color="amber" locale={locale} isCount />
-                <KPICard title="Out of Stock" value={stats?.outOfStockCount || 0} change={1} icon={AlertTriangle} color="red" locale={locale} isCount negative />
-                <KPICard title="Turnover Rate" value={stats?.turnoverRate || 0} change={5} icon={RefreshCw} color="green" locale={locale} isPercent />
+                <KPICard title={t("reports.kpi.inventoryValue")} value={stats?.inventoryValue || 0} change={5} icon={DollarSign} color="blue" locale={locale} />
+                <KPICard title={t("reports.kpi.lowStock")} value={stats?.lowStockCount || 0} change={-2} icon={AlertTriangle} color="amber" locale={locale} isCount />
+                <KPICard title={t("reports.kpi.outOfStock")} value={stats?.outOfStockCount || 0} change={1} icon={AlertTriangle} color="red" locale={locale} isCount negative />
+                <KPICard title={t("reports.kpi.turnoverRate")} value={stats?.turnoverRate || 0} change={5} icon={RefreshCw} color="green" locale={locale} isPercent />
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <ChartCard title="Stock Valuation by Category">
+                <ChartCard title={t("reports.charts.stockValuation")}>
                     <div className="flex items-center h-[280px]">
                         <ResponsiveContainer width="50%" height="100%">
                             <PieChart>
@@ -679,7 +685,7 @@ function InventoryDashboard({ stats, locale, viewMode }: { stats: any; locale: s
                     </div>
                 </ChartCard>
 
-                <ChartCard title="Stock Movements">
+                <ChartCard title={t("reports.charts.stockMovements")}>
                     <ResponsiveContainer width="100%" height={280}>
                         <BarChart data={stats?.stockMovements || []}>
                             <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -687,8 +693,8 @@ function InventoryDashboard({ stats, locale, viewMode }: { stats: any; locale: s
                             <YAxis axisLine={false} tickLine={false} />
                             <Tooltip />
                             <Legend />
-                            <Bar dataKey="in" fill="#22c55e" name="Stock In" radius={[4, 4, 0, 0]} />
-                            <Bar dataKey="out" fill="#ef4444" name="Stock Out" radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="in" fill="#22c55e" name={t("reports.tableHeaders.stockIn")} radius={[4, 4, 0, 0]} />
+                            <Bar dataKey="out" fill="#ef4444" name={t("reports.tableHeaders.stockOut")} radius={[4, 4, 0, 0]} />
                         </BarChart>
                     </ResponsiveContainer>
                 </ChartCard>
@@ -699,6 +705,7 @@ function InventoryDashboard({ stats, locale, viewMode }: { stats: any; locale: s
 
 // Clients Dashboard
 function ClientsDashboard({ stats, locale, viewMode }: { stats: any; locale: string; viewMode: string }) {
+    const { t } = useI18n();
     const clientData = stats?.salesByClient || [];
     const totalRevenue = clientData.reduce((s: number, c: any) => s + c.value, 0);
 
@@ -706,16 +713,16 @@ function ClientsDashboard({ stats, locale, viewMode }: { stats: any; locale: str
         return (
             <div className="bg-card rounded-lg border border-border overflow-hidden">
                 <div className="p-4 border-b border-border bg-muted/50">
-                    <h3 className="font-semibold">Client Performance</h3>
+                    <h3 className="font-semibold">{t("reports.charts.revenueByClient")}</h3>
                 </div>
                 <table className="w-full">
                     <thead className="bg-muted/30">
                         <tr>
-                            <th className="text-left p-3 font-medium">Rank</th>
-                            <th className="text-left p-3 font-medium">Client</th>
-                            <th className="text-right p-3 font-medium">Revenue</th>
-                            <th className="text-right p-3 font-medium">Share</th>
-                            <th className="text-left p-3 font-medium">Tier</th>
+                            <th className="text-left p-3 font-medium">{t("reports.tableHeaders.rank")}</th>
+                            <th className="text-left p-3 font-medium">{t("reports.tableHeaders.clientName")}</th>
+                            <th className="text-right p-3 font-medium">{t("reports.kpi.totalRevenue")}</th>
+                            <th className="text-right p-3 font-medium">{t("reports.tableHeaders.share")}</th>
+                            <th className="text-left p-3 font-medium">{t("reports.tableHeaders.tier")}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -729,7 +736,7 @@ function ClientsDashboard({ stats, locale, viewMode }: { stats: any; locale: str
                                     <span className={`px-2 py-1 rounded text-xs ${i === 0 ? "bg-yellow-100 text-yellow-700" :
                                         i < 3 ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700"
                                         }`}>
-                                        {i === 0 ? "Gold" : i < 3 ? "Silver" : "Standard"}
+                                        {i === 0 ? t("reports.clientTiers.gold") : i < 3 ? t("reports.clientTiers.silver") : t("reports.clientTiers.standard")}
                                     </span>
                                 </td>
                             </tr>
@@ -743,13 +750,13 @@ function ClientsDashboard({ stats, locale, viewMode }: { stats: any; locale: str
     return (
         <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <KPICard title="Total Clients" value={clientData.length} change={5} icon={Users} color="blue" locale={locale} isCount />
-                <KPICard title="Top Client Revenue" value={clientData[0]?.value || 0} change={15} icon={TrendingUp} color="green" locale={locale} />
-                <KPICard title="Avg Revenue/Client" value={clientData.length > 0 ? totalRevenue / clientData.length : 0} change={8} icon={DollarSign} color="purple" locale={locale} />
-                <KPICard title="Client Concentration" value={clientData[0]?.value && totalRevenue > 0 ? (clientData[0].value / totalRevenue) * 100 : 0} change={-3} icon={PieChartIcon} color="amber" locale={locale} isPercent />
+                <KPICard title={t("reports.kpi.totalClients")} value={stats?.totalClients || 0} change={12} icon={Users} color="blue" locale={locale} isCount />
+                <KPICard title={t("reports.kpi.avgRevenueClient")} value={stats?.avgRevenuePerClient || 0} change={8} icon={DollarSign} color="green" locale={locale} />
+                <KPICard title={t("reports.kpi.clientConcentration")} value={stats?.topClientConcentration || 0} change={2} icon={PieChartIcon} color="purple" locale={locale} isPercent />
+                <KPICard title={t("reports.kpi.invoiceCount")} value={stats?.invoiceCount || 0} change={5} icon={FileText} color="amber" locale={locale} isCount />
             </div>
 
-            <ChartCard title="Revenue by Client">
+            <ChartCard title={t("reports.charts.revenueByClient")}>
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart data={clientData} layout="vertical">
                         <CartesianGrid strokeDasharray="3 3" className="stroke-border" />
@@ -770,6 +777,7 @@ function ClientsDashboard({ stats, locale, viewMode }: { stats: any; locale: str
 
 // Reusable Components
 function KPICard({ title, value, change, icon: Icon, color, locale, negative = false, isCount = false, isPercent = false }: any) {
+    const { t } = useI18n();
     const colorClasses: Record<string, string> = {
         green: "bg-green-100 text-green-600",
         red: "bg-red-100 text-red-600",
@@ -791,7 +799,7 @@ function KPICard({ title, value, change, icon: Icon, color, locale, negative = f
             <p className={`text-2xl font-bold ${negative ? "text-red-600" : ""}`}>{formattedValue}</p>
             <div className={`flex items-center gap-1 mt-2 text-sm ${change >= 0 ? "text-green-600" : "text-red-600"}`}>
                 {change >= 0 ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
-                <span>{Math.abs(change)}% vs last period</span>
+                <span>{Math.abs(change)}% {t("reports.vsLastPeriod")}</span>
             </div>
         </motion.div>
     );

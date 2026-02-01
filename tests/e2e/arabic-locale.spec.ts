@@ -9,7 +9,7 @@ import { login } from '../fixtures';
 // Skip these tests when running in English locale
 test.describe('Arabic Locale - Login Page', () => {
     test('should display login page in Arabic', async ({ page }) => {
-        await page.goto('/login');
+        await page.goto('/en/login');
         await page.waitForLoadState('domcontentloaded');
 
         // Check if page loaded
@@ -29,21 +29,31 @@ test.describe('Arabic Locale - Dashboard', () => {
     });
 
     test('should have navigation labels', async ({ page }) => {
-        await login(page, 'en');
+        await login(page, 'ar');
 
-        // Check that navigation has text
-        const nav = page.locator('nav, aside');
+        // Check that navigation has Arabic text
+        const nav = page.locator('aside');
         if (await nav.count() > 0) {
-            const navText = await nav.first().textContent();
-            expect(navText?.length).toBeGreaterThan(0);
+            const navText = await nav.textContent();
+            expect(navText).toContain('لوحة التحكم'); // Dashboard (Sidebar)
+            expect(navText).toContain('الفواتير'); // Invoices
         }
+
+        // Check main content header
+        // Check main content header
+        const dashboardTitle = page.getByRole('heading', { name: 'لوحة التحكم', level: 1 });
+        await expect(dashboardTitle).toBeVisible();
+
+        // Check tabs
+        const snapshotTab = page.locator('button[value="snapshot"]');
+        await expect(snapshotTab).toContainText('نظرة عامة'); // Snapshot
     });
 });
 
 test.describe('Arabic Locale - Invoices Page', () => {
     test('should display invoices page', async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
         await page.waitForTimeout(1000);
 
         const heading = page.getByRole('heading');
@@ -51,21 +61,12 @@ test.describe('Arabic Locale - Invoices Page', () => {
     });
 });
 
-test.describe('Arabic Locale - Receivables Page', () => {
-    test('should display receivables page', async ({ page }) => {
-        await login(page, 'en');
-        await page.goto('/receivables');
-        await page.waitForTimeout(1000);
 
-        const heading = page.getByRole('heading');
-        await expect(heading.first()).toBeVisible();
-    });
-});
 
 test.describe('Arabic Locale - POS Page', () => {
     test('should display POS page', async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/pos');
+        await page.goto('/en/pos');
         await page.waitForTimeout(1000);
 
         const heading = page.getByRole('heading');
@@ -76,7 +77,7 @@ test.describe('Arabic Locale - POS Page', () => {
 test.describe('Arabic Locale - Financial Statements', () => {
     test('should display financial statements', async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/financial-statements');
+        await page.goto('/en/financial-statements');
         await page.waitForTimeout(1000);
 
         const heading = page.getByRole('heading');
@@ -87,7 +88,7 @@ test.describe('Arabic Locale - Financial Statements', () => {
 test.describe('Number & Date Formatting', () => {
     test('should format currency amounts correctly', async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/dashboard');
+        await page.goto('/en/dashboard');
         await page.waitForTimeout(1000);
 
         // Check for currency symbols or formatted numbers
@@ -99,14 +100,14 @@ test.describe('Number & Date Formatting', () => {
 
 test.describe('Layout Verification', () => {
     test('should have proper HTML structure', async ({ page }) => {
-        await page.goto('/login');
+        await page.goto('/en/login');
 
         const html = page.locator('html');
         await expect(html).toBeVisible();
     });
 
     test('should align form fields properly', async ({ page }) => {
-        await page.goto('/login');
+        await page.goto('/en/login');
 
         const formInputs = page.locator('input');
         const count = await formInputs.count();

@@ -2,28 +2,23 @@
 
 import { useEffect } from "react";
 import { useLocale } from "next-intl";
-import { useLocaleStore } from "@/lib/stores/locale-store";
+import { useParams } from "next/navigation";
+
+
 
 interface DashboardShellProps {
     children: React.ReactNode;
 }
 
 export function DashboardShell({ children }: DashboardShellProps) {
-    const locale = useLocale();
-    const { isRTL, setLocale } = useLocaleStore();
+    // Single Source of Truth - derive from URL params
+    const params = useParams();
+    const locale = params?.locale;
+    const isRTL = locale === "ar";
 
-    // Sync server locale to Zustand store on mount
-    useEffect(() => {
-        setLocale(locale);
-    }, [locale, setLocale]);
-
+    // Explicit padding logic for maximum stability
     return (
-        <div
-            className={`transition-all duration-300 ${isRTL
-                    ? "lg:pr-64 pr-0"
-                    : "lg:pl-64 pl-0"
-                }`}
-        >
+        <div className={`transition-all duration-300 ${isRTL ? "lg:pr-64 pr-0" : "lg:pl-64 pl-0"}`}>
             {children}
         </div>
     );

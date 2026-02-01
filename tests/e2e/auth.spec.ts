@@ -3,7 +3,7 @@ import { login } from '../fixtures';
 
 test.describe('Authentication Flow', () => {
     test('should display login page', async ({ page }) => {
-        await page.goto('/login');
+        await page.goto('/en/login');
 
         // Login page should show
         await expect(page.locator('h1')).toContainText(/welcome|sign in|login/i);
@@ -13,19 +13,19 @@ test.describe('Authentication Flow', () => {
     });
 
     test('should login successfully with valid credentials', async ({ page }) => {
-        await page.goto('/login');
+        await page.goto('/en/login');
 
         await page.fill('#email', 'admin@brownledger.com');
         await page.fill('#password', 'demo123');
         await page.click('button[type="submit"]');
 
         // Should redirect to dashboard
-        await page.waitForURL(/\/dashboard/, { timeout: 10000 });
+        await page.waitForURL(/\/en\/dashboard/, { timeout: 10000 });
         await expect(page).not.toHaveURL(/login/);
     });
 
     test('should show error with invalid credentials', async ({ page }) => {
-        await page.goto('/login');
+        await page.goto('/en/login');
 
         await page.fill('#email', 'wrong@email.com');
         await page.fill('#password', 'wrongpassword');
@@ -73,7 +73,7 @@ test.describe('Session Management', () => {
         await page.context().clearCookies();
 
         // Try to access protected route
-        await page.goto('/dashboard');
+        await page.goto('/en/dashboard');
 
         // Should redirect to login or show dashboard (depending on auth config)
         await page.waitForTimeout(3000);

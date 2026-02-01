@@ -15,7 +15,10 @@ export default async function DashboardLayout({
     const { locale } = await params;
 
     if (!session) {
+        console.log(`[DashboardLayout] No session found. Redirecting to /${locale}/login`);
         redirect(`/${locale}/login`);
+    } else {
+        console.log(`[DashboardLayout] Session found for user: ${session?.user?.email}`);
     }
 
     return (

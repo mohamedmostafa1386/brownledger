@@ -66,6 +66,19 @@ export default function TeamPage() {
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ["team"] }),
     });
 
+    // Update role mutation
+    const updateRole = useMutation({
+        mutationFn: (data: { userId: string; role: string }) =>
+            fetch("/api/team", {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            }).then(r => r.json()),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["team"] });
+        },
+    });
+
     const roles = [
         {
             value: "OWNER",
@@ -191,9 +204,16 @@ export default function TeamPage() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
-                                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getRoleColor(member.role)}`}>
-                                        {member.role}
-                                    </span>
+                                    <select
+                                        value={member.role}
+                                        onChange={(e) => updateRole.mutate({ userId: member.id, role: e.target.value })}
+                                        disabled={updateRole.isPending}
+                                        className={`px-2 py-1 rounded-full text-xs font-medium border-none outline-none cursor-pointer ${getRoleColor(member.role)}`}
+                                    >
+                                        {roles.map((r) => (
+                                            <option key={r.value} value={r.value}>{r.label}</option>
+                                        ))}
+                                    </select>
                                     <span className="flex items-center gap-1 text-sm text-green-600">
                                         <CheckCircle className="w-4 h-4" />
                                         Active

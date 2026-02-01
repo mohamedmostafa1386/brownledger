@@ -14,7 +14,7 @@ interface ReceivablesWidgetProps {
 }
 
 export function ReceivablesWidget({ pending, collectionRate, paidCount, pendingCount, overdueCount }: ReceivablesWidgetProps) {
-    const { locale } = useI18n();
+    const { t, locale } = useI18n();
 
     return (
         <motion.div
@@ -25,16 +25,16 @@ export function ReceivablesWidget({ pending, collectionRate, paidCount, pendingC
             <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold flex items-center gap-2">
                     <Clock className="w-5 h-5 text-primary" />
-                    {locale === "ar" ? "حسابات القبض" : "Accounts Receivable"}
+                    {t("widgets.receivables.title")}
                 </h3>
-                <Link href="/payments" className="text-sm text-primary hover:underline">
-                    {locale === "ar" ? "عرض الكل" : "View All"}
+                <Link href="/receivables" className="text-sm text-primary hover:underline">
+                    {t("widgets.receivables.viewAll")}
                 </Link>
             </div>
 
             <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                    <span className="text-muted-foreground">{locale === "ar" ? "إجمالي المعلق" : "Total Pending"}</span>
+                    <span className="text-muted-foreground">{t("widgets.receivables.totalPending")}</span>
                     <span className="text-2xl font-bold">{formatCurrency(pending)}</span>
                 </div>
 
@@ -47,15 +47,15 @@ export function ReceivablesWidget({ pending, collectionRate, paidCount, pendingC
 
                 <div className="grid grid-cols-3 gap-2 text-center">
                     <div className="p-2 bg-muted/50 rounded-lg">
-                        <p className="text-xs text-muted-foreground">{locale === "ar" ? "مدفوع" : "Paid"}</p>
+                        <p className="text-xs text-muted-foreground">{t("widgets.receivables.paid")}</p>
                         <p className="font-bold text-emerald-600">{paidCount}</p>
                     </div>
                     <div className="p-2 bg-muted/50 rounded-lg">
-                        <p className="text-xs text-muted-foreground">{locale === "ar" ? "معلق" : "Pending"}</p>
+                        <p className="text-xs text-muted-foreground">{t("widgets.receivables.pending")}</p>
                         <p className="font-bold text-amber-600">{pendingCount}</p>
                     </div>
                     <div className="p-2 bg-muted/50 rounded-lg">
-                        <p className="text-xs text-muted-foreground">{locale === "ar" ? "متأخر" : "Overdue"}</p>
+                        <p className="text-xs text-muted-foreground">{t("widgets.receivables.overdue")}</p>
                         <p className="font-bold text-rose-600">{overdueCount}</p>
                     </div>
                 </div>

@@ -1,19 +1,20 @@
-import { NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireCompanyId } from "@/lib/api-auth";
 import { permissions, canAccessModule } from "@/lib/rbac";
+import { apiResponse, apiError, unauthorizedError, forbiddenError } from "@/lib/api-response";
 
 // GET /api/clients - Fetch all clients
 export async function GET() {
     try {
         const auth = await requireCompanyId();
         if ("error" in auth) {
-            return NextResponse.json({ error: auth.error }, { status: auth.status });
+            return unauthorizedError(auth.error);
         }
         const { companyId, role } = auth;
 
         if (!canAccessModule(role, "clients")) {
-            return NextResponse.json({ error: "Forbidden: Access to clients is restricted" }, { status: 403 });
+            return forbiddenError("Access to clients is restricted");
         }
 
         const clients = await prisma.client.findMany({
@@ -47,10 +48,10 @@ export async function GET() {
             };
         });
 
-        return NextResponse.json(formatted);
+        return apiResponse(formatted);
     } catch (error) {
         console.error("Clients API error:", error);
-        return NextResponse.json({ error: "Failed to fetch clients" }, { status: 500 });
+        return apiError("Failed to fetch clients", "CLIENTS_FETCH_ERROR", 500, error);
     }
 }
 
@@ -59,12 +60,12 @@ export async function POST(request: Request) {
     try {
         const auth = await requireCompanyId();
         if ("error" in auth) {
-            return NextResponse.json({ error: auth.error }, { status: auth.status });
+            return unauthorizedError(auth.error);
         }
         const { companyId, role } = auth;
 
         if (!permissions.canManageClients(role)) {
-            return NextResponse.json({ error: "Forbidden: Only authorized roles can manage client master data" }, { status: 403 });
+            return forbiddenError("Only authorized roles can manage client master data");
         }
 
         const body = await request.json();
@@ -80,9 +81,9 @@ export async function POST(request: Request) {
             },
         });
 
-        return NextResponse.json(client, { status: 201 });
+        return apiResponse(client, 201);
     } catch (error) {
         console.error("Create client error:", error);
-        return NextResponse.json({ error: "Failed to create client" }, { status: 500 });
+        return apiError("Failed to create client", "CLIENT_CREATE_ERROR", 500, error);
     }
 }

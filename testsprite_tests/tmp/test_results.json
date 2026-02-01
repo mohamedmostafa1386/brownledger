@@ -1,0 +1,16 @@
+[
+  {
+    "projectId": "051d4785-3429-49aa-9ac1-85e6e325fbb7",
+    "testId": "c25b0f48-09a6-4536-89ec-fdd62643c1ee",
+    "userId": "f43884a8-2061-7035-3093-5f3d79963d5c",
+    "title": "TC001-test_auth_api_login_functionality",
+    "description": "Verify that the /api/auth/login endpoint correctly authenticates users with valid credentials and rejects invalid login attempts.",
+    "code": "import requests\n\nBASE_URL = \"http://localhost:3000\"\nLOGIN_ENDPOINT = \"/api/auth/login\"\nTIMEOUT = 30\n\ndef test_auth_api_login_functionality():\n    valid_credentials = {\n        \"email\": \"validuser@example.com\",\n        \"password\": \"ValidPass123!\"\n    }\n    invalid_password = {\n        \"email\": \"validuser@example.com\",\n        \"password\": \"WrongPassword\"\n    }\n    invalid_email = {\n        \"email\": \"nonexistentuser@example.com\",\n        \"password\": \"SomePassword123\"\n    }\n\n    headers = {\n        \"Content-Type\": \"application/json\"\n    }\n\n    # Test valid login\n    try:\n        response = requests.post(\n            BASE_URL + LOGIN_ENDPOINT,\n            json=valid_credentials,\n            headers=headers,\n            timeout=TIMEOUT\n        )\n        assert response.status_code == 200, f\"Expected 200 OK but got {response.status_code}\"\n        json_resp = response.json()\n        assert \"token\" in json_resp or \"accessToken\" in json_resp or \"auth\" in json_resp, \"Expected auth token in response\"\n    except requests.RequestException as e:\n        assert False, f\"Request failed during valid login test: {e}\"\n\n    # Test invalid password login\n    try:\n        response = requests.post(\n            BASE_URL + LOGIN_ENDPOINT,\n            json=invalid_password,\n            headers=headers,\n            timeout=TIMEOUT\n        )\n        assert response.status_code == 401 or response.status_code == 400, f\"Expected 401/400 for invalid password but got {response.status_code}\"\n    except requests.RequestException as e:\n        assert False, f\"Request failed during invalid password test: {e}\"\n\n    # Test invalid email login\n    try:\n        response = requests.post(\n            BASE_URL + LOGIN_ENDPOINT,\n            json=invalid_email,\n            headers=headers,\n            timeout=TIMEOUT\n        )\n        assert response.status_code == 401 or response.status_code == 400, f\"Expected 401/400 for invalid email but got {response.status_code}\"\n    except requests.RequestException as e:\n        assert False, f\"Request failed during invalid email test: {e}\"\n\ntest_auth_api_login_functionality()",
+    "testStatus": "FAILED",
+    "testError": "Test execution timed out after 15 minutes",
+    "testType": "BACKEND",
+    "createFrom": "mcp",
+    "created": "2026-01-31T16:57:55.828Z",
+    "modified": "2026-01-31T17:29:08.170Z"
+  }
+]

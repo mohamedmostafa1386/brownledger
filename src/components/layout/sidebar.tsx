@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useParams } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
 import { useEffect } from "react";
 import {
@@ -30,7 +30,7 @@ import {
     Undo2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useLocaleStore } from "@/lib/stores/locale-store";
+
 import { useI18n } from "@/lib/i18n-context";
 
 import { permissions, canAccessModule } from "@/lib/rbac";
@@ -45,14 +45,10 @@ export function Sidebar() {
     const { t, locale, dir } = useI18n();
     const userRole = (session?.user as any)?.role || "VIEWER";
 
-    // Use Zustand store for text RTL switching
-    const { isRTL, setLocale } = useLocaleStore();
-    const { isOpen, close } = useSidebarStore();
+    // Derive RTL from locale for explicit conditionals
+    const isRTL = locale === "ar";
 
-    // Sync locale to Zustand store on mount
-    useEffect(() => {
-        setLocale(locale);
-    }, [locale, setLocale]);
+    const { isOpen, close } = useSidebarStore();
 
     // Close sidebar on route change (mobile)
     useEffect(() => {
@@ -67,10 +63,10 @@ export function Sidebar() {
         { href: "/expenses", label: t("nav.expenses"), icon: Receipt, module: "expenses" },
         { href: "/clients", label: t("nav.clients"), icon: Users, module: "clients" },
         { href: "/suppliers", label: t("nav.suppliers"), icon: Truck, module: "suppliers" },
-        { href: "/bills", label: locale === "ar" ? "المشتريات" : "Purchases", icon: CreditCard, module: "bills" },
-        { href: "/purchase-orders", label: locale === "ar" ? "أوامر الشراء" : "Purchase Orders", icon: ShoppingCart, module: "purchase-orders" },
+        { href: "/bills", label: t("nav.purchases"), icon: CreditCard, module: "bills" },
+        { href: "/purchase-orders", label: t("nav.purchaseOrders"), icon: ShoppingCart, module: "purchase-orders" },
         { href: "/banking", label: t("nav.banking"), icon: PieChart, module: "banking" },
-        { href: "/banking/reconciliation", label: locale === "ar" ? "مطابقة البنك" : "Bank Reconciliation", icon: ArrowRightLeft, module: "banking" },
+        { href: "/banking/reconciliation", label: t("nav.reconciliation"), icon: ArrowRightLeft, module: "banking" },
         { href: "/prepaid-expenses", label: t("nav.prepaidExpenses"), icon: Clock, module: "prepaid-expenses" },
         { href: "/loans", label: t("nav.loans"), icon: TrendingUp, module: "loans" },
         // Accounting Section
@@ -79,8 +75,8 @@ export function Sidebar() {
         { href: "/financial-statements", label: t("nav.financialStatements"), icon: Calculator, module: "financials" },
         // Reports & Settings
 
-        { href: "/pos/shifts", label: locale === "ar" ? "ورديات الكاشير" : "Cashier Shifts", icon: Clock, module: "pos" },
-        { href: "/team", label: locale === "ar" ? "إدارة الفريق" : "Team Management", icon: Users2, module: "team" },
+        { href: "/pos/shifts", label: t("nav.cashierShifts"), icon: Clock, module: "pos" },
+        { href: "/team", label: t("nav.team"), icon: Users2, module: "team" },
         { href: "/settings", label: t("nav.settings"), icon: Settings, module: "settings" },
     ];
 
@@ -96,12 +92,14 @@ export function Sidebar() {
                 />
             )}
 
-            <aside className={cn(
-                "fixed top-0 z-40 h-screen w-64 border-border bg-card transition-transform duration-300 ease-in-out lg:translate-x-0",
-                isRTL
-                    ? (isOpen ? "right-0 translate-x-0 border-s" : "right-0 translate-x-full lg:translate-x-0 border-s")
-                    : (isOpen ? "left-0 translate-x-0 border-e" : "left-0 -translate-x-full lg:translate-x-0 border-e")
-            )}>
+            <aside
+                className={cn(
+                    "fixed top-0 z-50 h-screen w-64 border-border bg-card transition-transform duration-300 ease-in-out lg:translate-x-0",
+                    isRTL ? "right-0 border-l" : "left-0 border-r",
+                    isOpen
+                        ? "translate-x-0"
+                        : (isRTL ? "translate-x-full" : "-translate-x-full")
+                )}>
                 <div className="flex h-full flex-col">
                     {/* Logo */}
                     <div className="flex h-16 items-center justify-between border-b border-border px-6">

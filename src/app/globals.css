@@ -47,7 +47,7 @@ body {
   font-family: var(--font-arabic);
 }
 
-/* RTL Support */
+/* RTL Support - Comprehensive Fixes */
 [dir="rtl"] {
   text-align: right;
 }
@@ -61,6 +61,264 @@ body {
 [dir="rtl"] .number {
   direction: ltr;
   display: inline-block;
+}
+
+/* RTL Direction Flip for Margins */
+[dir="rtl"] .mr-1 {
+  margin-right: 0;
+  margin-left: 0.25rem;
+}
+
+[dir="rtl"] .mr-2 {
+  margin-right: 0;
+  margin-left: 0.5rem;
+}
+
+[dir="rtl"] .mr-3 {
+  margin-right: 0;
+  margin-left: 0.75rem;
+}
+
+[dir="rtl"] .mr-4 {
+  margin-right: 0;
+  margin-left: 1rem;
+}
+
+[dir="rtl"] .mr-5 {
+  margin-right: 0;
+  margin-left: 1.25rem;
+}
+
+[dir="rtl"] .mr-6 {
+  margin-right: 0;
+  margin-left: 1.5rem;
+}
+
+[dir="rtl"] .mr-auto {
+  margin-right: 0;
+  margin-left: auto;
+}
+
+[dir="rtl"] .ml-1 {
+  margin-left: 0;
+  margin-right: 0.25rem;
+}
+
+[dir="rtl"] .ml-2 {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .ml-3 {
+  margin-left: 0;
+  margin-right: 0.75rem;
+}
+
+[dir="rtl"] .ml-4 {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+[dir="rtl"] .ml-5 {
+  margin-left: 0;
+  margin-right: 1.25rem;
+}
+
+[dir="rtl"] .ml-6 {
+  margin-left: 0;
+  margin-right: 1.5rem;
+}
+
+[dir="rtl"] .ml-auto {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+/* RTL Direction Flip for Padding */
+[dir="rtl"] .pr-1 {
+  padding-right: 0;
+  padding-left: 0.25rem;
+}
+
+[dir="rtl"] .pr-2 {
+  padding-right: 0;
+  padding-left: 0.5rem;
+}
+
+[dir="rtl"] .pr-3 {
+  padding-right: 0;
+  padding-left: 0.75rem;
+}
+
+[dir="rtl"] .pr-4 {
+  padding-right: 0;
+  padding-left: 1rem;
+}
+
+[dir="rtl"] .pr-5 {
+  padding-right: 0;
+  padding-left: 1.25rem;
+}
+
+[dir="rtl"] .pr-6 {
+  padding-right: 0;
+  padding-left: 1.5rem;
+}
+
+[dir="rtl"] .pl-1 {
+  padding-left: 0;
+  padding-right: 0.25rem;
+}
+
+[dir="rtl"] .pl-2 {
+  padding-left: 0;
+  padding-right: 0.5rem;
+}
+
+[dir="rtl"] .pl-3 {
+  padding-left: 0;
+  padding-right: 0.75rem;
+}
+
+[dir="rtl"] .pl-4 {
+  padding-left: 0;
+  padding-right: 1rem;
+}
+
+[dir="rtl"] .pl-5 {
+  padding-left: 0;
+  padding-right: 1.5rem;
+}
+
+[dir="rtl"] .pl-6 {
+  padding-left: 0;
+  padding-right: 1.5rem;
+}
+
+/* RTL Text Alignment */
+[dir="rtl"] .text-left {
+  text-align: right;
+}
+
+[dir="rtl"] .text-right {
+  text-align: left;
+}
+
+/* RTL Flex Direction - Only use .rtl-flex-reverse class for explicit reversal */
+[dir="rtl"] .rtl-flex-reverse {
+  flex-direction: row-reverse;
+}
+
+/* RTL Word Wrapping and Overflow Prevention */
+[dir="rtl"] .card,
+[dir="rtl"] .bg-card,
+[dir="rtl"] [class*="rounded-"] {
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+/* RTL Input/Form alignment */
+[dir="rtl"] input,
+[dir="rtl"] textarea,
+[dir="rtl"] select {
+  text-align: right;
+}
+
+[dir="rtl"] input[type="number"],
+[dir="rtl"] input[type="tel"],
+[dir="rtl"] input[type="email"] {
+  text-align: left;
+  direction: ltr;
+}
+
+/* RTL Border Radius */
+[dir="rtl"] .rounded-l {
+  border-radius: 0 0.25rem 0.25rem 0;
+}
+
+[dir="rtl"] .rounded-r {
+  border-radius: 0.25rem 0 0 0.25rem;
+}
+
+[dir="rtl"] .rounded-l-lg {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+[dir="rtl"] .rounded-r-lg {
+  border-radius: 0.5rem 0 0 0.5rem;
+}
+
+[dir="rtl"] .rounded-l-xl {
+  border-radius: 0 0.75rem 0.75rem 0;
+}
+
+[dir="rtl"] .rounded-r-xl {
+  border-radius: 0.75rem 0 0 0.75rem;
+}
+
+/* RTL Absolute Positioning - Removed to prevent conflict with component logic */
+
+
+
+/* RTL Border */
+[dir="rtl"] .border-l {
+  border-left: 0;
+  border-right: 1px solid;
+}
+
+[dir="rtl"] .border-r {
+  border-right: 0;
+  border-left: 1px solid;
+}
+
+[dir="rtl"] .border-l-2 {
+  border-left: 0;
+  border-right: 2px solid;
+}
+
+[dir="rtl"] .border-r-2 {
+  border-right: 0;
+  border-left: 2px solid;
+}
+
+/* RTL Space utilities (gap-x stays same, space-x needs flip) */
+[dir="rtl"] .space-x-1> :not([hidden])~ :not([hidden]) {
+  margin-left: 0;
+  margin-right: 0.25rem;
+}
+
+[dir="rtl"] .space-x-2> :not([hidden])~ :not([hidden]) {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+[dir="rtl"] .space-x-3> :not([hidden])~ :not([hidden]) {
+  margin-left: 0;
+  margin-right: 0.75rem;
+}
+
+[dir="rtl"] .space-x-4> :not([hidden])~ :not([hidden]) {
+  margin-left: 0;
+  margin-right: 1rem;
+}
+
+
+
+/* RTL Icon spacing in buttons/links */
+[dir="rtl"] .gap-2 svg:first-child,
+[dir="rtl"] .gap-3 svg:first-child {
+  order: 1;
+}
+
+
+
+/* Keep currency and numbers LTR */
+[dir="rtl"] .currency,
+[dir="rtl"] [data-currency],
+[dir="rtl"] .font-mono {
+  direction: ltr;
+  display: inline-block;
+  text-align: left;
 }
 
 
@@ -116,26 +374,32 @@ body {
 }
 
 /* Click responsiveness improvements */
-button, a, [role="button"] {
+button,
+a,
+[role="button"] {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
 
 /* Faster hover/active transitions */
-button, a, [role="button"], .clickable {
+button,
+a,
+[role="button"],
+.clickable {
   transition: background-color 0.1s ease, transform 0.1s ease, opacity 0.1s ease;
 }
 
 /* Active state for immediate feedback */
-button:active:not(:disabled), 
-a:active, 
+button:active:not(:disabled),
+a:active,
 [role="button"]:active {
   transform: scale(0.98);
   opacity: 0.9;
 }
 
 /* Sidebar navigation - faster interactions */
-nav a, nav button {
+nav a,
+nav button {
   transition: background-color 0.05s ease, color 0.05s ease;
 }
 
@@ -145,13 +409,18 @@ nav a, nav button {
 }
 
 /* Input focus - quick response */
-input:focus, select:focus, textarea:focus {
+input:focus,
+select:focus,
+textarea:focus {
   transition: ring 0.1s ease, border-color 0.1s ease;
 }
 
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

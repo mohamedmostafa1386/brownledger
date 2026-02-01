@@ -1,5 +1,6 @@
 {
     "common": {
+        "appName": "براون ليدجر",
         "save": "حفظ",
         "cancel": "إلغاء",
         "add": "إضافة",
@@ -47,7 +48,10 @@
         "chartOfAccounts": "دليل الحسابات",
         "prepaidExpenses": "المصروفات المقدمة",
         "loans": "القروض",
-        "returns": "المرتجعات"
+        "returns": "المرتجعات",
+        "reconciliation": "مطابقة البنك",
+        "cashierShifts": "ورديات الكاشير",
+        "team": "إدارة الفريق"
     },
     "returns": {
         "title": "مرتجعات المبيعات والمشتريات",
@@ -82,6 +86,23 @@
         "revenueOverview": "نظرة عامة على الإيرادات",
         "monthlyBreakdown": "التفصيل الشهري",
         "revenue": "الإيرادات",
+        "subtitle": "نظرة شاملة على أداء عملك",
+        "snapshot": "نظرة عامة",
+        "reports": "التحليلات والتقارير",
+        "customize": "تخصيص",
+        "closeBuilder": "إغلاق المصمم",
+        "ranges": {
+            "today": "اليوم",
+            "week": "هذا الأسبوع",
+            "month": "هذا الشهر",
+            "quarter": "هذا الربع",
+            "year": "هذه السنة"
+        },
+        "health": {
+            "healthy": "صحي",
+            "fair": "متوسط",
+            "needsAttention": "يحتاج اهتمام"
+        },
         "profit": "الربح",
         "avgMonthly": "المتوسط الشهري",
         "highest": "الأعلى",
@@ -406,6 +427,131 @@
                     "desc": "قم بدعوة محاسبك أو فريقك مع صلاحيات محددة."
                 }
             }
+        },
+        "reports": {
+            "title": "التحليلات والرؤى",
+            "subtitle": "مؤشرات الأداء التفصيلية",
+            "tabs": {
+                "overview": "نظرة عامة",
+                "sales": "المبيعات والإيرادات",
+                "receivables": "المستحقات",
+                "purchases": "المشتريات",
+                "inventory": "المخزون",
+                "clients": "العملاء"
+            },
+            "controls": {
+                "dashboard": "لوحة المعلومات",
+                "table": "جداول",
+                "export": "تصدير"
+            },
+            "kpi": {
+                "totalRevenue": "إجمالي الإيرادات",
+                "totalExpenses": "إجمالي المصروفات",
+                "netProfit": "صافي الربح",
+                "cashFlow": "التدفق النقدي",
+                "totalSales": "إجمالي المبيعات",
+                "invoiceCount": "عدد الفواتير",
+                "avgOrderValue": "متوسط قيمة الطلب",
+                "topClientRevenue": "إيرادات كبار العملاء",
+                "totalAR": "إجمالي الذمم المدينة",
+                "current": "حالي",
+                "overdue": "متأخر",
+                "over90": "أكثر من 90 يوم",
+                "totalPurchases": "إجمالي المشتريات",
+                "pendingBills": "فواتير معلقة",
+                "apBalance": "رصيد الذمم الدائنة",
+                "topSupplierSpend": "أكبر الموردين",
+                "inventoryValue": "قيمة المخزون",
+                "lowStock": "مخزون منخفض",
+                "outOfStock": "نفذ من المخزون",
+                "turnoverRate": "معدل الدوران",
+                "totalClients": "إجمالي العملاء",
+                "avgRevenueClient": "متوسط الإيراد/عميل",
+                "clientConcentration": "تركز العملاء"
+            },
+            "charts": {
+                "revenueVsExpenses": "الإيرادات مقابل المصروفات",
+                "profitTrend": "اتجاه الربح",
+                "expensesByCategory": "المصروفات حسب الفئة",
+                "cashFlowForecast": "توقعات التدفق النقدي",
+                "salesByClient": "المبيعات حسب العميل",
+                "salesTrend": "اتجاه المبيعات",
+                "arAging": "أعمار الديون",
+                "purchasesBySupplier": "المشتريات حسب المورد",
+                "apAging": "أعمار الالتزامات",
+                "stockValuation": "تقييم المخزون حسب الفئة",
+                "stockMovements": "حركة المخزون",
+                "revenueByClient": "الإيرادات حسب العميل"
+            },
+            "tableHeaders": {
+                "metric": "المقياس",
+                "currentPeriod": "الفترة الحالية",
+                "change": "التغير",
+                "status": "الحالة",
+                "month": "الشهر",
+                "revenue": "الإيرادات",
+                "expenses": "المصروفات",
+                "profit": "الربح",
+                "margin": "الهامش",
+                "rank": "الترتيب",
+                "clientName": "اسم العميل",
+                "date": "التاريخ",
+                "agingBucket": "فترة الاستحقاق",
+                "amount": "المبلغ",
+                "riskLevel": "مستوى المخاطرة",
+                "supplier": "المورد",
+                "category": "الفئة",
+                "stockIn": "وارد",
+                "stockOut": "صادر",
+                "netChange": "صافي التغير",
+                "tier": "المستوى",
+                "share": "النسبة"
+            },
+            "vsLastPeriod": "مقارنة بالفترة السابقة",
+            "totalOutstanding": "إجمالي المستحقات",
+            "riskLevels": {
+                "low": "منخفض",
+                "medium": "متوسط",
+                "high": "مرتفع"
+            },
+            "clientTiers": {
+                "gold": "ذهبي",
+                "silver": "فضي",
+                "standard": "عادي"
+            }
+        },
+        "widgets": {
+            "receivables": {
+                "title": "حسابات القبض",
+                "viewAll": "عرض الكل",
+                "totalPending": "إجمالي المعلق",
+                "paid": "مدفوع",
+                "pending": "معلق",
+                "overdue": "متأخر"
+            },
+            "quickActions": {
+                "title": "إجراءات سريعة",
+                "newInvoice": "فاتورة جديدة",
+                "newInvoiceDesc": "إنشاء فاتورة",
+                "posSale": "بيع نقطة بيع",
+                "posSaleDesc": "بيع سريع",
+                "addExpense": "إضافة مصروف",
+                "addExpenseDesc": "تسجيل موصروف",
+                "addClient": "إضافة عميل",
+                "addClientDesc": "عميل جديد"
+            }
+        },
+        "aiHelp": {
+            "title": "مساعد المحاسبة",
+            "subtitle": "أنا هنا لمساعدتك",
+            "helpGuide": "دليل المساعدة",
+            "chat": "محادثة ذكية",
+            "back": "رجوع",
+            "searchPlaceholder": "ابحث في المواضيع...",
+            "helpForPage": "مساعدة لهذه الصفحة",
+            "allTopics": "جميع المواضيع",
+            "greeting": "اسألني أي شيء عن كيفية استخدام التطبيق",
+            "inputPlaceholder": "اكتب سؤالك..."
         },
         "testimonials": {
             "title": "محبوب من قبل الشركات في جميع أنحاء مصر"

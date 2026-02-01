@@ -11,7 +11,7 @@ test.describe('Double-Entry Accounting', () => {
     });
 
     test('should show balanced journal entries', async ({ page }) => {
-        await page.goto('/journal-entries');
+        await page.goto('/en/journal-entries');
         await page.waitForTimeout(1000);
 
         // Look for debit/credit columns or totals
@@ -21,7 +21,7 @@ test.describe('Double-Entry Accounting', () => {
     });
 
     test('should show trial balance totals equal', async ({ page }) => {
-        await page.goto('/financial-statements');
+        await page.goto('/en/financial-statements');
         await page.waitForTimeout(1000);
 
         // Trial balance should show matching debit/credit
@@ -37,7 +37,7 @@ test.describe('Invoice Calculations', () => {
     });
 
     test('should calculate line item totals', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
         await page.waitForTimeout(1000);
 
         // Invoice list should show amounts
@@ -47,7 +47,7 @@ test.describe('Invoice Calculations', () => {
     });
 
     test('should show correct total on invoice detail', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
         await page.waitForTimeout(1000);
 
         // Look for total amount text
@@ -63,7 +63,7 @@ test.describe('POS Calculations', () => {
     });
 
     test('should display subtotal', async ({ page }) => {
-        await page.goto('/pos');
+        await page.goto('/en/pos');
         await page.waitForTimeout(1000);
 
         const subtotal = page.getByText(/Subtotal|Sub|فرعي/i);
@@ -71,7 +71,7 @@ test.describe('POS Calculations', () => {
     });
 
     test('should display tax amount', async ({ page }) => {
-        await page.goto('/pos');
+        await page.goto('/en/pos');
         await page.waitForTimeout(1000);
 
         const tax = page.getByText(/Tax|VAT|ضريبة/i);
@@ -79,7 +79,7 @@ test.describe('POS Calculations', () => {
     });
 
     test('should display total amount', async ({ page }) => {
-        await page.goto('/pos');
+        await page.goto('/en/pos');
         await page.waitForTimeout(1000);
 
         const total = page.getByText(/Total|إجمالي/i);
@@ -93,7 +93,7 @@ test.describe('Financial Statement Integrity', () => {
     });
 
     test('should show Assets = Liabilities + Equity', async ({ page }) => {
-        await page.goto('/financial-statements');
+        await page.goto('/en/financial-statements');
         await page.waitForTimeout(1000);
 
         // Financial statements page should load with content
@@ -102,7 +102,7 @@ test.describe('Financial Statement Integrity', () => {
     });
 
     test('should calculate net income correctly', async ({ page }) => {
-        await page.goto('/financial-statements');
+        await page.goto('/en/financial-statements');
         await page.waitForTimeout(1000);
 
         // Income statement should show revenue, expenses, net income
@@ -118,7 +118,7 @@ test.describe('Stock Quantity Validation', () => {
     });
 
     test('should show stock quantities', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/products');
         await page.waitForTimeout(1000);
 
         // Products should show quantity/stock
@@ -134,7 +134,7 @@ test.describe('Invoice Number Uniqueness', () => {
     });
 
     test('should display unique invoice numbers', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
         await page.waitForTimeout(1000);
 
         // Invoice numbers should follow a pattern
@@ -150,7 +150,7 @@ test.describe('Payment Application Validation', () => {
     });
 
     test('should show payment amounts', async ({ page }) => {
-        await page.goto('/receivables');
+        await page.goto('/en/receivables');
         await page.waitForTimeout(1000);
 
         // Payments should show applied/unapplied amounts

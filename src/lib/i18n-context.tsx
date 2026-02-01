@@ -19,26 +19,27 @@ interface I18nContextType {
 const messages: Record<string, Messages> = {
     en: enMessages,
     ar: arMessages,
-    fr: frMessages,
+    fr: frMessages as any,
     de: enMessages, // fallback to English
     es: enMessages, // fallback to English
 };
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-    const [locale, setLocaleState] = useState<Locale>("en");
+export function I18nProvider({ children, locale: initialLocale }: { children: ReactNode; locale: string }) {
+    const [locale, setLocaleState] = useState<Locale>(initialLocale as Locale);
     const [isInitialized, setIsInitialized] = useState(false);
 
-    // Load saved locale from localStorage on mount
+    // Sync with prop if it changes (e.g. navigation)
     useEffect(() => {
-        const savedLocale = localStorage.getItem("app_language") as Locale;
-        if (savedLocale && ["en", "ar", "fr", "de", "es"].includes(savedLocale)) {
-            setLocaleState(savedLocale);
-            // Set document direction
-            document.documentElement.dir = savedLocale === "ar" ? "rtl" : "ltr";
-            document.documentElement.lang = savedLocale;
+        if (initialLocale) {
+            setLocaleState(initialLocale as Locale);
+            document.documentElement.dir = initialLocale === "ar" ? "rtl" : "ltr";
+            document.documentElement.lang = initialLocale;
         }
+    }, [initialLocale]);
+
+    useEffect(() => {
         setIsInitialized(true);
     }, []);
 
@@ -78,11 +79,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
 
     const dir = locale === "ar" ? "rtl" : "ltr";
 
-    // Don't render until initialized to prevent hydration mismatch
-    if (!isInitialized) {
-        return null;
-    }
-
+    // Use prop locale immediately, no need to wait for hydration if we trust the server
     return (
         <I18nContext.Provider value={{ locale, setLocale, t, dir, messages: messages[locale] || messages.en }}>
             {children}

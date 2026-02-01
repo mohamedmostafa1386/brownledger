@@ -103,9 +103,9 @@ export default function DashboardPage() {
 
     const getHealthStatus = () => {
         const healthLabels = {
-            healthy: locale === "ar" ? "صحي" : "Healthy",
-            fair: locale === "ar" ? "متوسط" : "Fair",
-            needsAttention: locale === "ar" ? "يحتاج اهتمام" : "Needs Attention"
+            healthy: t("dashboard.health.healthy"),
+            fair: t("dashboard.health.fair"),
+            needsAttention: t("dashboard.health.needsAttention")
         };
         if (profit > 0 && Number(collectionRate) > 80) return { status: healthLabels.healthy, color: "text-emerald-600", bg: "bg-emerald-50 dark:bg-emerald-900/20" };
         if (profit > 0 && Number(collectionRate) > 50) return { status: healthLabels.fair, color: "text-amber-600", bg: "bg-amber-50 dark:bg-amber-900/20" };
@@ -119,10 +119,10 @@ export default function DashboardPage() {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold flex items-center gap-2">
-                        {locale === "ar" ? "لوحة التحكم" : "Business Dashboard"}
+                        {t("dashboard.title")}
                     </h1>
                     <p className="text-muted-foreground">
-                        {locale === "ar" ? "نظرة شاملة على أداء عملك" : "Complete overview of your business performance"}
+                        {t("dashboard.subtitle")}
                     </p>
                 </div>
                 <div className="flex items-center gap-4">
@@ -141,11 +141,11 @@ export default function DashboardPage() {
                     <TabsList>
                         <TabsTrigger value="snapshot" className="flex items-center gap-2">
                             <LayoutDashboard className="w-4 h-4" />
-                            {locale === "ar" ? "نظرة عامة" : "Snapshot"}
+                            {t("dashboard.snapshot")}
                         </TabsTrigger>
                         <TabsTrigger value="analytics" className="flex items-center gap-2">
                             <span className="bg-primary/10 p-0.5 rounded text-primary text-[10px] font-bold">New</span>
-                            {locale === "ar" ? "التحليلات والتقارير" : "Reports"}
+                            {t("dashboard.reports")}
                         </TabsTrigger>
                     </TabsList>
 
@@ -158,7 +158,7 @@ export default function DashboardPage() {
                                 className="hidden sm:flex"
                             >
                                 <Settings className="w-4 h-4 mr-2" />
-                                {isEditing ? "Close Builder" : "Customize"}
+                                {isEditing ? t("dashboard.closeBuilder") : t("dashboard.customize")}
                             </Button>
 
                             {/* Date Range Selector */}
@@ -169,11 +169,11 @@ export default function DashboardPage() {
                                     onChange={(e) => setDateRange(e.target.value)}
                                     className="text-sm bg-transparent border-none outline-none cursor-pointer"
                                 >
-                                    <option value="today">{locale === "ar" ? "اليوم" : "Today"}</option>
-                                    <option value="this_week">{locale === "ar" ? "هذا الأسبوع" : "This Week"}</option>
-                                    <option value="this_month">{locale === "ar" ? "هذا الشهر" : "This Month"}</option>
-                                    <option value="this_quarter">{locale === "ar" ? "هذا الربع" : "This Quarter"}</option>
-                                    <option value="this_year">{locale === "ar" ? "هذه السنة" : "This Year"}</option>
+                                    <option value="today">{t("dashboard.ranges.today")}</option>
+                                    <option value="this_week">{t("dashboard.ranges.week")}</option>
+                                    <option value="this_month">{t("dashboard.ranges.month")}</option>
+                                    <option value="this_quarter">{t("dashboard.ranges.quarter")}</option>
+                                    <option value="this_year">{t("dashboard.ranges.year")}</option>
                                 </select>
                             </div>
                         </div>
@@ -193,6 +193,7 @@ export default function DashboardPage() {
                         config={config}
                         data={data}
                         isLoading={isLoading || isConfigLoading}
+                        periodLabel={t(`dashboard.ranges.${dateRange.replace('this_', '').replace('today', 'today')}`)}
                     />
                 </TabsContent>
 

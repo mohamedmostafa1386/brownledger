@@ -6,6 +6,7 @@ import { useTranslations } from "next-intl";
 import { signOut } from "next-auth/react";
 import { useSidebarStore } from "@/lib/stores/sidebar-store";
 import { useI18n } from "@/lib/i18n-context";
+import { LanguageSwitcher } from "@/components/language-switcher";
 
 export function Header() {
     const [isDark, setIsDark] = useState(false);
@@ -56,6 +57,9 @@ export function Header() {
                     <Bell className="h-4 w-4 text-muted-foreground" />
                     <span className="absolute end-1 top-1 h-2 w-2 rounded-full bg-destructive" />
                 </button>
+
+                {/* Language Switcher */}
+                <LanguageSwitcher />
 
                 {/* Theme Toggle */}
                 <button

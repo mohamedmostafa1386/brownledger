@@ -1,5 +1,6 @@
 {
     "common": {
+        "appName": "BrownLedger",
         "save": "Save",
         "cancel": "Cancel",
         "add": "Add",
@@ -47,7 +48,10 @@
         "chartOfAccounts": "Chart of Accounts",
         "prepaidExpenses": "Prepaid Expenses",
         "loans": "Loans",
-        "returns": "Returns"
+        "returns": "Returns",
+        "reconciliation": "Bank Reconciliation",
+        "cashierShifts": "Cashier Shifts",
+        "team": "Team Management"
     },
     "returns": {
         "title": "Sales & Purchase Returns",
@@ -82,6 +86,18 @@
         "revenueOverview": "Revenue Overview",
         "monthlyBreakdown": "Monthly Breakdown",
         "revenue": "Revenue",
+        "subtitle": "Complete overview of your business performance",
+        "snapshot": "Snapshot",
+        "reports": "Reports",
+        "customize": "Customize",
+        "closeBuilder": "Close Builder",
+        "ranges": {
+            "today": "Today",
+            "week": "This Week",
+            "month": "This Month",
+            "quarter": "This Quarter",
+            "year": "This Year"
+        },
         "profit": "Profit",
         "avgMonthly": "Avg Monthly",
         "highest": "Highest",
@@ -131,6 +147,11 @@
                 "label": "Recent Invoices",
                 "description": "List of latest invoice transactions."
             }
+        },
+        "health": {
+            "healthy": "Healthy",
+            "fair": "Fair",
+            "needsAttention": "Needs Attention"
         }
     },
     "invoices": {
@@ -390,21 +411,146 @@
                 },
                 "reconciliation": {
                     "title": "Bank Reconciliation",
-                    "desc": "Match bank transactions with your books automatically."
+                    "desc": "Automatically match bank transactions with your books."
                 },
                 "ai": {
-                    "title": "AI-Powered Insights",
-                    "desc": "Get smart suggestions and predictions powered by artificial intelligence."
+                    "title": "AI Insights",
+                    "desc": "Get smart suggestions and forecasts powered by AI."
                 },
                 "multiLang": {
-                    "title": "Multi-Language",
-                    "desc": "Full Arabic and English support with RTL interface."
+                    "title": "Multi-language",
+                    "desc": "Full support for Arabic & English with RTL interface."
                 },
                 "collaboration": {
                     "title": "Team Collaboration",
-                    "desc": "Invite your accountant, bookkeeper, or team members with role-based access."
+                    "desc": "Invite your accountant or team with specific permissions."
                 }
             }
+        },
+        "reports": {
+            "title": "Analytics & Insights",
+            "subtitle": "Detailed performance metrics",
+            "tabs": {
+                "overview": "Overview",
+                "sales": "Sales & Revenue",
+                "receivables": "Receivables",
+                "purchases": "Purchases",
+                "inventory": "Inventory",
+                "clients": "Clients"
+            },
+            "controls": {
+                "dashboard": "Dashboard",
+                "table": "Tables",
+                "export": "Export"
+            },
+            "kpi": {
+                "totalRevenue": "Total Revenue",
+                "totalExpenses": "Total Expenses",
+                "netProfit": "Net Profit",
+                "cashFlow": "Cash Flow",
+                "totalSales": "Total Sales",
+                "invoiceCount": "Invoice Count",
+                "avgOrderValue": "Avg Order Value",
+                "topClientRevenue": "Top Client Revenue",
+                "totalAR": "Total A/R",
+                "current": "Current",
+                "overdue": "Overdue",
+                "over90": "90+ Days",
+                "totalPurchases": "Total Purchases",
+                "pendingBills": "Pending Bills",
+                "apBalance": "A/P Balance",
+                "topSupplierSpend": "Top Supplier",
+                "inventoryValue": "Inventory Value",
+                "lowStock": "Low Stock Items",
+                "outOfStock": "Out of Stock",
+                "turnoverRate": "Turnover Rate",
+                "totalClients": "Total Clients",
+                "avgRevenueClient": "Avg Revenue/Client",
+                "clientConcentration": "Client Concentration"
+            },
+            "charts": {
+                "revenueVsExpenses": "Revenue vs Expenses",
+                "profitTrend": "Profit Trend",
+                "expensesByCategory": "Expenses by Category",
+                "cashFlowForecast": "Cash Flow Forecast",
+                "salesByClient": "Sales by Client",
+                "salesTrend": "Sales Trend",
+                "arAging": "A/R Aging Analysis",
+                "purchasesBySupplier": "Purchases by Supplier",
+                "apAging": "A/P Aging Buckets",
+                "stockValuation": "Stock Valuation by Category",
+                "stockMovements": "Stock Movements",
+                "revenueByClient": "Revenue by Client"
+            },
+            "tableHeaders": {
+                "metric": "Metric",
+                "currentPeriod": "Current Period",
+                "change": "Change",
+                "status": "Status",
+                "month": "Month",
+                "revenue": "Revenue",
+                "expenses": "Expenses",
+                "profit": "Profit",
+                "margin": "Margin",
+                "rank": "Rank",
+                "clientName": "Client Name",
+                "date": "Date",
+                "agingBucket": "Aging Bucket",
+                "amount": "Amount",
+                "riskLevel": "Risk Level",
+                "supplier": "Supplier",
+                "category": "Category",
+                "stockIn": "Stock In",
+                "stockOut": "Stock Out",
+                "netChange": "Net Change",
+                "tier": "Tier",
+                "share": "Share"
+            },
+            "vsLastPeriod": "vs last period",
+            "totalOutstanding": "Total Outstanding",
+            "riskLevels": {
+                "low": "Low",
+                "medium": "Medium",
+                "high": "High"
+            },
+            "clientTiers": {
+                "gold": "Gold",
+                "silver": "Silver",
+                "standard": "Standard"
+            }
+        },
+        "widgets": {
+            "receivables": {
+                "title": "Accounts Receivable",
+                "viewAll": "View All",
+                "totalPending": "Total Pending",
+                "paid": "Paid",
+                "pending": "Pending",
+                "overdue": "Overdue"
+            },
+            "quickActions": {
+                "title": "Quick Actions",
+                "newInvoice": "New Invoice",
+                "newInvoiceDesc": "Create invoice",
+                "posSale": "POS Sale",
+                "posSaleDesc": "Quick sale",
+                "addExpense": "Add Expense",
+                "addExpenseDesc": "Record expense",
+                "addClient": "Add Client",
+                "addClientDesc": "New customer"
+            }
+        },
+        "aiHelp": {
+            "title": "Accounting Assistant",
+            "subtitle": "Here to help you",
+            "helpGuide": "Help Guide",
+            "chat": "AI Chat",
+            "back": "Back",
+            "searchPlaceholder": "Search topics...",
+            "helpForPage": "Help for this page",
+            "allTopics": "All Topics",
+            "greeting": "Ask me anything about how to use the app",
+            "inputPlaceholder": "Type your question..."
         },
         "testimonials": {
             "title": "Loved by businesses across Egypt"

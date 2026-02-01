@@ -1,0 +1,199 @@
+{
+    "tech_stack": [
+        "TypeScript",
+        "Next.js",
+        "Prisma",
+        "PostgreSQL"
+    ],
+    "features": [
+        {
+            "name": "Auth API",
+            "description": "Authentication and authorization",
+            "files": [
+                "src/app/api/auth/login",
+                "src/app/api/auth/register",
+                "src/lib/auth.ts"
+            ],
+            "api_doc": {
+                "openapi": "3.0.0",
+                "paths": {
+                    "/api/auth/login": {
+                        "post": {
+                            "summary": "Login user",
+                            "requestBody": {
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "email": {
+                                                    "type": "string"
+                                                },
+                                                "password": {
+                                                    "type": "string"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Invoices API",
+            "description": "Manage invoices",
+            "files": [
+                "src/app/api/invoices/route.ts"
+            ],
+            "api_doc": {
+                "openapi": "3.0.0",
+                "paths": {
+                    "/api/invoices": {
+                        "get": {
+                            "summary": "List invoices"
+                        },
+                        "post": {
+                            "summary": "Create invoice",
+                            "requestBody": {
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "clientId": {
+                                                    "type": "string"
+                                                },
+                                                "items": {
+                                                    "type": "array"
+                                                }
+                                            },
+                                            "required": [
+                                                "clientId",
+                                                "items"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Clients API",
+            "description": "Manage clients",
+            "files": [
+                "src/app/api/clients/route.ts"
+            ],
+            "api_doc": {
+                "openapi": "3.0.0",
+                "paths": {
+                    "/api/clients": {
+                        "get": {
+                            "summary": "List clients"
+                        },
+                        "post": {
+                            "summary": "Create client",
+                            "requestBody": {
+                                "content": {
+                                    "application/json": {
+                                        "schema": {
+                                            "type": "object",
+                                            "properties": {
+                                                "name": {
+                                                    "type": "string"
+                                                },
+                                                "email": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "required": [
+                                                "name"
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Stock API",
+            "description": "Manage inventory stock, transfers and adjustments",
+            "files": [
+                "src/app/api/stock/adjust/route.ts",
+                "src/app/api/stock/transfer/route.ts",
+                "src/app/api/stock/warehouses/route.ts"
+            ],
+            "api_doc": {
+                "openapi": "3.0.0",
+                "paths": {
+                    "/api/stock/warehouses": {
+                        "get": {
+                            "summary": "List warehouses"
+                        },
+                        "post": {
+                            "summary": "Create warehouse"
+                        }
+                    },
+                    "/api/stock/transfer": {
+                        "post": {
+                            "summary": "Transfer stock between warehouses"
+                        }
+                    },
+                    "/api/stock/adjust": {
+                        "post": {
+                            "summary": "Adjust stock quantity"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Dashboard API",
+            "description": "Get dashboard metrics",
+            "files": [
+                "src/app/api/dashboard/route.ts"
+            ],
+            "api_doc": {
+                "openapi": "3.0.0",
+                "paths": {
+                    "/api/dashboard": {
+                        "get": {
+                            "summary": "Get dashboard metrics"
+                        }
+                    }
+                }
+            }
+        },
+        {
+            "name": "Team API",
+            "description": "Team management",
+            "files": [
+                "src/app/api/team/route.ts"
+            ],
+            "api_doc": {
+                "openapi": "3.0.0",
+                "paths": {
+                    "/api/team": {
+                        "get": {
+                            "summary": "List team members"
+                        },
+                        "post": {
+                            "summary": "Invite team member"
+                        },
+                        "patch": {
+                            "summary": "Update team member role"
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

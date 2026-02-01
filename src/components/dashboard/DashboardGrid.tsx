@@ -8,6 +8,7 @@ interface DashboardGridProps {
     config: { widgets: string[] } | null; // Order of widget IDs
     data: any;
     isLoading: boolean;
+    periodLabel?: string; // Label for current date range (e.g., "This Month")
 }
 
 export const defaultWidgetOrder = [
@@ -22,7 +23,7 @@ export const defaultWidgetOrder = [
     "recent-invoices"
 ];
 
-export function DashboardGrid({ config, data, isLoading }: DashboardGridProps) {
+export function DashboardGrid({ config, data, isLoading, periodLabel }: DashboardGridProps) {
     const { t } = useI18n();
     // Use user's config or default
     const widgetIds = config?.widgets || defaultWidgetOrder;
@@ -45,7 +46,7 @@ export function DashboardGrid({ config, data, isLoading }: DashboardGridProps) {
                 {activeWidgets.map((widget, index) => {
                     if (!widget) return null; // Should be filtered already
                     const WidgetComponent = widget.component;
-                    const props = widget.mapDataToProps ? widget.mapDataToProps(data, t) : {};
+                    const props = widget.mapDataToProps ? widget.mapDataToProps(data, t, periodLabel) : {};
 
                     // Determine grid span based on widget type or logic
                     // Metrics = 1 col, Charts = 2 cols, Lists = 2 cols

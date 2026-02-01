@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useI18n } from "@/lib/i18n-context";
 
 export function QuickActionsWidget() {
-    const { locale } = useI18n();
+    const { t } = useI18n(); // Ensure t is destructured if not already (it was only locale before)
+    // Actually the file had `const { locale } = useI18n();`. I need to change that line too.
 
     return (
         <motion.div
@@ -13,7 +14,7 @@ export function QuickActionsWidget() {
             animate={{ opacity: 1, y: 0 }}
             className="bg-card rounded-xl border p-6 h-full"
         >
-            <h3 className="font-semibold mb-4">{locale === "ar" ? "إجراءات سريعة" : "Quick Actions"}</h3>
+            <h3 className="font-semibold mb-4">{t("widgets.quickActions.title")}</h3>
             <div className="grid grid-cols-2 gap-3">
                 <Link
                     href="/invoices/new"
@@ -23,8 +24,8 @@ export function QuickActionsWidget() {
                         <FileText className="w-4 h-4" />
                     </div>
                     <div>
-                        <p className="text-sm font-medium">{locale === "ar" ? "فاتورة جديدة" : "New Invoice"}</p>
-                        <p className="text-xs text-muted-foreground">{locale === "ar" ? "إنشاء فاتورة" : "Create invoice"}</p>
+                        <p className="text-sm font-medium">{t("widgets.quickActions.newInvoice")}</p>
+                        <p className="text-xs text-muted-foreground">{t("widgets.quickActions.newInvoiceDesc")}</p>
                     </div>
                 </Link>
                 <Link
@@ -35,8 +36,8 @@ export function QuickActionsWidget() {
                         <ShoppingCart className="w-4 h-4" />
                     </div>
                     <div>
-                        <p className="text-sm font-medium">{locale === "ar" ? "بيع نقطة بيع" : "POS Sale"}</p>
-                        <p className="text-xs text-muted-foreground">{locale === "ar" ? "بيع سريع" : "Quick sale"}</p>
+                        <p className="text-sm font-medium">{t("widgets.quickActions.posSale")}</p>
+                        <p className="text-xs text-muted-foreground">{t("widgets.quickActions.posSaleDesc")}</p>
                     </div>
                 </Link>
                 <Link
@@ -47,8 +48,8 @@ export function QuickActionsWidget() {
                         <Receipt className="w-4 h-4" />
                     </div>
                     <div>
-                        <p className="text-sm font-medium">{locale === "ar" ? "إضافة مصروف" : "Add Expense"}</p>
-                        <p className="text-xs text-muted-foreground">{locale === "ar" ? "تسجيل مصروف" : "Record expense"}</p>
+                        <p className="text-sm font-medium">{t("widgets.quickActions.addExpense")}</p>
+                        <p className="text-xs text-muted-foreground">{t("widgets.quickActions.addExpenseDesc")}</p>
                     </div>
                 </Link>
                 <Link
@@ -59,8 +60,8 @@ export function QuickActionsWidget() {
                         <Users className="w-4 h-4" />
                     </div>
                     <div>
-                        <p className="text-sm font-medium">{locale === "ar" ? "إضافة عميل" : "Add Client"}</p>
-                        <p className="text-xs text-muted-foreground">{locale === "ar" ? "عميل جديد" : "New customer"}</p>
+                        <p className="text-sm font-medium">{t("widgets.quickActions.addClient")}</p>
+                        <p className="text-xs text-muted-foreground">{t("widgets.quickActions.addClientDesc")}</p>
                     </div>
                 </Link>
             </div>

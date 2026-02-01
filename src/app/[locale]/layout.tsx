@@ -22,10 +22,12 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  const locale = await getLocale();
+  const { locale } = await params;
   const messages = await getMessages();
   const isRTL = locale === "ar";
 
@@ -37,7 +39,7 @@ export default async function RootLayout({
     >
       <body className={`${inter.variable} ${cairo.variable} ${isRTL ? "font-arabic" : "font-sans"}`}>
         <NextIntlClientProvider messages={messages}>
-          <Providers>{children}</Providers>
+          <Providers locale={locale}>{children}</Providers>
         </NextIntlClientProvider>
       </body>
     </html>

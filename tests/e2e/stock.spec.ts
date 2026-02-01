@@ -11,18 +11,18 @@ test.describe('Stock Management Module', () => {
     });
 
     test('should display products page', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         await expect(page.getByRole('heading').first()).toBeVisible();
     });
 
     test('should have add product button', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         const addButton = page.locator('button:has-text("Add"), button:has-text("New"), a:has-text("Product")');
         await expect(addButton.first()).toBeVisible();
     });
 
     test('should display product grid or table', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         await page.waitForTimeout(1000);
         const content = page.locator('table, .grid, .bg-card');
         const count = await content.count();
@@ -30,13 +30,13 @@ test.describe('Stock Management Module', () => {
     });
 
     test('should have search functionality', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         const searchInput = page.locator('input[placeholder*="Search"], input[type="search"]');
         await expect(searchInput.first()).toBeVisible();
     });
 
     test('should display stock quantities', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         await page.waitForTimeout(1000);
         // Check for quantity-related text or column
         const stockText = page.getByText(/Stock|Quantity|Inventory|Available/i);
@@ -45,7 +45,7 @@ test.describe('Stock Management Module', () => {
     });
 
     test('should show low stock warning icon', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         await page.waitForTimeout(1000);
         // Low stock warnings might be shown as icons or colored badges
         const warnings = page.locator('[data-testid="low-stock"], .text-orange-500, .text-yellow-500, .text-red-500');
@@ -61,7 +61,7 @@ test.describe('Stock Adjustments', () => {
     });
 
     test('should access stock adjustment from products', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         // Look for adjustment button or link
         const adjustButton = page.locator('button:has-text("Adjust"), button:has-text("Stock"), [data-testid="stock-adjustment"]');
         const isVisible = await adjustButton.first().isVisible().catch(() => false);
@@ -75,7 +75,7 @@ test.describe('Product Categories', () => {
     });
 
     test('should filter products by category', async ({ page }) => {
-        await page.goto('/products');
+        await page.goto('/en/stock');
         // Products page should have filter or category options
         const filters = page.locator('select, [role="combobox"], button, input');
         const count = await filters.count();

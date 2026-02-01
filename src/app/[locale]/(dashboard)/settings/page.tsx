@@ -169,8 +169,11 @@ export default function SettingsPage() {
     const switchLanguage = (newLocale: string) => {
         if (newLocale === locale) return;
         setStoreLocale(newLocale);
-        const pathWithoutLocale = pathname.replace(/^\/(en|ar)/, "") || "/";
-        router.push(pathWithoutLocale);
+        // Remove current locale prefix (en or ar)
+        const pathWithoutLocale = pathname.replace(/^\/(en|ar|fr)/, "") || "/";
+        // Create new path with new locale, ensuring we don't double slash
+        const newPath = `/${newLocale}${pathWithoutLocale === "/" ? "" : pathWithoutLocale}`;
+        router.push(newPath);
         router.refresh();
     };
 

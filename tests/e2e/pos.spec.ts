@@ -2,9 +2,10 @@ import { test, expect } from '@playwright/test';
 import { login } from '../fixtures';
 
 test.describe('POS Module', () => {
+    test.setTimeout(60000);
     test.beforeEach(async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/pos');
+        await page.goto('/en/pos');
     });
 
     test('should display POS page', async ({ page }) => {

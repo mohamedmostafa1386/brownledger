@@ -1,0 +1,42 @@
+[
+  {
+    "id": "TC001",
+    "title": "test_auth_api_login_functionality",
+    "description": "Verify that the /api/auth/login endpoint correctly authenticates users with valid credentials and rejects invalid login attempts."
+  },
+  {
+    "id": "TC002",
+    "title": "test_invoices_api_create_and_list_invoices",
+    "description": "Validate that the /api/invoices POST endpoint creates invoices with required fields and the GET endpoint lists all invoices accurately."
+  },
+  {
+    "id": "TC003",
+    "title": "test_clients_api_create_and_list_clients",
+    "description": "Ensure the /api/clients POST endpoint creates clients with mandatory fields and the GET endpoint retrieves the list of clients correctly."
+  },
+  {
+    "id": "TC004",
+    "title": "test_stock_api_warehouses_management",
+    "description": "Test the /api/stock/warehouses GET endpoint for listing warehouses and POST endpoint for creating new warehouses with valid data."
+  },
+  {
+    "id": "TC005",
+    "title": "test_stock_api_transfer_stock_between_warehouses",
+    "description": "Verify that the /api/stock/transfer POST endpoint correctly transfers stock quantities between warehouses and handles errors for invalid transfers."
+  },
+  {
+    "id": "TC006",
+    "title": "test_stock_api_adjust_stock_quantity",
+    "description": "Check that the /api/stock/adjust POST endpoint adjusts stock quantities accurately and validates input data properly."
+  },
+  {
+    "id": "TC007",
+    "title": "test_dashboard_api_get_metrics",
+    "description": "Validate that the /api/dashboard GET endpoint returns real-time financial KPIs and metrics reflecting the current state of the system."
+  },
+  {
+    "id": "TC008",
+    "title": "test_team_api_manage_team_members",
+    "description": "Test the /api/team GET endpoint for listing team members, POST endpoint for inviting new members, and PATCH endpoint for updating member roles."
+  }
+]

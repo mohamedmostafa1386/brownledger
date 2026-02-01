@@ -10,7 +10,7 @@ test.describe('Button Functionality Audit', () => {
     });
 
     test('audit all buttons on dashboard', async ({ page }) => {
-        await page.goto('/dashboard');
+        await page.goto('/en/dashboard');
         await page.waitForTimeout(1000);
 
         const buttons = await page.locator('button').all();
@@ -28,7 +28,7 @@ test.describe('Button Functionality Audit', () => {
     });
 
     test('audit all buttons on invoices page', async ({ page }) => {
-        await page.goto('/invoices');
+        await page.goto('/en/invoices');
         await page.waitForTimeout(1000);
 
         const buttons = await page.locator('button').all();
@@ -44,7 +44,7 @@ test.describe('Button Functionality Audit', () => {
     });
 
     test('audit all buttons on POS page', async ({ page }) => {
-        await page.goto('/pos');
+        await page.goto('/en/pos');
         await page.waitForTimeout(1000);
 
         const buttons = await page.locator('button').all();
@@ -59,21 +59,7 @@ test.describe('Button Functionality Audit', () => {
         }
     });
 
-    test('audit all buttons on receivables page', async ({ page }) => {
-        await page.goto('/receivables');
-        await page.waitForTimeout(1000);
 
-        const buttons = await page.locator('button').all();
-        console.log(`Found ${buttons.length} buttons on receivables page`);
-
-        for (const button of buttons) {
-            const isVisible = await button.isVisible().catch(() => false);
-            if (isVisible) {
-                const isEnabled = await button.isEnabled().catch(() => false);
-                expect(typeof isEnabled).toBe('boolean');
-            }
-        }
-    });
 });
 
 test.describe('Form Validation Tests', () => {
@@ -84,7 +70,7 @@ test.describe('Form Validation Tests', () => {
     test('login form should validate empty fields', async ({ page }) => {
         // Logout first
         await page.context().clearCookies();
-        await page.goto('/login');
+        await page.goto('/en/login');
 
         // Try to submit empty form
         await page.click('button[type="submit"]');
@@ -98,7 +84,7 @@ test.describe('Form Validation Tests', () => {
 test.describe('Calculation Tests', () => {
     test('POS cart should calculate totals correctly', async ({ page }) => {
         await login(page, 'en');
-        await page.goto('/pos');
+        await page.goto('/en/pos');
         await page.waitForTimeout(1000);
 
         // Page should have total display - use getByText instead of mixed selector

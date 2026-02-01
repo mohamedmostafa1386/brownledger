@@ -42,7 +42,7 @@ export function getDefaultDateRange(): DateRange {
 }
 
 /**
- * Calculate Revenue from PAID invoices + COMPLETED POS sales
+ * Calculate Revenue from ALL finalized invoices (Accrual Basis) + COMPLETED POS sales
  */
 export async function calculateRevenue(
     companyId: string,
@@ -53,11 +53,11 @@ export async function calculateRevenue(
         ? { startDate, endDate }
         : getDefaultDateRange();
 
-    // Revenue from PAID invoices
+    // Revenue from ALL invoices (Accrual)
     const paidInvoices = await prisma.invoice.findMany({
         where: {
             companyId,
-            status: "PAID",
+            status: { in: ["PAID", "PENDING", "SENT", "OVERDUE"] },
             issueDate: { gte: start, lte: end },
         },
         include: { items: true },
@@ -120,7 +120,7 @@ export async function calculateCOGS(
     const paidInvoices = await prisma.invoice.findMany({
         where: {
             companyId,
-            status: "PAID",
+            status: { in: ["PAID", "PENDING", "SENT", "OVERDUE"] },
             issueDate: { gte: start, lte: end },
         },
         include: { items: true },

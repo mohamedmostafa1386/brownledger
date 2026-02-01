@@ -85,27 +85,42 @@ Return a JSON object with an "insights" array:
 Focus on: cash flow issues, revenue opportunities, expense optimization, overdue payments, client concentration.
 Return ONLY valid JSON.`;
 
-        const response = await getOpenAI().chat.completions.create({
-            model: "gpt-4",
-            messages: [{ role: "user", content: prompt }],
-            temperature: 0.4,
-            max_tokens: 800,
-        });
+        let content = "{}";
+        try {
+            const response = await getOpenAI().chat.completions.create({
+                model: "gpt-4",
+                messages: [{ role: "user", content: prompt }],
+                temperature: 0.4,
+                max_tokens: 800,
+            });
+            content = response.choices[0].message.content || "{}";
+        } catch (apiError) {
+            console.error("OpenAI API call failed:", apiError);
+            throw apiError; // Re-throw to be caught by outer catch
+        }
 
-        const content = response.choices[0].message.content || "{}";
         const jsonMatch = content.match(/\{[\s\S]*\}/);
-        const result = JSON.parse(jsonMatch?.[0] || '{"insights":[]}');
+        let result = { insights: [] };
+
+        try {
+            if (jsonMatch) {
+                result = JSON.parse(jsonMatch[0]);
+            }
+        } catch (parseError) {
+            console.error("Failed to parse AI response:", content);
+            // Fallback to empty insights
+        }
 
         return result.insights || [];
     } catch (error) {
-        console.error("AI insights error:", error);
+        console.error("AI insights generation error:", error);
 
         // Return default insights if AI fails
         return [
             {
                 type: "info",
                 title: "AI Analysis Unavailable",
-                description: "Unable to generate AI insights at this time. Please check your API configuration.",
+                description: "Unable to connect to AI service. Displaying standard financial data.",
                 actionable: false,
             },
         ];

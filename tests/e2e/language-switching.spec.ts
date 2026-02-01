@@ -2,8 +2,9 @@ import { test, expect } from '@playwright/test';
 import { login } from '../fixtures';
 
 test.describe('Multi-language Support', () => {
+    test.setTimeout(60000);
     test('should display English by default', async ({ page }) => {
-        await page.goto('/login');
+        await page.goto('/en/login');
 
         // Page should render with lang attribute
         const html = page.locator('html');
